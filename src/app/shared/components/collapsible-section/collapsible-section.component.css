@@ -1,0 +1,119 @@
+.collapsible-container {
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
+.collapsible-toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  background: var(--collapsible-toggle-bg);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.collapsible-toggle:hover {
+  background: var(--collapsible-toggle-hover);
+  transform: scale(1.1);
+}
+
+.collapsible-toggle:active {
+  transform: scale(0.95);
+}
+
+.toggle-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--collapsible-toggle-icon);
+  transition: transform 0.3s ease;
+}
+
+.toggle-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.collapsible-content {
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.collapsible-content.hidden {
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+}
+
+/* Cuando está colapsado, mostrar una pequeña franja */
+.collapsible-container.collapsed {
+  position: relative;
+  min-height: 40px;
+}
+
+.collapsible-container.collapsed::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.collapsible-container.collapsed .collapsible-toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  pointer-events: auto;
+}
+
+.collapsible-container.collapsed .collapsible-toggle:hover {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  transform: scale(1.1);
+}
+
+/* Override form-section background when collapsed */
+.form-section .collapsible-container.collapsed::before {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+}
+
+/* Dark mode is now handled by CSS custom properties in styles.css */
+
+/* Accessibility improvements */
+.collapsible-toggle:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Smooth animation for content */
+.collapsible-container:not(.collapsed) .collapsible-content {
+  max-height: none;
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,76 @@
+/* Estilos específicos para el módulo de mantenimiento de usuarios */
+/* Los estilos comunes ya están en styles.css global */
+
+/* Estilos únicos para este módulo si los hay */
+.user-specific-section {
+  /* Aquí se pueden agregar estilos específicos que no se usen en otros módulos */
+}
+
+/* Estilos específicos para campos de permisos */
+.permissions-section {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.permissions-title {
+  color: #92400e;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Estilos para campos de contraseña */
+.password-field {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: #374151;
+  background: #f3f4f6;
+}
+
+/* Estilos para validación de contraseñas */
+.password-strength {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.password-strength.weak {
+  color: #dc2626;
+}
+
+.password-strength.medium {
+  color: #d97706;
+}
+
+.password-strength.strong {
+  color: #16a34a;
+}
+
+/* Los estilos del grid ya están definidos en styles.css global */
+/* No necesitamos estilos específicos aquí ya que usamos el sistema de grid */
+
+/* Responsive adjustments específicos para usuarios */
+@media (max-width: 768px) {
+  .permissions-grid {
+    grid-template-columns: 1fr;
+  }
+}

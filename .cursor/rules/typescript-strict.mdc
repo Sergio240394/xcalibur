@@ -1,0 +1,13 @@
+---
+description: "Enforce strict TypeScript practices"
+globs:
+  - "**/*.ts"
+alwaysApply: true
+---
+
+- Enable `strict` mode in `tsconfig.json`.
+- Define interfaces for all structured data.
+- Avoid using `any`, `unknown`, or untyped variables.
+- Explicitly type the return value of all public functions.
+- Avoid `any` even in function prototypes; prefer `unknown` with type guards.
+- Use literal types and enums when possible.

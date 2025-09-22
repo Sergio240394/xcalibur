@@ -1,0 +1,171 @@
+<div class="modern-form-container">
+  <!-- Header Section - Clean and Compact -->
+  <div class="form-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="form-title">Carga de Comprobantes</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Form -->
+  <form [formGroup]="comprobantesForm" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()" class="modern-form">
+
+    <app-collapsible-section>
+      <div class="form-section">
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="field-label">
+              Compañia
+              @if (companiaDescription()) {
+                <span class="compania-name-display">({{ companiaDescription() }})</span>
+              }
+              <span class="required-asterisk">*</span>
+            </label>
+            <div class="input-with-icon">
+              <input type="text" formControlName="compania" placeholder="Código de compañía"
+                     class="modern-input"
+                     [class.error]="comprobantesForm.get('compania')?.invalid && comprobantesForm.get('compania')?.touched"
+                     (keydown)="onCompanyInput($event)"
+                     (blur)="onCompanyInput($event)">
+              <button type="button" (click)="openPopup('compania')" class="search-button" title="Buscar compañía">
+                @if (isLoadingCompany()) {
+                  <div class="loading-spinner-small"></div>
+                } @else {
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                }
+              </button>
+            </div>
+            @if (comprobantesForm.get('compania')?.invalid && comprobantesForm.get('compania')?.touched) {
+              <span class="field-error">Este campo es requerido</span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">
+              Archivo
+              <span class="required-asterisk">*</span>
+            </label>
+            <input type="file"
+                   (change)="onFileSelected($event)"
+                   class="modern-input"
+                   accept=".xlsx,.xls,.csv"
+                   [class.error]="comprobantesForm.get('archivo')?.invalid && comprobantesForm.get('archivo')?.touched">
+            @if (comprobantesForm.get('archivo')?.invalid && comprobantesForm.get('archivo')?.touched) {
+              <span class="field-error">Este campo es requerido</span>
+            }
+          </div>
+        </div>
+      </div>
+    </app-collapsible-section>
+
+    <!-- Action Buttons -->
+    <div class="form-actions">
+      <div class="action-buttons">
+        <button type="submit" class="btn-primary">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+          </svg>
+          Cargar Comprobantes
+        </button>
+        <button type="button" (click)="onClear()" class="btn-secondary">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          Limpiar
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Modern Popup Modal -->
+  @if (showPopup()) {
+    <div class="modern-popup-overlay" (click)="closePopup()">
+      <div class="modern-popup-modal" (click)="$event.stopPropagation()">
+        <!-- Popup Header -->
+        <div class="popup-header">
+          <div class="popup-title-section">
+            <div class="popup-icon">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <h3 class="popup-title">{{ popupTitle() }}</h3>
+          </div>
+          <button (click)="closePopup()" class="popup-close-btn">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Search Section -->
+        <div class="popup-search-section">
+          <div class="search-controls">
+            <div class="search-input-container">
+              <input type="text" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" (keydown.enter)="onSearch()" placeholder="Buscar en todos los campos..." class="search-input">
+              <button class="search-btn" (click)="onSearch()" title="Buscar">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+              @if (searchTerm()) {
+                <button class="clear-btn" (click)="onSearchClear()" title="Limpiar búsqueda">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Grid -->
+        <div class="popup-grid-container">
+          @if (isLoading()) {
+            <div class="loading-container">
+              <div class="loading-spinner"></div>
+              <div class="loading-text">Cargando compañías...</div>
+            </div>
+          } @else {
+            <div class="grid-header">
+              <div class="grid-cell header-cell">Código</div>
+              <div class="grid-cell header-cell">Nombre Compañía</div>
+              <div class="grid-cell header-cell">Responsable</div>
+              <div class="grid-cell header-cell">NIT</div>
+            </div>
+
+            <div class="grid-body">
+              @if (filteredItems().length === 0) {
+                <div class="no-data-message">
+                  No se encontraron registros
+                </div>
+              } @else {
+                @for (item of filteredItems(); track item.cia; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    <div class="grid-cell">{{ item.cia }}</div>
+                    <div class="grid-cell">{{ item['nombre-cia'] }}</div>
+                    <div class="grid-cell">{{ item['nomrep-cia'] }}</div>
+                    <div class="grid-cell">{{ item.nit }}</div>
+                  </div>
+                }
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Popup Footer -->
+        <div class="popup-footer">
+          <button (click)="closePopup()" class="btn-secondary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

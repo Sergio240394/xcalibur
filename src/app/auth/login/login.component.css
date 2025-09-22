@@ -1,0 +1,330 @@
+/* Login Container */
+.login-container {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-white) 100%);
+  overflow: hidden;
+}
+
+/* Background with light effects */
+.login-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-white) 100%);
+  z-index: 1;
+}
+
+.login-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.8) 0%, transparent 50%),
+              radial-gradient(circle at 60% 60%, rgba(135, 206, 250, 0.3) 0%, transparent 50%);
+  z-index: 2;
+}
+
+/* Header with logos */
+.login-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 40px 0px 40px;
+  width: 100%;
+}
+
+/* XCALIBUR Logo - Top Left */
+.xcalibur-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-image {
+  height: 100px;
+  width: auto;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  letter-spacing: -0.025em;
+}
+
+.logo-text sup {
+  font-size: 0.6rem;
+  color: var(--color-primary);
+}
+
+/* PROSINTESIS Logo - Top Right */
+.prosintesis-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.prosintesis-icon {
+  margin-top: 20px;
+  height: 40px;
+  width: auto;
+}
+
+.prosintesis-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.prosintesis-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  letter-spacing: -0.025em;
+}
+
+.prosintesis-tagline {
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  font-weight: 500;
+  margin-top: 0.125rem;
+}
+
+/* Central Login Panel */
+.login-panel {
+  position: relative;
+  z-index: 10;
+  background: var(--color-white);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-xl);
+  padding: 3rem;
+  max-width: 28rem;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 2rem;
+}
+
+/* PwC Logo */
+.pwc-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.pwc-icon {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+}
+
+.pwc-square {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd23f, #8b4513);
+  border-radius: 0.25rem;
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+}
+
+.pwc-text {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+}
+
+/* Welcome Section */
+.welcome-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.welcome-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.welcome-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+/* Error Message */
+.error-message {
+  background: var(--color-error-light);
+  border: 1px solid var(--color-error);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.error-message p {
+  color: var(--color-error);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Login Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.password-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgot-password {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgot-password:hover {
+  color: var(--text-secondary);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-medium);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  background: var(--color-white);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.form-input:disabled {
+  background-color: var(--bg-secondary);
+  cursor: not-allowed;
+}
+
+/* Login Button */
+.login-button {
+  width: 100%;
+  background: var(--color-primary-dark);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.login-button:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.login-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.loading-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Support Links */
+.support-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.support-link {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.support-link:hover {
+  color: var(--text-secondary);
+}
+
+.support-contact {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.support-contact:hover {
+  color: var(--color-primary-hover);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-header {
+    padding: 1.5rem 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .login-panel {
+    margin: 1rem;
+    padding: 2rem;
+  }
+
+  .xcalibur-logo,
+  .prosintesis-logo {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,259 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Floating Logout Button - Top Right -->
+  <div class="floating-logout-btn fixed top-4 right-4 z-[99999]">
+    <div class="relative">
+      <button
+        (click)="toggleUserMenu()"
+        class="floating-btn flex items-center space-x-2 p-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 hover:border-blue-300"
+      >
+        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">{{ user()?.name?.charAt(0) || 'U' }}</span>
+        </div>
+        <span class="hidden sm:block text-sm font-medium text-gray-700">{{ user()?.name }}</span>
+        <svg class="w-4 h-4 text-gray-500 transition-transform duration-200" [class.rotate-180]="showUserMenu()" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+
+      <!-- User dropdown menu -->
+      @if (showUserMenu()) {
+        <div class="user-dropdown absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-[99999]">
+          <div class="px-4 py-3 border-b border-gray-100">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <span class="text-white text-sm font-semibold">{{ user()?.name?.charAt(0) || 'U' }}</span>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-gray-900">{{ user()?.name }}</p>
+                <p class="text-xs text-gray-500">Sesión activa</p>
+              </div>
+            </div>
+          </div>
+          <div class="py-1">
+            <button
+              (click)="logout()"
+              class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors duration-200"
+            >
+              <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+              </svg>
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div
+    class="fixed inset-y-0 left-0 w-96 bg-white shadow-lg transform transition-transform duration-300 ease-in-out"
+    [class.translate-x-0]="isSidebarOpen()"
+    [class.-translate-x-full]="!isSidebarOpen()"
+  >
+    <!-- Sidebar Header -->
+    <div class="content-box-header">
+      <div class="content-header-logo">
+        <div class="flex items-center w-full">
+          <img src="assets/images/xcalibur_LOGO FLAT.png" alt="Xcalibur" class="xcalibur-logo-header">
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 absolute right-0">
+        <!-- Menu Toggle Button -->
+        <button
+          (click)="toggleMenuView()"
+          class="menu-toggle-btn p-1 rounded text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-all duration-200"
+          [title]="showSecondaryMenu() ? 'Mostrar menú principal' : 'Mostrar menú secundario'"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+
+        <!-- Close Sidebar Button (Mobile) -->
+        <button
+          (click)="toggleSidebar()"
+          class="p-1.5 rounded-lg text-gray-600 hover:bg-gray-100 transition-all duration-200 lg:hidden"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Primary Menu Container -->
+    @if (!showSecondaryMenu()) {
+      <div class="border-b border-gray-200 bg-white second-menu-container menu-transition menu-visible">
+        <div class="px-4 py-3">
+          <!-- Dynamic Menu Items -->
+          @if (dynamicMenuItems().length > 0) {
+          <!-- Level 1 Items (Sistemas) -->
+          @for (sistema of dynamicMenuItems(); track sistema.sistema; let i = $index) {
+            <div class="mb-4">
+              <!-- Level 1 Header (Sistema) -->
+              <div class="menu2-item-level-1 cursor-pointer" (click)="toggleSecondMenuLevel2(i)" [title]="isLevel2Expanded(i) ? 'Colapsar' : 'Expandir'">
+                <div class="w-6 h-6 rounded-lg flex items-center justify-center mr-3">
+                  <app-svg-icon
+                    [iconName]="getSystemIcon(sistema.sistAbrev)"
+                    cssClass="menu-icon">
+                  </app-svg-icon>
+                </div>
+                <span class="text-sm font-semibold text-gray-800 flex-1">{{ sistema.sistema }}</span>
+                <div class="btn-menu2 menu-button">
+                  <svg class="w-4 h-4 transition-transform duration-200"
+                       [class.rotate-180]="isLevel2Expanded(i)"
+                       fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Level 2 Items (Grupos) -->
+              @if (sistema.grupos && sistema.grupos.length > 0) {
+                <div class="tree-level-2-container ml-4 space-y-1" [class.hidden]="!isLevel2Expanded(i)">
+                  @for (grupo of sistema.grupos; track grupo.grupoMen; let j = $index) {
+                    <div class="tree-level-2-item mb-2">
+                      <!-- Level 2 Header (Grupo) -->
+                      <div class="flex items-center justify-between rounded border border-gray-200 hover:border-gray-300 transition-colors menu-item-level-2 ml-6 cursor-pointer" (click)="grupo.items && grupo.items.length > 0 ? toggleSecondMenuLevel3(i, j) : null" [title]="grupo.items && grupo.items.length > 0 ? (isLevel3Expanded(i, j) ? 'Colapsar' : 'Expandir') : ''">
+                        <div class="flex items-center flex-1">
+                          <div class="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
+                          <span class="text-xs font-medium text-gray-700">{{ grupo.grupoMen }}</span>
+                        </div>
+                        @if (grupo.items && grupo.items.length > 0) {
+                          <div class="btn-menu2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 menu-button">
+                            <svg class="w-4 h-4 transition-transform duration-200"
+                                 [class.rotate-180]="isLevel3Expanded(i, j)"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                          </div>
+                        }
+                      </div>
+
+                      <!-- Level 3 Items (Opciones del menú) -->
+                      @if (grupo.items && grupo.items.length > 0) {
+                        <div class="tree-level-3-container ml-6 mt-1 space-y-1" [class.hidden]="!isLevel3Expanded(i, j)">
+                          @for (item of grupo.items; track trackByLevel3Item($index, item); let isLastLevel3 = $last) {
+                            <div class="tree-level-3-item">
+                              <a
+                                [routerLink]="getMenuPath(item)"
+                                class="menu-item-level-3"
+                                [title]="item.nombreMen"
+                              >
+                                <div class="flex items-center">
+                                  <div class="w-1 h-1 bg-gray-400 rounded-full mr-2 group-hover:bg-blue-400 transition-colors"></div>
+                                  <span class="truncate font-medium flex-1">{{ item.nombreMen }}</span>
+                                  <div class="w-1.5 h-1.5 bg-gray-300 rounded-full group-hover:bg-blue-400 transition-colors"></div>
+                                </div>
+                              </a>
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        } @else {
+          <!-- Fallback to static menu if no dynamic menu -->
+          @for (item of menuItems(); track item.path; let i = $index) {
+            <div class="mb-4">
+              <!-- Level 1 Header -->
+              <div class="menu2-item-level-1 cursor-pointer" (click)="toggleSecondMenuLevel2(i)" [title]="isLevel2Expanded(i) ? 'Colapsar' : 'Expandir'">
+                @if (item.icon) {
+                  <div class="w-6 h-6 rounded-lg flex items-center justify-center mr-3">
+                    <app-svg-icon
+                      iconName={{item.icon}}
+                      size="25px"
+                      cssClass="text-blue-600">
+                    </app-svg-icon>
+                  </div>
+                }
+                <span class="text-sm font-semibold text-gray-800 flex-1">{{ item.label }}</span>
+                <div class="btn-menu2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-100 transition-all duration-200 menu-button">
+                  <svg class="w-4 h-4 transition-transform duration-200"
+                       [class.rotate-180]="isLevel2Expanded(i)"
+                       fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Level 2 Items (Collapsible) -->
+              @if (item.children && item.children.length > 0) {
+                <div class="tree-level-2-container ml-4 space-y-1" [class.hidden]="!isLevel2Expanded(i)">
+                  @for (level2Item of item.children; track level2Item.path; let j = $index; let isLast = $last) {
+                    <div class="tree-level-2-item mb-2">
+                      <!-- Level 2 Header -->
+                      <div class="flex items-center justify-between rounded border border-gray-200 hover:border-gray-300 transition-colors menu-item-level-2 ml-6 cursor-pointer" (click)="level2Item.children && level2Item.children.length > 0 ? toggleSecondMenuLevel3(i, j) : null" [title]="level2Item.children && level2Item.children.length > 0 ? (isLevel3Expanded(i, j) ? 'Colapsar' : 'Expandir') : ''">
+                        <div class="flex items-center flex-1">
+                          <div class="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
+                          <span class="text-xs font-medium text-gray-700">{{ level2Item.label }}</span>
+                        </div>
+                        @if (level2Item.children && level2Item.children.length > 0) {
+                          <div class="btn-menu2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 menu-button">
+                            <svg class="w-4 h-4 transition-transform duration-200"
+                                 [class.rotate-180]="isLevel3Expanded(i, j)"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                          </div>
+                        }
+                      </div>
+
+                      <!-- Level 3 Items (Collapsible) -->
+                      @if (level2Item.children && level2Item.children.length > 0) {
+                        <div class="tree-level-3-container ml-6 mt-1 space-y-1" [class.hidden]="!isLevel3Expanded(i, j)">
+                          @for (level3Item of level2Item.children; track level3Item.path; let isLastLevel3 = $last) {
+                            <div class="tree-level-3-item">
+                              <a
+                                [routerLink]="level3Item.path"
+                                class="menu-item-level-3"
+                              >
+                                <div class="flex items-center">
+                                  <div class="w-1 h-1 bg-gray-400 rounded-full mr-2 group-hover:bg-blue-400 transition-colors"></div>
+                                  <span class="truncate font-medium flex-1">{{ level3Item.label }}</span>
+                                  <div class="w-1.5 h-1.5 bg-gray-300 rounded-full group-hover:bg-blue-400 transition-colors"></div>
+                                </div>
+                              </a>
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+    }
+
+    <!-- Secondary Menu Container -->
+    @if (showSecondaryMenu()) {
+      <div class="border-t border-gray-200 bg-gray-50 menu-transition menu-visible">
+        <div class="px-4 py-3">
+          <h4 class="text-sm font-semibold text-gray-600 mb-3">Menú Secundario</h4>
+          <app-secondary-menu></app-secondary-menu>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-1 ml-96 transition-all duration-300 ease-in-out" [class.ml-0]="!isSidebarOpen()" style="margin-left: 384px !important; width: calc(100vw - 384px) !important; position: relative !important; z-index: 1 !important;">
+    <!-- Page Content -->
+    <div class="p-4 sm:p-6 lg:p-8" style="width: 100% !important; max-width: 100% !important; box-sizing: border-box !important;">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
+
+<!-- Toast Container -->
+<app-toast></app-toast>

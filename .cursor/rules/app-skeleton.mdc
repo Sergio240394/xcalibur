@@ -1,0 +1,12 @@
+---
+description: "Generate the initial skeleton of the Xcalibur system with routing"
+globs:
+  - "src/app/**/*"
+alwaysApply: true
+---
+
+- Create a skeleton for an Angular 20+ application using `standalone components`.
+- Implement an `AppComponent` that includes a fixed sidebar for navigation.
+- Use Angular Router to navigate between modules.
+- Each menu item should link to a route that loads an empty placeholder view (e.g., 'Coming soon').
+- Create one module per functional area of the system (e.g., accounts receivable, treasury, accounting), but leave them empty for now.

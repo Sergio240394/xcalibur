@@ -1,0 +1,868 @@
+<div class="modern-form-container">
+  <!-- Header Section - Clean and Compact -->
+  <div class="form-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="form-title">Mantenimiento de Compañías</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Navigation -->
+  <div class="section-navigation">
+    <button type="button" (click)="previousSection()" [disabled]="currentSection() === 1" class="nav-button prev-button">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+      Anterior
+    </button>
+
+    <div class="section-indicator">
+      <span class="current-section">{{ currentSection() }} de 5</span>
+      <div class="section-title">{{ getCurrentSectionTitle() }}</div>
+    </div>
+
+    <button type="button" (click)="nextSection()" [disabled]="currentSection() === 5" class="nav-button next-button">
+      Siguiente
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Main Form -->
+  <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" class="modern-form">
+
+    <!-- Always Visible Fields -->
+    <div class="form-section always-visible">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">
+            Compañía
+            @if (companiaName()) {
+              <span class="compania-name-display">({{ companiaName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="compania" placeholder="Código de la compañía" class="modern-input"
+                   (blur)="onCompaniaBlur()" (keydown.enter)="onCompaniaEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('compania')" class="search-button" title="Buscar compañía">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Empresa
+            @if (empresaName()) {
+              <span class="empresa-name-display">({{ empresaName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="empresa" placeholder="Código de la empresa" class="modern-input"
+                   (blur)="onEmpresaBlur()" (keydown.enter)="onEmpresaEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('empresa')" class="search-button" title="Buscar empresa">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Nombre</label>
+          <input type="text" formControlName="nombre" placeholder="Nombre de la compañía" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            N.I.T.
+            @if (nitName()) {
+              <span class="nit-name-display">({{ nitName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="nit" placeholder="Número de Identificación Tributaria" class="modern-input"
+                   (blur)="onNitBlur()" (keydown.enter)="onNitEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('nit')" class="search-button" title="Buscar NIT">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1: Información Básica de la Compañía -->
+    @if (currentSection() === 1) {
+    <div class="form-section active-section">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">
+            Vendedor
+            @if (vendedorName()) {
+              <span class="vendedor-name-display">({{ vendedorName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="vendedor" placeholder="Código del vendedor" class="modern-input"
+                   (blur)="onVendedorBlur()" (keydown.enter)="onVendedorEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('vendedor')" class="search-button" title="Buscar vendedor">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Condición de Pago
+            @if (condicionPagoName()) {
+              <span class="condicion-pago-name-display">({{ condicionPagoName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="condicionPago" placeholder="Condición de pago" class="modern-input"
+                   (blur)="onCondicionPagoBlur()" (keydown.enter)="onCondicionPagoEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('condicionPago')" class="search-button" title="Buscar condición de pago">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Dirección</label>
+          <input type="text" formControlName="direccion" placeholder="Dirección de la compañía" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Teléfonos</label>
+          <input type="text" formControlName="telefonos" placeholder="Números de teléfono" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Fax</label>
+          <input type="text" formControlName="fax" placeholder="Número de fax" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Telex</label>
+          <input type="text" formControlName="telex" placeholder="Número de telex" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Zona Postal</label>
+          <input type="text" formControlName="zonaPostal" placeholder="Zona postal" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">R.I.F.</label>
+          <input type="text" formControlName="rif" placeholder="Registro de Información Fiscal" class="modern-input">
+        </div>
+      </div>
+    </div>
+
+    <!-- Financial Information Section -->
+    <div class="form-section active-section">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">Día Caja</label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="diaCaja" placeholder="Día de caja" class="modern-input">
+            <button type="button" (click)="openPopup('diaCaja')" class="search-button" title="Buscar día de caja">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Fecha Ingreso</label>
+          <input type="date" formControlName="fechaIngreso" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Límite</label>
+          <input type="text" formControlName="limite" placeholder="Límite de crédito" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Descuento</label>
+          <input type="text" formControlName="descuento" placeholder="Porcentaje de descuento" class="modern-input">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">Contactos</label>
+          <textarea formControlName="contactos" rows="2" placeholder="Información de contactos..." class="modern-textarea"></textarea>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Comentarios</label>
+          <textarea formControlName="comentarios" rows="2" placeholder="Comentarios adicionales..." class="modern-textarea"></textarea>
+        </div>
+      </div>
+
+    </div>
+    }
+
+    <!-- Section 2: Información Geográfica -->
+    @if (currentSection() === 2) {
+    <div class="form-section active-section">
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">
+            País
+            @if (paisName()) {
+              <span class="pais-name-display">({{ paisName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="pais" placeholder="Código del país" class="modern-input"
+                   (blur)="onPaisBlur()" (keydown.enter)="onPaisEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('pais')" class="search-button" title="Buscar país">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Ciudad
+            @if (ciudadName()) {
+              <span class="ciudad-name-display">({{ ciudadName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="ciudad" placeholder="Código de la ciudad" class="modern-input"
+                   (blur)="onCiudadBlur()" (keydown.enter)="onCiudadEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('ciudad')" class="search-button" title="Buscar ciudad">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Zona
+            @if (zonaName()) {
+              <span class="zona-name-display">({{ zonaName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="zona" placeholder="Código de la zona" class="modern-input"
+                   (blur)="onZonaBlur()" (keydown.enter)="onZonaEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('zona')" class="search-button" title="Buscar zona">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Localidad
+            @if (localidadName()) {
+              <span class="localidad-name-display">({{ localidadName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="localidad" placeholder="Código de la localidad" class="modern-input"
+                   (blur)="onLocalidadBlur()" (keydown.enter)="onLocalidadEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('localidad')" class="search-button" title="Buscar localidad">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Negocio
+            @if (negocioName()) {
+              <span class="negocio-name-display">({{ negocioName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="negocio" placeholder="Código del negocio" class="modern-input"
+                   (blur)="onNegocioBlur()" (keydown.enter)="onNegocioEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('negocio')" class="search-button" title="Buscar negocio">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Tipo Cliente
+            @if (tipoClienteName()) {
+              <span class="tipo-cliente-name-display">({{ tipoClienteName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="tipoCliente" placeholder="Tipo de cliente" class="modern-input"
+                   (blur)="onTipoClienteBlur()" (keydown.enter)="onTipoClienteEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('tipoCliente')" class="search-button" title="Buscar tipo de cliente">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Moneda
+            @if (monedaName()) {
+              <span class="moneda-name-display">({{ monedaName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="moneda" placeholder="Código de la moneda" class="modern-input"
+                   (blur)="onMonedaBlur()" (keydown.enter)="onMonedaEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('moneda')" class="search-button" title="Buscar moneda">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Cobrador
+            @if (cobradorName()) {
+              <span class="cobrador-name-display">({{ cobradorName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="cobrador" placeholder="Código del cobrador" class="modern-input"
+                   (blur)="onCobradorBlur()" (keydown.enter)="onCobradorEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('cobrador')" class="search-button" title="Buscar cobrador">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Clasificación Venta
+            @if (clasificVentaName()) {
+              <span class="clasific-venta-name-display">({{ clasificVentaName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="clasificVenta" placeholder="Código de clasificación de venta" class="modern-input"
+                   (blur)="onClasificVentaBlur()" (keydown.enter)="onClasificVentaEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('clasificVenta')" class="search-button" title="Buscar clasificación de venta">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Clasificación por Cobro
+            @if (clasifXCobroName()) {
+              <span class="clasif-x-cobro-name-display">({{ clasifXCobroName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="clasifXCobro" placeholder="Código de clasificación por cobro" class="modern-input"
+                   (blur)="onClasifXCobroBlur()" (keydown.enter)="onClasifXCobroEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('clasifXCobro')" class="search-button" title="Buscar clasificación por cobro">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Section 3: Información Comercial y Legal -->
+    @if (currentSection() === 3) {
+    <div class="form-section active-section">
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">
+            Causa Suspensión
+            @if (causaSuspName()) {
+              <span class="causa-susp-name-display">({{ causaSuspName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="causaSusp" placeholder="Código de causa de suspensión" class="modern-input"
+                   (blur)="onCausaSuspBlur()" (keydown.enter)="onCausaSuspEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('causaSusp')" class="search-button" title="Buscar causa de suspensión">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            LoS Line of Service
+            @if (losLineServiceName()) {
+              <span class="los-line-service-name-display">({{ losLineServiceName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="losLineService" placeholder="Código de línea de servicio" class="modern-input"
+                   (blur)="onLosLineServiceBlur()" (keydown.enter)="onLosLineServiceEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('losLineService')" class="search-button" title="Buscar línea de servicio">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            SubLoS SubLine of Service
+            @if (subLosSubLineName()) {
+              <span class="sub-los-sub-line-name-display">({{ subLosSubLineName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="subLosSubLine" placeholder="Código de sub-línea de servicio" class="modern-input"
+                   (blur)="onSubLosSubLineBlur()" (keydown.enter)="onSubLosSubLineEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('subLosSubLine')" class="search-button" title="Buscar sub-línea de servicio">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Product Group
+            @if (productGroupName()) {
+              <span class="product-group-name-display">({{ productGroupName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="productGroup" placeholder="Código de grupo de producto" class="modern-input"
+                   (blur)="onProductGroupBlur()" (keydown.enter)="onProductGroupEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('productGroup')" class="search-button" title="Buscar grupo de producto">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Affinity
+            @if (affinityName()) {
+              <span class="affinity-name-display">({{ affinityName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="affinity" placeholder="Código de afiliación" class="modern-input"
+                   (blur)="onAffinityBlur()" (keydown.enter)="onAffinityEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('affinity')" class="search-button" title="Buscar afiliación">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legal Information Subsection -->
+    <div class="form-section active-section">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">Registro Mercantil</label>
+          <input type="text" formControlName="regMercan" placeholder="Registro mercantil" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Fecha Registro</label>
+          <input type="date" formControlName="fechaRegistro" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Capital Pagado</label>
+          <input type="text" formControlName="capitalPag" placeholder="Capital pagado" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Capital Suscrito</label>
+          <input type="text" formControlName="capitalSusc" placeholder="Capital suscrito" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Nombre Abreviado</label>
+          <input type="text" formControlName="nombreAbrev" placeholder="Nombre abreviado" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Razón Social</label>
+          <input type="text" formControlName="rSocial" placeholder="Razón social" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Back-Order</label>
+          <select formControlName="backOrder" class="modern-select">
+            <option value="">Seleccionar</option>
+            <option value="SI">Sí</option>
+            <option value="NO">No</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Section 4: Información Logística -->
+    @if (currentSection() === 4) {
+    <div class="form-section active-section">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">
+            Transporte
+            @if (transporteName()) {
+              <span class="transporte-name-display">({{ transporteName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="transporte" placeholder="Código de transporte" class="modern-input"
+                   (blur)="onTransporteBlur()" (keydown.enter)="onTransporteEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('transporte')" class="search-button" title="Buscar transporte">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Ruta
+            @if (rutaName()) {
+              <span class="ruta-name-display">({{ rutaName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="ruta" placeholder="Código de ruta" class="modern-input"
+                   (blur)="onRutaBlur()" (keydown.enter)="onRutaEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('ruta')" class="search-button" title="Buscar ruta">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Sector
+            @if (sectorName()) {
+              <span class="sector-name-display">({{ sectorName() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="sector" placeholder="Código de sector" class="modern-input"
+                   (blur)="onSectorBlur()" (keydown.enter)="onSectorEnter($event)"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();return false;}">
+            <button type="button" (click)="openPopup('sector')" class="search-button" title="Buscar sector">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Secuencia</label>
+          <input type="text" formControlName="secuencia" placeholder="Secuencia" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Precio</label>
+          <input type="text" formControlName="precio" placeholder="Precio" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Contribuye</label>
+          <input type="text" formControlName="contribuye" placeholder="Contribuye" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Fecha Aumento</label>
+          <input type="date" formControlName="fechaAumento" class="modern-input">
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">Dirección de Entrega</label>
+          <textarea formControlName="direcEntrega" rows="3" placeholder="Dirección de entrega..." class="modern-textarea"></textarea>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Correo Electrónico</label>
+          <textarea formControlName="correoElectr" rows="3" placeholder="Correos electrónicos..." class="modern-textarea"></textarea>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Section 5: Factura Electrónica -->
+    @if (currentSection() === 5) {
+    <div class="form-section active-section electronic-invoice-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+        </div>
+        <h3 class="section-title electronic-invoice-title">Factura Electrónica</h3>
+      </div>
+
+      <div class="checkbox-group" formGroupName="facturaElectronica">
+        <div class="checkbox-item">
+          <input type="checkbox" formControlName="agregaFact01" id="agregaFact01">
+          <label for="agregaFact01">1</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" formControlName="agregaFact02" id="agregaFact02">
+          <label for="agregaFact02">2</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" formControlName="agregaFact03" id="agregaFact03">
+          <label for="agregaFact03">5</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" formControlName="agregaFact04" id="agregaFact04">
+          <label for="agregaFact04">8</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" formControlName="agregaFact05" id="agregaFact05">
+          <label for="agregaFact05">13</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" formControlName="agregaFact06" id="agregaFact06">
+          <label for="agregaFact06">14</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" formControlName="agregaFact07" id="agregaFact07">
+          <label for="agregaFact07">15</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" formControlName="agregaFact08" id="agregaFact08">
+          <label for="agregaFact08">16</label>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Action Buttons - Always Visible -->
+    <div class="form-actions">
+      <div class="action-buttons">
+        <button type="button" class="btn-primary" (click)="onSubmit()">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          Guardar Compañía
+        </button>
+        <button type="button" (click)="onDelete()" class="btn-danger">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+          Eliminar
+        </button>
+        <button type="button" (click)="onClear()" class="btn-secondary">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          Limpiar
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Modern Popup Modal -->
+  @if (showPopup()) {
+    <div class="modern-popup-overlay">
+      <div class="modern-popup-modal">
+        <!-- Popup Header -->
+        <div class="popup-header">
+          <div class="popup-title-section">
+            <div class="popup-icon">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <h3 class="popup-title">{{ popupTitle() }}</h3>
+          </div>
+          <button (click)="closePopup()" class="popup-close-btn">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Search Section -->
+        <div class="popup-search-section">
+          <div class="search-controls">
+            <!-- Search input -->
+            <div class="search-input-container">
+              <input type="text" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" (keydown.enter)="onSearch()" placeholder="Buscar en todos los campos..." class="search-input">
+              <button class="search-btn" (click)="onSearch()" title="Buscar">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+              @if (searchTerm()) {
+                <button class="clear-btn" (click)="onSearchClear()" title="Limpiar búsqueda">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Grid -->
+        <div class="popup-grid-container"
+             [class.nit-modal]="popupTitle().includes('NIT')"
+             [class.two-column-modal]="popupTitle().includes('País') || popupTitle().includes('Ciudad') || popupTitle().includes('Zona') || popupTitle().includes('Localidad') || popupTitle().includes('Negocio') || popupTitle().includes('Moneda') || popupTitle().includes('Cobrador') || popupTitle().includes('Clasificación Venta') || popupTitle().includes('Clasificación por Cobro') || popupTitle().includes('Causa de Suspensión') || popupTitle().includes('LoS Line of Service') || popupTitle().includes('SubLoS SubLine of Service') || popupTitle().includes('Product Group') || popupTitle().includes('Affinity') || popupTitle().includes('Transporte') || popupTitle().includes('Ruta') || popupTitle().includes('Sector') || popupTitle().includes('Condición') || popupTitle().includes('Tipo Cliente')">
+          <!-- Header -->
+          <div class="grid-header">
+            <div class="grid-cell header-cell">{{ popupTitle().includes('NIT') ? 'NIT' : 'Código' }}</div>
+            <div class="grid-cell header-cell">
+              {{ popupTitle().includes('Compañía') ? 'Nombre Compañía' :
+                 popupTitle().includes('Empresa') ? 'Empresa' :
+                 popupTitle().includes('País') ? 'País' :
+                 popupTitle().includes('Ciudad') ? 'Ciudad' :
+                 popupTitle().includes('Zona') ? 'Zona' :
+                 popupTitle().includes('Localidad') ? 'Localidad' :
+                 popupTitle().includes('Negocio') ? 'Negocio' :
+                 popupTitle().includes('Moneda') ? 'Moneda' :
+                 popupTitle().includes('Cobrador') ? 'Cobrador' :
+                 popupTitle().includes('Clasificación Venta') ? 'Clasificación Venta' :
+                 popupTitle().includes('Clasificación por Cobro') ? 'Clasificación por Cobro' :
+                 popupTitle().includes('Causa de Suspensión') ? 'Causa de Suspensión' :
+                 popupTitle().includes('LoS Line of Service') ? 'LoS Line of Service' :
+                 popupTitle().includes('SubLoS SubLine of Service') ? 'SubLoS SubLine of Service' :
+                 popupTitle().includes('Product Group') ? 'Product Group' :
+                 popupTitle().includes('Affinity') ? 'Affinity' :
+                 popupTitle().includes('Transporte') ? 'Transporte' :
+                 popupTitle().includes('Ruta') ? 'Ruta' :
+                 popupTitle().includes('Sector') ? 'Sector' :
+                 popupTitle().includes('Condición') ? 'Condición de Pago' :
+                 popupTitle().includes('Tipo Cliente') ? 'Tipo Cliente' :
+                 popupTitle().includes('NIT') ? 'Nombre' : 'Descripción' }}
+            </div>
+            @if (!popupTitle().includes('NIT') && !popupTitle().includes('País') && !popupTitle().includes('Ciudad') && !popupTitle().includes('Zona') && !popupTitle().includes('Localidad') && !popupTitle().includes('Negocio') && !popupTitle().includes('Moneda') && !popupTitle().includes('Cobrador') && !popupTitle().includes('Clasificación Venta') && !popupTitle().includes('Clasificación por Cobro') && !popupTitle().includes('Causa de Suspensión') && !popupTitle().includes('LoS Line of Service') && !popupTitle().includes('SubLoS SubLine of Service') && !popupTitle().includes('Product Group') && !popupTitle().includes('Affinity') && !popupTitle().includes('Transporte') && !popupTitle().includes('Ruta') && !popupTitle().includes('Sector') && !popupTitle().includes('Condición') && !popupTitle().includes('Tipo Cliente')) {
+              <div class="grid-cell header-cell">
+                {{ popupTitle().includes('Compañía') ? 'Responsable' :
+                   popupTitle().includes('Empresa') ? 'NIT' : 'Código' }}
+              </div>
+            }
+            @if (!popupTitle().includes('NIT') && !popupTitle().includes('País') && !popupTitle().includes('Ciudad') && !popupTitle().includes('Zona') && !popupTitle().includes('Localidad') && !popupTitle().includes('Negocio') && !popupTitle().includes('Moneda') && !popupTitle().includes('Cobrador') && !popupTitle().includes('Clasificación Venta') && !popupTitle().includes('Clasificación por Cobro') && !popupTitle().includes('Causa de Suspensión') && !popupTitle().includes('LoS Line of Service') && !popupTitle().includes('SubLoS SubLine of Service') && !popupTitle().includes('Product Group') && !popupTitle().includes('Affinity') && !popupTitle().includes('Transporte') && !popupTitle().includes('Ruta') && !popupTitle().includes('Sector') && !popupTitle().includes('Condición') && !popupTitle().includes('Tipo Cliente')) {
+              <div class="grid-cell header-cell">
+                {{ popupTitle().includes('Compañía') ? 'NIT' :
+                   popupTitle().includes('Empresa') ? 'Vendedor' : 'Tipo' }}
+              </div>
+            }
+          </div>
+
+          <!-- Body -->
+          <div class="grid-body">
+            @if (isLoading()) {
+              <!-- Loading State -->
+              <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Cargando {{ popupTitle().toLowerCase() }}...</div>
+              </div>
+            } @else {
+              <!-- Data Rows -->
+              @for (company of filteredCompanies(); track company.codigo; let i = $index) {
+                <div class="grid-row" (click)="selectCompany(company)">
+                  <div class="grid-cell">{{ company.codigo }}</div>
+                  <div class="grid-cell">{{ getCompanyNombre(company) }}</div>
+                  @if (!popupTitle().includes('NIT') && !popupTitle().includes('País') && !popupTitle().includes('Ciudad') && !popupTitle().includes('Zona') && !popupTitle().includes('Localidad') && !popupTitle().includes('Negocio') && !popupTitle().includes('Moneda') && !popupTitle().includes('Cobrador') && !popupTitle().includes('Clasificación Venta') && !popupTitle().includes('Clasificación por Cobro') && !popupTitle().includes('Causa de Suspensión') && !popupTitle().includes('LoS Line of Service') && !popupTitle().includes('SubLoS SubLine of Service') && !popupTitle().includes('Product Group') && !popupTitle().includes('Affinity') && !popupTitle().includes('Transporte') && !popupTitle().includes('Ruta') && !popupTitle().includes('Sector') && !popupTitle().includes('Condición') && !popupTitle().includes('Tipo Cliente')) {
+                    <div class="grid-cell">{{ getCompanyResponsable(company) }}</div>
+                  }
+                  @if (!popupTitle().includes('NIT') && !popupTitle().includes('País') && !popupTitle().includes('Ciudad') && !popupTitle().includes('Zona') && !popupTitle().includes('Localidad') && !popupTitle().includes('Negocio') && !popupTitle().includes('Moneda') && !popupTitle().includes('Cobrador') && !popupTitle().includes('Clasificación Venta') && !popupTitle().includes('Clasificación por Cobro') && !popupTitle().includes('Causa de Suspensión') && !popupTitle().includes('LoS Line of Service') && !popupTitle().includes('SubLoS SubLine of Service') && !popupTitle().includes('Product Group') && !popupTitle().includes('Affinity') && !popupTitle().includes('Transporte') && !popupTitle().includes('Ruta') && !popupTitle().includes('Sector') && !popupTitle().includes('Condición') && !popupTitle().includes('Tipo Cliente')) {
+                    <div class="grid-cell">{{ getCompanyNit(company) }}</div>
+                  }
+                </div>
+              }
+              @if (filteredCompanies().length === 0 && !isLoading()) {
+                <div class="no-data-message">
+                  No se encontraron registros
+                </div>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Popup Footer -->
+        <div class="popup-footer">
+          <button (click)="closePopup()" class="btn-secondary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

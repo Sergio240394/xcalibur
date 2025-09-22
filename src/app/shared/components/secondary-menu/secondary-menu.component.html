@@ -1,0 +1,50 @@
+<div class="secondary-menu-container">
+  <div class="px-4 py-3">
+    <!-- Dynamic Menu Items -->
+    @if (menuItems().length > 0) {
+      <!-- Level 1 Items (Sistemas) -->
+      @for (item of menuItems(); track item.path; let i = $index) {
+        <div class="mb-4">
+          <!-- Level 1 Header (Sistema) -->
+          <div class="menu2-item-level-1" (click)="toggleItem(i)" [title]="isExpanded(i) ? 'Colapsar' : 'Expandir'">
+            <div class="w-6 h-6 rounded-lg flex items-center justify-center mr-3">
+              <app-svg-icon
+                [iconName]="item.icon || 'admin.svg'"
+                cssClass="menu-icon">
+              </app-svg-icon>
+            </div>
+            <span class="text-sm font-semibold text-gray-800 flex-1">{{ item.label }}</span>
+            <div class="btn-menu2 menu-button">
+              <svg class="w-4 h-4 transition-transform duration-200"
+                   [class.rotate-180]="isExpanded(i)"
+                   fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Level 3 Items (Direct children, skipping level 2) -->
+          @if (item.children && item.children.length > 0) {
+            <div class="tree-level-3-container ml-6 mt-1 space-y-1" [class.hidden]="!isExpanded(i)">
+              @for (level3Item of item.children; track level3Item.path; let isLastLevel3 = $last) {
+                <div class="tree-level-3-item">
+                  <a
+                    [routerLink]="level3Item.path"
+                    class="menu-item-level-3"
+                    [title]="level3Item.label"
+                  >
+                    <div class="flex items-center">
+                      <div class="w-1 h-1 bg-gray-400 rounded-full mr-2 group-hover:bg-blue-400 transition-colors"></div>
+                      <span class="truncate font-medium flex-1">{{ level3Item.label }}</span>
+                      <div class="w-1.5 h-1.5 bg-gray-300 rounded-full group-hover:bg-blue-400 transition-colors"></div>
+                    </div>
+                  </a>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>

@@ -1,0 +1,1025 @@
+/* Sidebar Styles */
+.sidebar {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  z-index: 1;
+}
+
+/* Menu Toggle Button Styles - More Discrete */
+.menu-toggle-btn {
+  position: relative;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+  border: none;
+  background: transparent;
+}
+
+.menu-toggle-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
+  opacity: 1;
+}
+
+.menu-toggle-btn:active {
+  transform: scale(0.9);
+}
+
+.menu-toggle-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Menu transition animations */
+.menu-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.menu-hidden {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.menu-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Floating Logout Button Styles - Force visibility */
+.fixed.top-4.right-4 {
+  z-index: 2 !important;
+  position: fixed !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+.fixed.top-4.right-4 button {
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  padding: 0.75rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  transition: all 0.2s ease !important;
+  z-index: 2 !important;
+}
+
+.fixed.top-4.right-4 button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Ensure the button container is visible */
+.fixed.top-4.right-4 > div {
+  z-index: 2 !important;
+  position: relative !important;
+}
+
+/* Floating Logout Button Styles - Specific Classes */
+.floating-logout-btn {
+  position: fixed !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  z-index: 2 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+.floating-btn {
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  padding: 0.75rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  transition: all 0.2s ease !important;
+  z-index: 2 !important;
+}
+
+.floating-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  border-color: #3b82f6 !important;
+}
+
+.user-dropdown {
+  z-index: 2 !important;
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Force sidebar to have lower z-index */
+.fixed.inset-y-0.left-0.z-50 {
+  z-index: 40 !important;
+}
+
+/* User Menu Dropdown */
+.user-menu-dropdown {
+  animation: slideDown 0.2s ease-out;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* User Info Header */
+.user-info-header {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.user-info-content {
+  position: relative;
+}
+
+.user-avatar {
+  position: relative;
+  overflow: hidden;
+}
+
+.user-avatar::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #3b82f6);
+  border-radius: 50%;
+  z-index: -1;
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.user-details {
+  position: relative;
+}
+
+.user-name {
+  background: linear-gradient(135deg, #1e293b, #475569);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.user-status {
+  position: relative;
+}
+
+.user-status::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Menu Items */
+.menu-items {
+  position: relative;
+}
+
+.menu-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #fef2f2, #fee2e2);
+  transition: width 0.3s ease;
+}
+
+.menu-item:hover::before {
+  width: 100%;
+}
+
+.menu-item-icon {
+  position: relative;
+  z-index: 1;
+}
+
+.menu-item-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* Component-specific styles can be added here if needed */
+
+/* XCALIBUR Logo Styles */
+.logo-container img {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: all 0.3s ease;
+}
+
+.logo-container:hover img {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+  transform: scale(1.05);
+}
+
+/* Second Menu Styles */
+.content-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 5rem;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  background: white;
+  color: #1f2937;
+  padding-top: 1rem;
+}
+
+.content-header-logo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+.content-header-logo h1 {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+}
+
+.content-header-logo p {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Second Menu Container */
+.second-menu-container {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb;
+  height: calc(100vh - 120px) !important; /* Full height below logo */
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-y: auto !important; /* Changed back to auto for better UX */
+  overflow-x: hidden !important;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-height: calc(100vh - 120px) !important;
+  /* Ensure scrollbar is functional */
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 #e2e8f0;
+}
+
+.second-menu-container h3 {
+  color: #374151;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* Tree Navigation Lines - Using CSS pseudo-elements for better reliability */
+.tree-level-2-container {
+  position: relative;
+  border-left: 2px solid;
+  border-image: linear-gradient(180deg, #3b82f6, #8b5cf6) 1;
+  padding-left: 16px;
+  margin-left: 8px;
+  overflow: hidden;
+}
+
+.tree-level-2-item {
+  position: relative;
+}
+
+.tree-level-2-item::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, transparent);
+}
+
+.tree-level-3-container {
+  position: relative;
+  border-left: 2px solid;
+  border-image: linear-gradient(180deg, #8b5cf6, #ec4899) 1;
+  padding-left: 16px;
+  margin-left: 8px;
+  overflow: hidden;
+}
+
+.tree-level-3-item {
+  position: relative;
+}
+
+.tree-level-3-item::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 2px;
+  background: linear-gradient(90deg, #8b5cf6, transparent);
+}
+
+/* Ensure tree lines are visible above other elements */
+.tree-level-2-container,
+.tree-level-3-container {
+  z-index: 1;
+}
+
+.tree-level-2-item::before,
+.tree-level-3-item::before {
+  z-index: 2;
+}
+
+/* Enhanced tree navigation styling */
+.tree-container {
+  position: relative;
+  padding-left: 8px;
+}
+
+.tree-item {
+  position: relative;
+  margin-left: 8px;
+}
+
+/* Ensure tree lines are visible */
+.tree-line-vertical,
+.tree-line-horizontal,
+.tree-line-vertical-level3,
+.tree-line-horizontal-level3 {
+  pointer-events: none;
+}
+
+.tree-connector {
+  position: absolute;
+  left: 8px;
+  top: 12px;
+  width: 12px;
+  height: 1px;
+  background: #d1d5db;
+}
+
+.tree-connector::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -6px;
+  width: 1px;
+  height: 12px;
+  background: #d1d5db;
+}
+
+/* Transition animations */
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* Smooth transitions for expand/collapse */
+.transition-transform {
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Enhanced button styles */
+.menu-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-button:hover {
+  transform: scale(1.05);
+}
+
+/* Arrow rotation animation */
+.arrow-rotate {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Level 3 item enhancements */
+.level-3-item {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.level-3-item:hover {
+  transform: translateX(2px);
+}
+
+/* Ensure level 3 items have proper sizing */
+.level-3-item svg {
+  width: 1rem !important;
+  height: 1rem !important;
+  max-width: 1rem !important;
+  max-height: 1rem !important;
+}
+
+/* Override any conflicting styles */
+.menu-item-level-3 svg {
+  width: 1rem !important;
+  height: 1rem !important;
+  max-width: 1rem !important;
+  max-height: 1rem !important;
+}
+
+/* Hidden class for smooth transitions */
+.hidden {
+  display: none !important;
+  max-height: 0 !important;
+  opacity: 0 !important;
+  transform: translateY(-10px) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Menu transition animations */
+.menu-transition {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Second menu positioning */
+.second-menu-container {
+  position: relative;
+  z-index: 10;
+  transition: max-height 0.3s ease;
+}
+
+/* Ensure the content inside can scroll */
+.second-menu-container > div {
+  min-height: 100%;
+  overflow: visible;
+  padding-bottom: 20px; /* Add some bottom padding */
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Force the menu items to take up space */
+.second-menu-container .mb-4 {
+  margin-bottom: 1rem !important;
+}
+
+/* Ensure level 2 and 3 containers don't interfere with scroll */
+.tree-level-2-container,
+.tree-level-3-container {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+/* Menu item improvements - Remove shadows and borders */
+.menu-item-level-1 {
+  box-shadow: none;
+}
+
+.menu-item-level-2 {
+  box-shadow: none;
+}
+
+.menu-item-level-3 {
+  box-shadow: none;
+}
+
+/* Hover effects - Clean hover without shadows */
+.menu-item-level-1:hover {
+  box-shadow: none;
+}
+
+.menu-item-level-2:hover {
+  box-shadow: none;
+}
+
+.menu-item-level-3:hover {
+  box-shadow: none;
+}
+
+/* Enhanced Menu Level 1 Items */
+.menu2-item-level-1 {
+  color: var(--color-primary) !important;
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  margin-bottom: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  transition: all 0.2s ease;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.menu2-item-level-1:hover {
+  background: var(--color-primary-light);
+  transform: none;
+  box-shadow: none;
+  border: none;
+}
+
+/* Enhanced Icon Containers */
+.menu2-item-level-1 .w-6.h-6 {
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 25px;
+  height: 25px;
+}
+
+.menu2-item-level-1:hover .w-6.h-6 {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Menu Icon Styles */
+.menu-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 25px !important;
+  height: 25px !important;
+  overflow: hidden !important;
+  color: var(--color-primary) !important;
+}
+
+.menu-icon svg {
+  width: 25px !important;
+  height: 25px !important;
+  display: block !important;
+  object-fit: contain !important;
+  flex-shrink: 0 !important;
+  fill: var(--color-primary) !important;
+  stroke: var(--color-primary) !important;
+}
+
+/* SVG Icon positioning fixes */
+.menu2-item-level-1 .svg-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  color: var(--color-primary) !important;
+}
+
+.menu2-item-level-1 .svg-icon svg {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 25px !important;
+  max-height: 25px !important;
+  display: block !important;
+  object-fit: contain !important;
+  flex-shrink: 0 !important;
+  fill: var(--color-primary) !important;
+  stroke: var(--color-primary) !important;
+}
+
+/* Enhanced Button Menu 2 */
+.btn-menu2 {
+  background: none;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  border-radius: 0.375rem;
+  padding: 0.375rem;
+  color: var(--text-tertiary);
+}
+
+.btn-menu2:hover {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  transform: none;
+}
+
+/* Enhanced Menu Item Level 2 */
+.menu-item-level-2 {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  background: transparent;
+  border: none;
+  transition: all 0.2s ease;
+  margin-left: 1rem;
+  box-shadow: none;
+}
+
+.menu-item-level-2:hover {
+  transform: none;
+  box-shadow: none;
+  border: none;
+  background: var(--color-primary-light);
+}
+
+.menu-item-level-2 .w-2.h-2 {
+  background: var(--color-primary);
+  box-shadow: none;
+}
+
+/* Enhanced Menu Item Level 3 */
+.menu-item-level-3 {
+  display: block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background: transparent;
+  border: none;
+  transition: all 0.2s ease;
+  margin-left: 1rem;
+  box-shadow: none;
+  margin-bottom: 0.125rem;
+  text-decoration: none;
+  color: var(--text-secondary);
+  width: calc(100% - 1rem) !important;
+  max-width: calc(100% - 1rem) !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.menu-item-level-3:hover {
+  transform: none;
+  box-shadow: none;
+  border: none;
+  background: var(--color-primary-light);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.menu-item-level-3 .w-1.h-1 {
+  background: var(--color-primary);
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.menu-item-level-3:hover .w-1.h-1 {
+  transform: none;
+}
+
+.menu-item-level-3 .w-1\.5.h-1\.5 {
+  background: var(--text-muted);
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.menu-item-level-3:hover .w-1\.5.h-1\.5 {
+  transform: none;
+}
+
+/* Tree Level 3 Container - Fixed */
+.tree-level-3-container {
+  position: relative;
+  border-left: 2px solid;
+  border-image: linear-gradient(180deg, #8b5cf6, #ec4899) 1;
+  padding-left: 16px;
+  margin-left: 8px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: calc(100% - 24px) !important;
+  max-width: calc(100% - 24px) !important;
+  box-sizing: border-box !important;
+}
+
+.tree-level-3-item {
+  position: relative;
+  margin-bottom: 0.25rem;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.tree-level-3-item::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 2px;
+  background: linear-gradient(90deg, #8b5cf6, transparent);
+}
+
+/* Ensure proper spacing and visibility */
+.tree-level-3-container .menu-item-level-3 {
+  display: block;
+  text-decoration: none;
+  color: var(--color-primary-dark);
+}
+
+.tree-level-3-container .menu-item-level-3:hover {
+  text-decoration: none;
+}
+
+/* Fix for level 3 items that might be hidden */
+.tree-level-3-container:not(.hidden) {
+  display: block;
+  max-height: none;
+  opacity: 1;
+  transform: none;
+}
+
+/* Enhanced Menu Item Labels */
+.menu-item-level-2 span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primary-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.menu-item-level-3 span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primary-dark);
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  line-height: 1.4;
+}
+
+/* Specific styles for level 3 menu items to prevent horizontal expansion */
+.menu-item-level-3 {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+}
+
+.menu-item-level-3 .flex {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.menu-item-level-3 .flex span {
+  flex: 1 !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+
+/* Override Tailwind classes that might be causing issues */
+.tree-level-3-container.ml-6 {
+  margin-left: 1.5rem !important;
+  width: calc(100% - 1.5rem) !important;
+  max-width: calc(100% - 1.5rem) !important;
+  box-sizing: border-box !important;
+}
+
+.tree-level-3-item {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+/* Force truncation on the span with truncate class */
+.menu-item-level-3 .truncate {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Nuclear option - force all text in level 3 to truncate */
+.tree-level-3-container * {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+
+.tree-level-3-container span {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Ensure all menu text doesn't cause horizontal expansion */
+.menu2-item-level-1 span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+  color: var(--color-primary-dark) !important;
+}
+
+/* Enhanced Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(226, 232, 240, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+  border-radius: 4px;
+  min-height: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #2563eb, #7c3aed);
+}
+
+/* Force scrollbar to be functional */
+.second-menu-container::-webkit-scrollbar {
+  width: 8px;
+  display: block !important;
+}
+
+.second-menu-container::-webkit-scrollbar-track {
+  background: rgba(226, 232, 240, 0.5);
+  border-radius: 4px;
+}
+
+.second-menu-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+  border-radius: 4px;
+  min-height: 20px;
+}
+
+.second-menu-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #2563eb, #7c3aed);
+}
+
+/* Global Transitions */
+* {
+  transition: all 0.2s ease;
+}
+
+/* Enhanced Button States */
+.btn-menu2:active {
+  transform: scale(0.95);
+}
+
+.menu2-item-level-1:active {
+  transform: translateY(0);
+}
+
+/* Focus States */
+.btn-menu2:focus {
+  outline: none;
+}
+
+/* Loading States */
+.menu2-item-level-1.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.menu2-item-level-1.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #e2e8f0;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .content-box-header {
+    padding: 1rem;
+  }
+
+  .second-menu-container {
+    padding: 0.75rem;
+  }
+
+  .menu2-item-level-1 {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Force the main content to be positioned correctly */
+main.flex-1 {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Force sidebar to never expand beyond fixed width */
+.fixed.inset-y-0.left-0.w-96 {
+  width: 384px !important;
+  min-width: 384px !important;
+  max-width: 384px !important;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+}
+
+/* Ensure all content inside sidebar respects the width */
+.fixed.inset-y-0.left-0.w-96 * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure the sidebar doesn't overlap content */
+.fixed.inset-y-0.left-0.z-50 {
+  z-index: 40 !important;
+  width: 384px !important;
+  min-width: 384px !important;
+  max-width: 384px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+/* Additional CSS to force main content positioning */
+body > div > main.flex-1.ml-96,
+div > main.flex-1.ml-96 {
+  margin-left: 384px !important;
+  width: calc(100vw - 384px) !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  position: relative !important;
+  left: 0 !important;
+  transform: none !important;
+}
+
+/* Force the main content container */
+main.flex-1.ml-96 {
+  margin-left: 384px !important;
+  width: calc(100vw - 384px) !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  position: relative !important;
+  left: 0 !important;
+  transform: none !important;
+  box-sizing: border-box !important;
+}

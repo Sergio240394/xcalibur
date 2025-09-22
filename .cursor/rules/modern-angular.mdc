@@ -1,0 +1,15 @@
+---
+description: "Enforce modern and recommended Angular practices"
+globs:
+  - "**/*.ts"
+  - "**/*.html"
+alwaysApply: true
+---
+
+- Use `signals`, `computed`, and `effect` for state management.
+- Avoid using `*ngIf` and `*ngFor`. Use modern control flow syntax like `@if`, `@for`, and `@switch` instead.
+- Always use `standalone components` instead of traditional NgModules.
+- Prefer dependency injection via `provide*` functions over module-based providers.
+- Avoid using `@Input` and `@Output`; prefer signals or shared services for communication between components.
+- Do not use `RxJS` unless absolutely necessary.
+- Never use deprecated APIs or outdated Angular features.

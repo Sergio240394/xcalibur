@@ -1,0 +1,311 @@
+<div class="modern-form-container">
+  <!-- Header Section - Clean and Compact -->
+  <div class="form-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="form-title">Consulta por Factura</h1>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Main Form -->
+  <form [formGroup]="facturaForm" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()" class="modern-form">
+
+    <app-collapsible-section>
+      <div class="form-section">
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="field-label">
+              Compañia
+              @if (companiaDescription()) {
+                <span class="compania-name-display">({{ companiaDescription() }})</span>
+              }
+              <span class="required-asterisk">*</span>
+            </label>
+            <div class="input-with-icon">
+              <input type="text" formControlName="compania" placeholder="Código de compañía"
+                     class="modern-input"
+                     [class.error]="facturaForm.get('compania')?.invalid && facturaForm.get('compania')?.touched">
+              <button type="button" (click)="openPopup('compania')" class="search-button" title="Buscar compañía">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+            </div>
+            @if (facturaForm.get('compania')?.invalid && facturaForm.get('compania')?.touched) {
+              <span class="field-error">Este campo es requerido</span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">
+              Empresa
+              @if (empresaDescription()) {
+                <span class="compania-name-display">({{ empresaDescription() }})</span>
+              }
+            </label>
+            <div class="input-with-icon">
+              <input type="text" formControlName="empresa" placeholder="Código de empresa"
+                     class="modern-input"
+                     [class.error]="facturaForm.get('empresa')?.invalid && facturaForm.get('empresa')?.touched">
+              <button type="button" (click)="openPopup('empresa')" class="search-button" title="Buscar empresa">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+            </div>
+            @if (facturaForm.get('empresa')?.invalid && facturaForm.get('empresa')?.touched) {
+              <span class="field-error">Este campo es requerido</span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">
+              Tipo
+              @if (tipoDescription()) {
+                <span class="compania-name-display">({{ tipoDescription() }})</span>
+              }
+            </label>
+            <div class="input-with-icon">
+              <input type="text" formControlName="tipo" placeholder="Tipo de documento"
+                     class="modern-input"
+                     [class.error]="facturaForm.get('tipo')?.invalid && facturaForm.get('tipo')?.touched">
+              <button type="button" (click)="openPopup('tipo')" class="search-button" title="Buscar tipo">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+            </div>
+            @if (facturaForm.get('tipo')?.invalid && facturaForm.get('tipo')?.touched) {
+              <span class="field-error">Este campo es requerido</span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">
+              Socio
+              @if (socioDescription()) {
+                <span class="compania-name-display">({{ socioDescription() }})</span>
+              }
+            </label>
+            <div class="input-with-icon">
+              <input type="text" formControlName="socio" placeholder="Código de socio"
+                     class="modern-input"
+                     [class.error]="facturaForm.get('socio')?.invalid && facturaForm.get('socio')?.touched">
+              <button type="button" (click)="openPopup('socio')" class="search-button" title="Buscar socio">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+            </div>
+            @if (facturaForm.get('socio')?.invalid && facturaForm.get('socio')?.touched) {
+              <span class="field-error">Este campo es requerido</span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">
+              Gerente
+              @if (gerenteDescription()) {
+                <span class="compania-name-display">({{ gerenteDescription() }})</span>
+              }
+            </label>
+            <div class="input-with-icon">
+              <input type="text" formControlName="gerente" placeholder="Código de gerente"
+                     class="modern-input"
+                     [class.error]="facturaForm.get('gerente')?.invalid && facturaForm.get('gerente')?.touched">
+              <button type="button" (click)="openPopup('gerente')" class="search-button" title="Buscar gerente">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+            </div>
+            @if (facturaForm.get('gerente')?.invalid && facturaForm.get('gerente')?.touched) {
+              <span class="field-error">Este campo es requerido</span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">Fecha Desde</label>
+            <input type="date" formControlName="fechaDesde" class="modern-input">
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">Fecha Hasta</label>
+            <input type="date" formControlName="fechaHasta" class="modern-input">
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">Factura <span class="required-asterisk">*</span></label>
+            <input type="text" formControlName="factura" placeholder="Número de factura"
+                   class="modern-input"
+                   [class.error]="facturaForm.get('factura')?.invalid && facturaForm.get('factura')?.touched">
+            @if (facturaForm.get('factura')?.invalid && facturaForm.get('factura')?.touched) {
+              <span class="field-error">Este campo es requerido</span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">Saldo</label>
+            <input type="text" formControlName="saldo" placeholder="0.00" class="modern-input" readonly>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">Saldo Ext</label>
+            <input type="text" formControlName="saldoExt" placeholder="0.00" class="modern-input" readonly>
+          </div>
+        </div>
+      </div>
+    </app-collapsible-section>
+
+    <!-- Resultados Section -->
+    <div class="form-section">
+
+      <div class="table-container">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Fecha Mov</th>
+              <th>Documento</th>
+              <th>Tipo Doc</th>
+              <th>Proced</th>
+              <th>Monto</th>
+              <th>Saldo</th>
+              <th>Base IVA</th>
+              <th>Descuento IVA</th>
+              <th>Vendedor</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (factura of facturas(); track $index) {
+              <tr class="table-row">
+                <td>{{ factura['fecmov-his'] | date:'dd/MM/yyyy' }}</td>
+                <td>{{ factura['numdoc-his'] }}</td>
+                <td>{{ factura['nombre-tdoc'] }}</td>
+                <td>{{ factura['proced-his'] }}</td>
+                <td>{{ factura['monto-his'] | currency:'COP':'symbol':'1.0-0' }}</td>
+                <td>{{ factura['saldo-doc'] | currency:'COP':'symbol':'1.0-0' }}</td>
+                <td>{{ factura['basiva-his'] | currency:'COP':'symbol':'1.0-0' }}</td>
+                <td>{{ factura['desiva-his'] | currency:'COP':'symbol':'1.0-0' }}</td>
+                <td>{{ factura['nombre-vend'] }}</td>
+                <td>
+                  <span class="status-badge" [class.active]="factura['estado-his']" [class.inactive]="!factura['estado-his']">
+                    {{ factura['estado-his'] ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="form-actions">
+      <div class="action-buttons">
+        <button type="submit" class="btn-primary">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          Consultar
+        </button>
+        <button type="button" (click)="onClear()" class="btn-secondary">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          Limpiar
+        </button>
+        <button type="button" (click)="onReport()" class="btn-primary">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          Reporte por Pantalla
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Modern Popup Modal -->
+  @if (showPopup()) {
+    <div class="modern-popup-overlay">
+      <div class="modern-popup-modal">
+        <!-- Popup Header -->
+        <div class="popup-header">
+          <div class="popup-title-section">
+            <div class="popup-icon">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <h3 class="popup-title">{{ popupTitle() }}</h3>
+          </div>
+          <button (click)="closePopup()" class="popup-close-btn">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Search/Filter Section -->
+        <div class="popup-search-section">
+          <div class="search-controls">
+            <!-- Search input -->
+            <div class="search-input-container">
+              <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Ingrese criterio de búsqueda..." class="search-input">
+              <button (click)="onSearch()" class="search-btn">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="popup-table-container">
+          @if (isLoading()) {
+            <div class="loading-container">
+              <div class="loading-spinner"></div>
+              <p class="loading-text">Cargando compañías...</p>
+            </div>
+          } @else {
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Descripción</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (filteredItems().length === 0) {
+                  <tr>
+                    <td colspan="2" class="no-data">No se encontraron registros</td>
+                  </tr>
+                } @else {
+                  @for (item of filteredItems(); track item.codigo; let i = $index) {
+                    <tr (click)="selectItem(item)" class="table-row">
+                      <td>{{ item.codigo }}</td>
+                      <td>{{ item.descripcion }}</td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Popup Footer -->
+        <div class="popup-footer">
+          <button (click)="closePopup()" class="btn-secondary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

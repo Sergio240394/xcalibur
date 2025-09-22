@@ -1,0 +1,15 @@
+---
+description: "Use Tailwind CSS to create a modern and professional UI"
+globs:
+  - "**/*.html"
+  - "**/*.css"
+  - "**/*.ts"
+alwaysApply: true
+---
+
+- Use Tailwind CSS for all styling.
+- The UI should be clean, modern, and responsive.
+- Use cards, buttons, and inputs styled with Tailwind utility classes.
+- Avoid inline styles or unnecessary custom CSS classes.
+- Ensure layout responsiveness for medium and large screens.
+- Use `@tailwind base`, `@tailwind components`, and `@tailwind utilities` as needed.

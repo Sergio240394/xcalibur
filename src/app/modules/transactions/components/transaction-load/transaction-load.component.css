@@ -1,0 +1,121 @@
+
+
+/* Loading Spinners - Standard Application Style */
+.loading-spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0.5rem;
+}
+
+
+
+/* Standard loading container for modals */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  min-height: 200px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.loading-text {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Clickable table rows */
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clickable-row:hover {
+  background-color: #f8f9fa;
+}
+
+.clickable-row:active {
+  background-color: #e9ecef;
+}
+
+/* Contabilidad Data Section */
+.contabilidad-data-section {
+  margin-top: 2rem;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contabilidad-data-section .section-title {
+  color: #374151;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.contabilidad-data-section .table-container {
+  overflow-x: auto;
+}
+
+.contabilidad-data-section .modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.contabilidad-data-section .modern-table th {
+  background-color: #f8fafc;
+  color: #374151;
+  font-weight: 600;
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 2px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.contabilidad-data-section .modern-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: top;
+}
+
+.contabilidad-data-section .modern-table .amount-cell {
+  text-align: right;
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.contabilidad-data-section .modern-table .table-row:hover {
+  background-color: #f8fafc;
+}
+
+.contabilidad-data-section .no-data-message {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 2rem;
+}
+

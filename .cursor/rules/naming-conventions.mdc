@@ -1,0 +1,12 @@
+---
+description: "Define naming conventions for files and folders"
+globs:
+  - "src/app/**/*"
+alwaysApply: true
+---
+
+- Use `kebab-case` for all file and folder names.
+- Component files must follow the pattern: `name.component.ts`.
+- Each feature module should have its own directory with subcomponents inside.
+- Services must end with `.service.ts`.
+- Use descriptive prefixes like `admin-`, `auth-`, `core-` when appropriate.

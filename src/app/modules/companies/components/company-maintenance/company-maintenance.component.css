@@ -1,0 +1,233 @@
+/* Estilos específicos para el módulo de mantenimiento de compañías */
+/* Los estilos comunes ya están en styles.css global */
+
+/* Estilo para mostrar el nombre de la compañía en el label */
+.compania-name-display {
+  font-weight: normal;
+  color: #666;
+  font-style: italic;
+  margin-left: 4px;
+}
+
+/* Estilo para mostrar el nombre del vendedor en el label */
+.vendedor-name-display {
+  font-weight: normal;
+  color: #666;
+  font-style: italic;
+  margin-left: 4px;
+}
+
+/* Estilo para mostrar el nombre de la empresa en el label */
+.empresa-name-display {
+  font-weight: normal;
+  color: #666;
+  font-style: italic;
+  margin-left: 4px;
+}
+
+/* Estilo para mostrar el nombre de la condición de pago en el label */
+.condicion-pago-name-display {
+  font-weight: normal;
+  color: #666;
+  font-style: italic;
+  margin-left: 4px;
+}
+
+/* Estilo para mostrar el nombre del NIT en el label */
+.nit-name-display {
+  font-weight: normal;
+  color: #666;
+  font-style: italic;
+  margin-left: 4px;
+}
+
+/* Estilo para el mensaje informativo del modal */
+.popup-info {
+  background-color: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 8px 16px;
+}
+
+.popup-info p {
+  margin: 0;
+  color: #0369a1;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+}
+
+.popup-info i {
+  color: #0ea5e9;
+  margin-right: 4px;
+}
+
+
+/* Responsive design */
+@media (max-width: 768px) {
+
+
+
+}
+
+@media (max-width: 480px) {
+  .popup-grid-container {
+    max-height: 300px;
+  }
+
+  .grid-cell {
+    padding: 6px 8px;
+    font-size: 0.875rem;
+  }
+}
+
+/* Section Navigation Styles - Now in global styles.css for reusability */
+
+/* Action buttons styles - Now in global styles.css for reusability */
+
+
+/* Si hay campos específicos de compañías que necesiten estilos únicos */
+.company-logo-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.company-logo-preview {
+  width: 80px;
+  height: 80px;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+/* Estilos para campos de facturación electrónica */
+.electronic-invoice-section {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.electronic-invoice-title {
+  color: #0369a1;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-evenly;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.checkbox-item:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+}
+
+.checkbox-item label {
+  font-size: 0.875rem;
+  color: #374151;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Responsive adjustments específicos para compañías */
+@media (max-width: 1024px) {
+  .checkbox-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .company-logo-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .company-logo-preview {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Loading states */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  min-height: 200px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f4f6;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.loading-text {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.no-data-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #6b7280;
+  font-size: 14px;
+  font-style: italic;
+  min-height: 200px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Estilo para mostrar el nombre del Tipo Cliente en el label */
+.tipo-cliente-name-display {
+  font-weight: normal;
+  color: #666;
+  font-style: italic;
+  margin-left: 4px;
+}

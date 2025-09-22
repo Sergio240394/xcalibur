@@ -1,0 +1,97 @@
+<div class="login-container">
+  <!-- Background with gradient and light effects -->
+  <div class="login-background"></div>
+
+  <!-- Top Logos -->
+  <div class="login-header">
+    <!-- XCALIBUR Logo - Top Left -->
+    <div class="xcalibur-logo">
+      <img src="assets/images/xcalibur_LOGO FLAT.png" alt="XCALIBUR" class="logo-image">
+    </div>
+
+    <!-- PROSINTESIS Logo - Top Right -->
+    <div class="prosintesis-logo">
+      <img src="assets/images/LOGO PROSINTESIS SVG.png" alt="PROSINTESIS" class="prosintesis-icon">
+    </div>
+  </div>
+
+  <!-- Central Login Panel -->
+  <div class="login-panel">
+    <!-- PwC Logo -->
+    <div class="pwc-logo">
+      <div class="pwc-icon">
+        <div class="pwc-square"></div>
+      </div>
+      <span class="pwc-text">pwc</span>
+    </div>
+
+    <!-- Welcome Message -->
+    <div class="welcome-section">
+      <h1 class="welcome-title">Bienvenido</h1>
+      <p class="welcome-subtitle">Introduce tus credenciales e inicia sesión</p>
+    </div>
+
+    <!-- Error Message -->
+    @if (authService.errorMessage()) {
+      <div class="error-message">
+        <p>{{ authService.errorMessage() }}</p>
+      </div>
+    }
+
+    <!-- Login Form -->
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email" class="form-label">Dirección email</label>
+        <input
+          id="email"
+          type="email"
+          [value]="credentials().username"
+          (input)="updateUsername($any($event.target).value)"
+          class="form-input"
+          placeholder="Enter your email"
+          required
+          [disabled]="isLoading()"
+        />
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <div class="password-header">
+          <label for="password" class="form-label">Contraseña</label>
+          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+        <input
+          id="password"
+          type="password"
+          [value]="credentials().password"
+          (input)="updatePassword($any($event.target).value)"
+          class="form-input"
+          placeholder="Name"
+          required
+          [disabled]="isLoading()"
+        />
+      </div>
+
+      <!-- Login Button -->
+      <button
+        type="submit"
+        [disabled]="isLoading()"
+        class="login-button"
+      >
+        @if (isLoading()) {
+          <div class="loading-spinner"></div>
+          Iniciando sesión...
+        } @else {
+          Login
+        }
+      </button>
+    </form>
+
+    <!-- Support Links -->
+    <div class="support-links">
+      <a href="#" class="support-link">¿Problemas para acceder?</a>
+      <a href="#" class="support-link support-contact">Contacta a soporte</a>
+    </div>
+  </div>
+</div>
