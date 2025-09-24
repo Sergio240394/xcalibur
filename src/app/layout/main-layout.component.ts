@@ -1,6 +1,6 @@
 import { Component, signal, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
 import { MenuService } from '../core/services/menu.service';
 import { ToastService } from '../core/services/toast.service';
@@ -8,6 +8,7 @@ import { SvgIconComponent } from '../shared/components/svg-icon/svg-icon.compone
 import { SecondaryMenuComponent } from '../shared/components/secondary-menu/secondary-menu.component';
 import { ToastComponent } from '../shared/components/toast/toast.component';
 import { MenuLevel1, MenuLevel2, MenuLevel3 } from '../core/interfaces/menu.interface';
+import { filter } from 'rxjs/operators';
 
 interface MenuItem {
   path: string;
@@ -31,7 +32,7 @@ interface MenuItem {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
-  public readonly isSidebarOpen = signal<boolean>(true);
+  public readonly isSidebarOpen = signal<boolean>(false);
   public readonly expandedLevel2Items = signal<Set<number>>(new Set());
   public readonly expandedLevel3Items = signal<Set<string>>(new Set());
   public readonly showUserMenu = signal<boolean>(false);
@@ -310,7 +311,8 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private menuService: MenuService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private router: Router
   ) {
     // No usar effect() - todo se pre-calculará una sola vez
   }
@@ -318,10 +320,55 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Intentar cargar menú desde localStorage primero
     this.loadMenuFromStorage();
+
+    // Check screen size and set initial sidebar state
+    this.checkScreenSize();
+
+    // Listen for window resize events
+    window.addEventListener('resize', () => this.checkScreenSize());
+
+    // Listen for route changes and close menu on mobile
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        // Close menu on mobile when navigating to a module
+        if (window.innerWidth < 1024 && this.isModuleRoute(event.url)) {
+          this.isSidebarOpen.set(false);
+        }
+      });
   }
 
   ngOnDestroy(): void {
     // Cleanup si es necesario
+    window.removeEventListener('resize', () => this.checkScreenSize());
+  }
+
+  private checkScreenSize(): void {
+    // On large screens (desktop), sidebar should be open by default
+    // On small screens (mobile/tablet), sidebar should be closed by default
+    const isLargeScreen = window.innerWidth >= 1024;
+    this.isSidebarOpen.set(isLargeScreen);
+  }
+
+  private isModuleRoute(url: string): boolean {
+    // List of routes that are considered modules (not dashboard or login)
+    const moduleRoutes = [
+      '/administrador',
+      '/cuentas-por-cobrar',
+      '/contabilidad-general',
+      '/cuentas-por-pagar',
+      '/inventory',
+      '/purchases',
+      '/sales',
+      '/reports',
+      '/settings',
+      '/transacciones',
+      '/carga-comprobantes',
+      '/consulta-facturas-cliente'
+    ];
+
+    // Check if the current URL starts with any module route
+    return moduleRoutes.some(route => url.startsWith(route));
   }
 
   private loadMenuFromStorage(): void {

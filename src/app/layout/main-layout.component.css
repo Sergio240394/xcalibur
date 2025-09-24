@@ -943,7 +943,60 @@
   100% { transform: translateY(-50%) rotate(360deg); }
 }
 
+/* Mobile Menu Toggle Button */
+.mobile-menu-toggle {
+  position: fixed !important;
+  top: 1rem !important;
+  left: 1rem !important;
+  z-index: 999999 !important;
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  padding: 0.75rem !important;
+  transition: all 0.2s ease !important;
+  display: none !important;
+  pointer-events: auto !important;
+}
+
+.mobile-menu-toggle:hover {
+  background: #f9fafb !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Show mobile toggle only on small screens */
+@media (max-width: 1024px) {
+  .mobile-menu-toggle {
+    display: block !important;
+  }
+}
+
 /* Responsive Design */
+@media (max-width: 1024px) {
+  /* Sidebar behavior on mobile */
+  .fixed.inset-y-0.left-0.w-96 {
+    width: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .fixed.inset-y-0.left-0.w-96.translate-x-0 {
+    transform: translateX(0);
+  }
+
+  .fixed.inset-y-0.left-0.w-96.-translate-x-full {
+    transform: translateX(-100%);
+  }
+
+  /* Main content behavior on mobile - always full width */
+  main.flex-1 {
+    margin-left: 0 !important;
+    width: 100vw !important;
+  }
+}
+
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -963,10 +1016,24 @@
   }
 }
 
-/* Force the main content to be positioned correctly */
+/* Main content positioning */
 main.flex-1 {
   position: relative !important;
   z-index: 1 !important;
+  min-height: 100vh !important;
+  transition: margin-left 0.3s ease-in-out !important;
+}
+
+/* When sidebar is open - desktop behavior */
+main.flex-1.ml-96 {
+  margin-left: 384px !important;
+  width: calc(100vw - 384px) !important;
+}
+
+/* When sidebar is closed - mobile behavior */
+main.flex-1.ml-0 {
+  margin-left: 0 !important;
+  width: 100vw !important;
 }
 
 /* Force sidebar to never expand beyond fixed width */
@@ -986,7 +1053,7 @@ main.flex-1 {
 
 /* Ensure the sidebar doesn't overlap content */
 .fixed.inset-y-0.left-0.z-50 {
-  z-index: 40 !important;
+  z-index: 50 !important;
   width: 384px !important;
   min-width: 384px !important;
   max-width: 384px !important;
@@ -998,28 +1065,4 @@ main.flex-1 {
   bottom: 0 !important;
   height: 100vh !important;
   overflow: hidden !important;
-}
-
-/* Additional CSS to force main content positioning */
-body > div > main.flex-1.ml-96,
-div > main.flex-1.ml-96 {
-  margin-left: 384px !important;
-  width: calc(100vw - 384px) !important;
-  min-width: 0 !important;
-  overflow-x: hidden !important;
-  position: relative !important;
-  left: 0 !important;
-  transform: none !important;
-}
-
-/* Force the main content container */
-main.flex-1.ml-96 {
-  margin-left: 384px !important;
-  width: calc(100vw - 384px) !important;
-  min-width: 0 !important;
-  overflow-x: hidden !important;
-  position: relative !important;
-  left: 0 !important;
-  transform: none !important;
-  box-sizing: border-box !important;
 }
