@@ -34,18 +34,18 @@ export class SecondaryMenuComponent {
       label: 'Contabilidad general',
       icon: 'team.svg',
       children: [
-        { path: '/administrador/companias/mantenimiento-companias', label: 'Mantenimiento de empresas' },
-        { path: '/cuentas-por-cobrar/procesos-principales/consulta-facturas-cliente', label: 'Consulta de facturas por cliente' },
-        { path: '/transacciones', label: 'Carga de transacciones' },
+        { path: '/contabilidad-general/reportes-principales/balance-comprobacion', label: 'Balance de comprobación' },
+        { path: '/cuentas-por-pagar/procesos-principales/carga-comprobantes', label: 'Carga de comprobantes' }
       ]
     },
     {
       path: '/cuentas-por-pagar',
-      label: 'Cuentas por pagar',
+      label: 'Cuentas por cobrar',
       icon: 'dollar.svg',
       children: [
-        { path: '/contabilidad-general/reportes-principales/balance-comprobacion', label: 'Balance de comprobación' },
-        { path: '/cuentas-por-pagar/procesos-principales/carga-comprobantes', label: 'Carga de comprobantes' }
+        { path: '/administrador/companias/mantenimiento-companias', label: 'Mantenimiento de empresas' },
+        { path: '/cuentas-por-cobrar/procesos-principales/consulta-facturas-cliente', label: 'Consulta de facturas por cliente' },
+        { path: '/transacciones', label: 'Carga de transacciones' }
       ]
     }
   ]);
