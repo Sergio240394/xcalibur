@@ -26,15 +26,15 @@ export class SecondaryMenuComponent {
       label: 'Administrador del sistema',
       icon: 'admin.svg',
       children: [
-        { path: '/administrador/autorizacion-usuarios/mantenimiento-usuarios', label: 'Mantenimientos de usuarios' },
-        { path: '/administrador/companias/mantenimiento-companias', label: 'Mantenimiento de compañias' }
+        { path: '/administrador/autorizacion-usuarios/mantenimiento-usuarios', label: 'Mantenimientos de usuarios' }
       ]
     },
     {
       path: '/cuentas-por-cobrar',
-      label: 'Cuentas por cobrar',
+      label: 'Contabilidad general',
       icon: 'team.svg',
       children: [
+        { path: '/administrador/companias/mantenimiento-companias', label: 'Mantenimiento de empresas' },
         { path: '/cuentas-por-cobrar/procesos-principales/consulta-facturas-cliente', label: 'Consulta de facturas por cliente' },
         { path: '/transacciones', label: 'Carga de transacciones' },
       ]

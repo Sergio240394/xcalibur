@@ -119,13 +119,13 @@
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  margin-bottom: 2rem;
 }
 
 .pwc-icon {
   position: relative;
-  width: 2rem;
-  height: 2rem;
+  margin-top: -20px;
+  width: 170px;
+  height: auto;
 }
 
 .pwc-square {
@@ -154,7 +154,7 @@
 .welcome-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #000;
   margin-bottom: 0.5rem;
 }
 
@@ -312,19 +312,46 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .login-header {
-    padding: 1.5rem 1rem;
-    flex-direction: column;
+    padding: 0.5rem 1rem;
+    flex-direction: row;
     gap: 1rem;
     align-items: center;
-  }
-
-  .login-panel {
-    margin: 1rem;
-    padding: 2rem;
   }
 
   .xcalibur-logo,
   .prosintesis-logo {
     justify-content: center;
+  }
+
+  .logo-image {
+    height: 50px;
+    width: auto;
+  }
+
+  .prosintesis-icon{
+    margin-top: 0;
+    height: 35px;
+    width: auto;
+  }
+
+  .login-panel{
+    margin-top: 1rem;
+  }
+
+  .pwc-icon{
+    margin-top: -45px;
+    width: 120px;
+  }
+
+  .welcome-section {
+    margin-bottom: 1rem;
+  }
+
+  .login-panel-container {
+    overflow: auto;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

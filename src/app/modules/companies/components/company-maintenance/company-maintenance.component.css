@@ -66,9 +66,43 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
+  /* Hide button text in responsive view, keep only arrows */
+  .nav-button .button-text {
+    display: none;
+  }
 
+  /* Adjust button padding for arrow-only display */
+  .nav-button {
+    padding: 0.5rem !important;
+    min-width: auto !important;
+  }
 
+  /* Center the arrows in the buttons */
+  .nav-button svg {
+    margin: 0 !important;
+  }
 
+  /* Make action buttons non-floating in responsive view */
+  .section-navigation + .modern-form .form-actions {
+    position: static !important;
+    bottom: auto !important;
+    right: auto !important;
+    border-radius: 8px;
+    padding: 1rem !important;
+    margin-top: 1.5rem !important;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: auto !important;
+  }
+
+  .section-navigation + .modern-form .form-actions .action-buttons {
+    display: flex !important;
+    gap: 0.75rem !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    flex-direction: column !important;
+  }
 }
 
 @media (max-width: 480px) {

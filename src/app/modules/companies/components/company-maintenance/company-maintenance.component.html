@@ -3,7 +3,7 @@
   <div class="form-header">
     <div class="header-content">
       <div class="header-text">
-        <h1 class="form-title">Mantenimiento de Compañías</h1>
+        <h1 class="form-title">Mantenimiento de Empresas</h1>
       </div>
     </div>
   </div>
@@ -14,7 +14,7 @@
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
       </svg>
-      Anterior
+      <span class="button-text">Anterior</span>
     </button>
 
     <div class="section-indicator">
@@ -23,7 +23,7 @@
     </div>
 
     <button type="button" (click)="nextSection()" [disabled]="currentSection() === 5" class="nav-button next-button">
-      Siguiente
+      <span class="button-text">Siguiente</span>
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
       </svg>

@@ -1163,6 +1163,10 @@ a {
 
 /* Responsive Design for Forms */
 @media (max-width: 768px) {
+  .form-grid {
+    display: flex;
+    flex-direction: column;
+}
   .modern-form-container {
     padding: 1rem;
   }

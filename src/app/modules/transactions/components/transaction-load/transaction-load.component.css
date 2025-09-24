@@ -119,3 +119,173 @@
   padding: 2rem;
 }
 
+/* Responsive design */
+@media (max-width: 768px) {
+  /* Hide button text in responsive view, keep only arrows */
+  .nav-button .button-text {
+    display: none;
+  }
+
+  /* Adjust button padding for arrow-only display */
+  .nav-button {
+    padding: 0.5rem !important;
+    min-width: auto !important;
+  }
+
+  /* Center the arrows in the buttons */
+  .nav-button app-icon {
+    margin: 0 !important;
+  }
+
+  /* Fix floating action buttons - make them non-floating in responsive */
+  .form-actions {
+    position: static !important;
+    bottom: auto !important;
+    right: auto !important;
+    border-radius: 8px;
+    padding: 1rem !important;
+    margin-top: 1.5rem !important;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: auto !important;
+  }
+
+  .action-buttons {
+    display: flex !important;
+    gap: 0.75rem !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    flex-direction: column !important;
+  }
+}
+
+/* Extra small screens - ensure 100% width adaptation */
+@media (max-width: 405px) {
+  /* Ensure form container takes full width */
+  .modern-form-container {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0.5rem !important;
+  }
+
+  /* Adjust section navigation for very small screens */
+  .section-navigation {
+    padding: 0.5rem 0.25rem !important;
+    margin: 0 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Make navigation buttons even more compact */
+  .nav-button {
+    padding: 0.375rem !important;
+    font-size: 0.75rem !important;
+    min-width: 32px !important;
+  }
+
+  /* Adjust section indicator for very small screens */
+  .section-indicator {
+    margin: 0 0.25rem !important;
+  }
+
+  .section-title {
+    font-size: 0.875rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .current-section {
+    font-size: 0.75rem !important;
+  }
+
+  /* Ensure form sections take full width */
+  .form-section {
+    width: 100% !important;
+    padding: 0.5rem !important;
+    margin: 0 !important;
+  }
+
+  /* Adjust form grid for very small screens */
+  .form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Ensure inputs take full width */
+  .modern-input,
+  .modern-select,
+  .modern-textarea {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Adjust input with icon containers */
+  .input-with-icon {
+    width: 100% !important;
+  }
+
+  /* Make search buttons smaller */
+  .search-button {
+    min-width: 32px !important;
+    padding: 0.375rem !important;
+  }
+
+  /* Adjust table containers for very small screens */
+  .table-container {
+    overflow-x: auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .modern-table {
+    min-width: 600px !important; /* Ensure table has minimum width for scrolling */
+    font-size: 0.75rem !important;
+  }
+
+  .modern-table th,
+  .modern-table td {
+    padding: 0.375rem !important;
+  }
+
+  /* Fix floating action buttons - make them non-floating in responsive */
+  .form-actions {
+    position: static !important;
+    bottom: auto !important;
+    right: auto !important;
+    border-radius: 8px;
+    padding: 0.5rem !important;
+    margin-top: 1rem !important;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: auto !important;
+  }
+
+  .action-buttons {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  .btn-primary,
+  .btn-danger,
+  .btn-secondary {
+    width: 100% !important;
+    padding: 0.625rem 0.75rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Adjust totals display */
+  .totals-display,
+  .content-debito-credito {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  .total-display,
+  .total-box {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 0.5rem !important;
+  }
+}
+
