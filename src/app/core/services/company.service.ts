@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface CompanyResponse {
   dsRespuesta: {
@@ -31,7 +32,7 @@ export interface ErrorResponse {
   providedIn: 'root'
 })
 export class CompanyService {
-  private baseUrl = 'http://184.168.30.44:8810/XcaliburWeb/rest/ServiciosXcaliburWeb';
+  private baseUrl = environment.apiUrl;
 
   // Mock data for testing - replace with actual auth service integration
   private readonly pcLogin = 'testuser';

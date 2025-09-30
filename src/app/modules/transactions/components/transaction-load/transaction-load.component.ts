@@ -9,6 +9,7 @@ import { DocumentTypesService } from '../../../../core/services/document-types.s
 import { VendedoresService, VendedorItem } from '../../../../core/services/vendedores.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ToastService } from '../../../../core/services/toast.service';
+import { LoadingService } from '../../../../core/services/loading.service';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
 import { CollapsibleSectionComponent } from '../../../../shared/components/collapsible-section';
 import { CompaniasCxCService, CompaniaCxC, FechaPeriodoCxC, LoteCxC, EmpresaCxC, TipoDocCxC, DocumentoCxC, FechaEmisionCxC, FechaVencimientoCxC, AplicaDocCxC, MontoCxC, ApiResponse } from '../../../../core/services/companias-cxc.service';
@@ -171,6 +172,7 @@ export class TransactionLoadComponent implements OnInit {
     private vendedoresService: VendedoresService,
     private authService: AuthService,
     private toastService: ToastService,
+    private loadingService: LoadingService,
     private companiasCxCService: CompaniasCxCService,
     private cuentasService: CuentasService,
     private auxiliaresService: AuxiliaresService,
@@ -640,10 +642,12 @@ export class TransactionLoadComponent implements OnInit {
     const transactionData = this.buildTransactionData();
 
     // Log específico para endpoint de sección 1
-    const endpoint = `http://184.168.30.44:8810/XcaliburWeb/rest/ServiciosXcaliburWeb/UpdateCTCxC?pcLogin=${currentUser.pcLogin}&pcSuper=${currentUser.pcSuper}&pcToken=${currentUser.pcToken}`;
+    const endpoint = `${environment.apiUrl}/UpdateCTCxC?pcLogin=${currentUser.pcLogin}&pcSuper=${currentUser.pcSuper}&pcToken=${currentUser.pcToken}`;
     console.log('ENDPOINT LOTE SECCION 1:', endpoint);
     console.log('JSON ENVIADO SECCION 1:', JSON.stringify(transactionData, null, 2));
 
+    // Mostrar loading global
+    this.loadingService.show('Guardando transacciones...');
     this.isLoading.set(true);
 
     this.companiasCxCService.updateCTCxC(
@@ -654,10 +658,12 @@ export class TransactionLoadComponent implements OnInit {
     ).subscribe({
       next: (response) => {
         this.isLoading.set(false);
+        this.loadingService.hide();
         this.handleSaveResponse(response);
       },
       error: (error) => {
         this.isLoading.set(false);
+        this.loadingService.hide();
         this.toastService.showError('Error al guardar la transacción');
       }
     });
@@ -2070,7 +2076,7 @@ export class TransactionLoadComponent implements OnInit {
     });
 
     // Construir URL manualmente para logging
-    const baseUrl = 'http://184.168.30.44:8810/XcaliburWeb/rest/ServiciosXcaliburWeb';
+    const baseUrl = environment.apiUrl;
     const fullUrl = `${baseUrl}/GetLeaveUbicacionCxC?pcCompania=${companiaValue}&pcCuentaC=${cuentaValue}&pcUbicacion=${ubicacionValue}&pcLogin=${currentUser.pcLogin || ''}&pcSuper=${currentUser.pcSuper || false}&pcToken=${currentUser.pcToken || ''}`;
 
     console.log('🌐 === URL COMPLETA DEL ENDPOINT ===');
@@ -2274,7 +2280,7 @@ export class TransactionLoadComponent implements OnInit {
     });
 
     // Construir URL manualmente para logging
-    const baseUrl = 'http://184.168.30.44:8810/XcaliburWeb/rest/ServiciosXcaliburWeb';
+    const baseUrl = environment.apiUrl;
     const fullUrl = `${baseUrl}/GetLeaveCentroCCxC?pcCompania=${companiaValue}&pcCuentaC=${cuentaValue}&pcCentro=${cCostoValue}&pcLogin=${currentUser.pcLogin || ''}&pcSuper=${currentUser.pcSuper || false}&pcToken=${currentUser.pcToken || ''}`;
 
     console.log('🌐 === URL COMPLETA DEL ENDPOINT ===');
@@ -2478,7 +2484,7 @@ export class TransactionLoadComponent implements OnInit {
     });
 
     // Construir URL manualmente para logging
-    const baseUrl = 'http://184.168.30.44:8810/XcaliburWeb/rest/ServiciosXcaliburWeb';
+    const baseUrl = environment.apiUrl;
     const fullUrl = `${baseUrl}/GetLeaveUtifonCxC?pcCompania=${companiaValue}&pcCuentaC=${cuentaValue}&pcUtifon=${uFondoValue}&pcLogin=${currentUser.pcLogin || ''}&pcSuper=${currentUser.pcSuper || false}&pcToken=${currentUser.pcToken || ''}`;
 
     console.log('🌐 === URL COMPLETA DEL ENDPOINT ===');
@@ -3745,9 +3751,12 @@ export class TransactionLoadComponent implements OnInit {
     const contabilidadData = this.mapToContabilidadJSON();
 
     // Log específico para endpoint de sección 2
-    const endpoint = `http://184.168.30.44:8810/XcaliburWeb/rest/ServiciosXcaliburWeb/UpdateContCxC?pcLogin=${currentUser.pcLogin}&pcSuper=${currentUser.pcSuper}&pcToken=${currentUser.pcToken}`;
+    const endpoint = `${environment.apiUrl}/UpdateContCxC?pcLogin=${currentUser.pcLogin}&pcSuper=${currentUser.pcSuper}&pcToken=${currentUser.pcToken}`;
     console.log('ENDPOINT LOTE SECCION 2:', endpoint);
     console.log('JSON ENVIADO SECCION 2:', JSON.stringify(contabilidadData, null, 2));
+
+    // Mostrar loading global
+    this.loadingService.show('Guardando contabilidad...');
 
     this.companiasCxCService.updateContCxC(
       contabilidadData,
@@ -3757,6 +3766,7 @@ export class TransactionLoadComponent implements OnInit {
     ).subscribe({
       next: (response) => {
         this.toastService.showSuccess('Contabilidad guardada exitosamente');
+        this.loadingService.hide();
         this.clearSection2Fields();
 
         // Simular Enter en el input lote para recargar datos de la tabla
@@ -3770,6 +3780,7 @@ export class TransactionLoadComponent implements OnInit {
       },
       error: (error) => {
         this.toastService.showError('Error al guardar la contabilidad');
+        this.loadingService.hide();
       }
     });
   }

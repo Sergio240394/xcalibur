@@ -10,6 +10,7 @@ import { CondicionesPagoService, CondicionPagoItem } from '../../../../core/serv
 import { NitsService, NitItem } from '../../../../core/services/nits.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ToastService } from '../../../../core/services/toast.service';
+import { LoadingService } from '../../../../core/services/loading.service';
 import { environment } from '../../../../../environments/environment';
 
 @Component({
@@ -64,7 +65,8 @@ export class CompanyMaintenanceComponent implements OnInit {
     private condicionesPagoService: CondicionesPagoService,
     private nitsService: NitsService,
     private authService: AuthService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private loadingService: LoadingService
   ) {
     this.companyForm = this.fb.group({
       compania: [''],
@@ -1806,10 +1808,14 @@ export class CompanyMaintenanceComponent implements OnInit {
       console.log('💾 [GUARDAR] JSON enviado:', JSON.stringify(empresaData, null, 2));
       console.log('🌐 [GUARDAR] Endpoint:', url);
 
+      // Mostrar loading global
+      this.loadingService.show('Guardando empresa...');
+
       this.http.put(url, empresaData, { headers }).subscribe({
         next: (response) => {
           console.log('✅ [GUARDAR] Respuesta exitosa:', response);
           this.toastService.showSuccess('Empresa guardada exitosamente');
+          this.loadingService.hide();
         },
         error: (error) => {
           console.error('❌ [GUARDAR] Error al guardar empresa:', error);
@@ -1820,6 +1826,7 @@ export class CompanyMaintenanceComponent implements OnInit {
             error: error.error
           });
           this.toastService.showError('Error al guardar la empresa. Por favor, intente nuevamente.');
+          this.loadingService.hide();
         }
       });
     } else {
@@ -4175,6 +4182,71 @@ export class CompanyMaintenanceComponent implements OnInit {
     this.companyForm.reset();
     // Clear all field names to remove previous record names
     this.clearAllFieldNames();
+  }
+
+  onReport(): void {
+    const currentUser = this.authService.user();
+
+    if (!currentUser) {
+      this.toastService.showError('No hay usuario autenticado');
+      return;
+    }
+
+    // Obtener el código de compañía del formulario
+    const companiaValue = this.companyForm.get('compania')?.value;
+
+    if (!companiaValue) {
+      this.toastService.showError('Por favor seleccione una compañía');
+      return;
+    }
+
+    // Mostrar loading global
+    this.loadingService.show('Generando reporte...');
+
+    // Construir parámetros para la URL
+    const params = {
+      pcCompania: companiaValue,
+      pcToken: currentUser.pcToken || ''
+    };
+
+    console.log('🔄 Generando reporte de maestros de clientes...', params);
+
+    // Llamar al endpoint GetMaestroClientesT
+    this.http.get<any>(`${environment.apiUrl}/GetMaestroClientesT`, { params })
+      .subscribe({
+        next: (response) => {
+          console.log('✅ Respuesta del reporte recibida:', response);
+          this.handleReportResponse(response);
+          this.loadingService.hide();
+        },
+        error: (error) => {
+          console.error('❌ Error al generar reporte:', error);
+          this.toastService.showError('Error al generar el reporte');
+          this.loadingService.hide();
+        }
+      });
+  }
+
+  private handleReportResponse(response: any): void {
+    try {
+      // Verificar si hay datos en la respuesta
+      if (response.dsRespuesta && response.dsRespuesta.tccempres && response.dsRespuesta.tccempres.length > 0) {
+        const empresa = response.dsRespuesta.tccempres[0];
+
+        // Verificar si hay errores/terrores en la respuesta
+        if (empresa.terrores && empresa.terrores.length > 0) {
+          const mensaje = empresa.terrores[0].descripcion || 'Reporte generado exitosamente';
+          this.toastService.showSuccess(mensaje);
+        } else {
+          this.toastService.showSuccess('Reporte generado exitosamente');
+        }
+      } else {
+        this.toastService.showSuccess('Reporte generado exitosamente');
+      }
+    } catch (error) {
+      console.error('Error al procesar respuesta del reporte:', error);
+      this.toastService.showSuccess('Reporte generado exitosamente');
+    }
   }
 
   private clearAllFieldNames(): void {

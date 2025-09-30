@@ -45,17 +45,41 @@
 
           <div class="form-field">
             <label class="field-label">
-              Archivo
+              Archivo Excel
               <span class="required-asterisk">*</span>
             </label>
-            <input type="file"
-                   (change)="onFileSelected($event)"
-                   class="modern-input"
-                   accept=".xlsx,.xls,.csv"
-                   [class.error]="comprobantesForm.get('archivo')?.invalid && comprobantesForm.get('archivo')?.touched">
+            <div class="file-upload-container"
+                 [class.error]="comprobantesForm.get('archivo')?.invalid && comprobantesForm.get('archivo')?.touched">
+              <input type="file"
+                     #fileInput
+                     (change)="onFileSelected($event)"
+                     class="file-input-hidden"
+                     accept=".xlsx,.xls">
+              <div class="file-upload-row">
+                <button type="button"
+                        (click)="fileInput.click()"
+                        class="file-upload-button">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                  </svg>
+                  Seleccionar Archivo Excel
+                </button>
+                @if (selectedFile()) {
+                  <div class="file-name-simple">
+                    {{ selectedFile()?.name }} ({{ formatFileSize(selectedFile()?.size || 0) }})
+                  </div>
+                }
+              </div>
+            </div>
             @if (comprobantesForm.get('archivo')?.invalid && comprobantesForm.get('archivo')?.touched) {
               <span class="field-error">Este campo es requerido</span>
             }
+            <div class="file-hint">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Solo se permiten archivos Excel (.xlsx, .xls)
+            </div>
           </div>
         </div>
       </div>

@@ -197,24 +197,6 @@
   margin: 0;
 }
 
-/* Responsive adjustments específicos para compañías */
-@media (max-width: 1024px) {
-  .checkbox-group {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .company-logo-section {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .company-logo-preview {
-    width: 60px;
-    height: 60px;
-  }
-}
 
 /* Loading states */
 .loading-container {
@@ -264,4 +246,27 @@
   color: #666;
   font-style: italic;
   margin-left: 4px;
+}
+
+/* Responsive adjustments específicos para compañías */
+@media (max-width: 1024px) {
+  .checkbox-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .company-logo-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .company-logo-preview {
+    width: 60px;
+    height: 60px;
+  }
+
+  .checkbox-group {
+    flex-direction: column;
+}
 }

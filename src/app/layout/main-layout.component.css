@@ -3,6 +3,7 @@
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   z-index: 1;
+  transition: width 0.4s ease;
 }
 
 /* Menu Toggle Button Styles - More Discrete */
@@ -44,16 +45,66 @@
   transform: translateX(0);
 }
 
+.content-elements-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: absolute;
+  right: 0px;
+  top: 0.25rem;
+  flex-direction: column;
+}
+
+/* Collapsed sidebar styles */
+.collapse-toggle-btn {
+  transition: all 0.2s ease-in-out;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #6c757d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.collapse-toggle-btn:hover {
+  background: #e9ecef;
+  color: #495057;
+  border-color: #dee2e6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateX(2px);
+}
+
+.collapse-toggle-btn:active {
+  transform: translateX(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Menu item adjustments for collapsed state */
+.menu2-item-level-1 {
+  transition: all 0.2s ease-in-out;
+  padding: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.menu2-item-level-1:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 0.5rem;
+}
+
+/* Ensure proper spacing for collapsed icons */
+.menu2-item-level-1 .w-8 {
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
 /* Floating Logout Button Styles - Force visibility */
 .fixed.top-4.right-4 {
   z-index: 2 !important;
   position: fixed !important;
-  top: 1rem !important;
-  right: 1rem !important;
+  top: 1rem;
+  right: 1rem;
   pointer-events: auto !important;
   visibility: visible !important;
   opacity: 1 !important;
-  display: block !important;
+  display: block;
 }
 
 .fixed.top-4.right-4 button {
@@ -61,7 +112,7 @@
   border: 1px solid #e5e7eb !important;
   border-radius: 9999px !important;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-  padding: 0.75rem !important;
+  padding: 0.75rem;
   display: flex !important;
   align-items: center !important;
   gap: 0.5rem !important;
@@ -84,8 +135,8 @@
 /* Floating Logout Button Styles - Specific Classes */
 .floating-logout-btn {
   position: fixed !important;
-  top: 1rem !important;
-  right: 1rem !important;
+  top: 1rem;
+  right: 1rem;
   z-index: 2 !important;
   pointer-events: auto !important;
   visibility: visible !important;
@@ -98,7 +149,7 @@
   border: 1px solid #e5e7eb !important;
   border-radius: 9999px !important;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-  padding: 0.75rem !important;
+  padding: 0.75rem;
   display: flex !important;
   align-items: center !important;
   gap: 0.5rem !important;
@@ -946,14 +997,14 @@
 /* Mobile Menu Toggle Button */
 .mobile-menu-toggle {
   position: fixed !important;
-  top: 1rem !important;
-  left: 1rem !important;
+  top: 1rem;
+  left: 1rem;
   z-index: 999999 !important;
   background: white !important;
   border: 1px solid #e5e7eb !important;
   border-radius: 0.5rem !important;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-  padding: 0.75rem !important;
+  padding: 0.75rem;
   transition: all 0.2s ease !important;
   display: none !important;
   pointer-events: auto !important;
@@ -975,9 +1026,8 @@
 @media (max-width: 1024px) {
   /* Sidebar behavior on mobile */
   .fixed.inset-y-0.left-0.w-96 {
-    width: 320px !important;
-    min-width: 320px !important;
-    max-width: 320px !important;
+    width: 320px;
+    max-width: 320px;
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
   }
@@ -997,24 +1047,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-    max-width: 320px;
-  }
-
-  .content-box-header {
-    padding: 1rem;
-  }
-
-  .second-menu-container {
-    padding: 0.75rem;
-  }
-
-  .menu2-item-level-1 {
-    padding: 0.5rem 0.75rem;
-  }
-}
 
 /* Main content positioning */
 main.flex-1 {
@@ -1038,16 +1070,15 @@ main.flex-1.ml-0 {
 
 /* Force sidebar to never expand beyond fixed width */
 .fixed.inset-y-0.left-0.w-96 {
-  width: 384px !important;
-  min-width: 384px !important;
-  max-width: 384px !important;
+  width: 384px;
+  max-width: 384px;
   flex-shrink: 0 !important;
   flex-grow: 0 !important;
 }
 
 /* Ensure all content inside sidebar respects the width */
 .fixed.inset-y-0.left-0.w-96 * {
-  max-width: 100% !important;
+  max-width: 100%;
   box-sizing: border-box !important;
 }
 
@@ -1065,4 +1096,54 @@ main.flex-1.ml-0 {
   bottom: 0 !important;
   height: 100vh !important;
   overflow: hidden !important;
+}
+
+@media (max-width: 768px) {
+
+  .floating-btn{
+    padding: 8px !important;
+  }
+
+  .svg-hidden{
+    display: none;
+  }
+
+  .floating-logout-btn {
+    right: 5px !important;
+    top: 5px !important;
+  }
+
+  .mobile-menu-toggle {
+    padding: 8px;
+    top: 5px;
+    left: 5px;
+  }
+
+  .row-deploy-menu{
+    display: none;
+  }
+
+  .sidebar {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .content-box-header {
+    padding: 1rem;
+  }
+
+  .second-menu-container {
+    padding: 0.75rem;
+  }
+
+  .menu2-item-level-1 {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 500px) {
+  /* When sidebar is open - desktop behavior */
+  .content-hidden {
+    display: none !important;
+  }
 }

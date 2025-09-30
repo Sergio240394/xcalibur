@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ToastService } from '../../../../core/services/toast.service';
 import { AuthService } from '../../../../core/services/auth.service';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { environment } from '../../../../../environments/environment';
 
 interface BalanceComprobacionResponse {
   response: {
@@ -29,6 +31,7 @@ export class BalanceComprobacionComponent {
   private http = inject(HttpClient);
   private toastService = inject(ToastService);
   private authService = inject(AuthService);
+  private loadingService = inject(LoadingService);
 
   constructor() {
     this.form = this.fb.group({
@@ -126,20 +129,25 @@ export class BalanceComprobacionComponent {
 
     console.log('🔄 Generando Balance de Comprobación...', params);
 
+    // Mostrar loading global
+    this.loadingService.show('Generando Balance de Comprobación...');
+
     // Llamar al endpoint
     this.http.get<BalanceComprobacionResponse>(
-      'http://184.168.30.44:8810/XcaliburWeb/rest/ServiciosXcaliburWeb/Getcg2206',
+      `${environment.apiUrl}/Getcg2206`,
       { params }
     ).subscribe({
       next: (response) => {
         console.log('✅ Respuesta recibida:', response);
         this.handleResponse(response);
         this.isLoading.set(false);
+        this.loadingService.hide();
       },
       error: (error) => {
         console.error('❌ Error al generar Balance de Comprobación:', error);
         this.toastService.showError('Error al generar el Balance de Comprobación');
         this.isLoading.set(false);
+        this.loadingService.hide();
       }
     });
   }

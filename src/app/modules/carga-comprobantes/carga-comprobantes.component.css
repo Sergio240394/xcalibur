@@ -21,3 +21,35 @@
   padding: 2rem;
   grid-column: 1 / -1;
 }
+
+/* File info styles */
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background-color: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.file-name {
+  font-weight: 500;
+  color: #0c4a6e;
+}
+
+.file-size {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.file-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 0.8rem;
+}

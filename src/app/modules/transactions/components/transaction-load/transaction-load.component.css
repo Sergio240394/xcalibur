@@ -58,6 +58,56 @@
   background-color: #e9ecef;
 }
 
+/* Lote Data Section - Table with horizontal scroll */
+.lote-data-section {
+  margin-top: 2rem;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lote-data-section .table-container {
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.lote-data-section .modern-table {
+  width: 100%;
+  min-width: 800px; /* Ensure table has minimum width for scrolling */
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.lote-data-section .modern-table th {
+  background-color: #f8fafc;
+  color: #374151;
+  font-weight: 600;
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 2px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.lote-data-section .modern-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.lote-data-section .modern-table .table-row:hover {
+  background-color: #f8f9fa;
+}
+
+.lote-data-section .no-data {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 2rem;
+}
+
 /* Contabilidad Data Section */
 .contabilidad-data-section {
   margin-top: 2rem;
@@ -78,10 +128,13 @@
 
 .contabilidad-data-section .table-container {
   overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 .contabilidad-data-section .modern-table {
   width: 100%;
+  min-width: 700px; /* Ensure table has minimum width for scrolling */
   border-collapse: collapse;
   font-size: 0.875rem;
 }
@@ -100,6 +153,7 @@
   padding: 0.75rem;
   border-bottom: 1px solid #e5e7eb;
   vertical-align: top;
+  white-space: nowrap;
 }
 
 .contabilidad-data-section .modern-table .amount-cell {
