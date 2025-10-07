@@ -1,0 +1,96 @@
+<div class="modern-form-container">
+  <!-- Header Section - Clean and Compact -->
+  <div class="form-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="form-title">Balance de Comprobación</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Form -->
+  <form [formGroup]="form" (ngSubmit)="onGenerate()" class="modern-form">
+    <div class="form-section">
+      <div class="form-grid">
+        <!-- Compañía Field -->
+        <div class="form-field">
+          <label class="field-label">
+            Compañía <span class="required">*</span>
+          </label>
+          <div class="input-with-icon">
+            <input
+              type="text"
+              formControlName="compania"
+              placeholder="Código de la compañía"
+              class="modern-input"
+              [class.error]="form.get('compania')?.invalid && form.get('compania')?.touched"
+            />
+          </div>
+          @if (form.get('compania')?.invalid && form.get('compania')?.touched) {
+            <div class="error-message">La compañía es requerida</div>
+          }
+        </div>
+
+        <!-- Fecha Proceso Field -->
+        <div class="form-field">
+          <label class="field-label">
+            Fecha Proceso <span class="required">*</span>
+          </label>
+          <div class="input-with-icon">
+            <input
+              type="date"
+              formControlName="fechaProceso"
+              class="modern-input"
+              [class.error]="form.get('fechaProceso')?.invalid && form.get('fechaProceso')?.touched"
+            />
+          </div>
+          @if (form.get('fechaProceso')?.invalid && form.get('fechaProceso')?.touched) {
+            <div class="error-message">La fecha proceso es requerida</div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="form-actions">
+      <div class="action-buttons">
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="!canGenerate()"
+        >
+          @if (isLoading()) {
+            <div class="loading-spinner"></div>
+            Consultando...
+          } @else {
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            Consultar
+          }
+        </button>
+        <button
+          type="button"
+          (click)="onClear()"
+          class="btn-secondary"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          Limpiar
+        </button>
+        <button
+          type="button"
+          (click)="onReport()"
+          class="btn-primary"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          Reporte por Pantalla
+        </button>
+      </div>
+    </div>
+  </form>
+
+</div>

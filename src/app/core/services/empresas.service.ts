@@ -108,7 +108,7 @@ export class EmpresasService {
    * @param pcToken Token de autenticación
    * @returns Observable con la lista de empresas
    */
-  getEmpresas(pcCompania: string, pcLogin: string, pcSuper: boolean, pcToken: string): Observable<EmpresaItem[]> {
+  getEmpresas(pcCompania: string, pcLogin: string, pcSuper: string, pcToken: string): Observable<EmpresaItem[]> {
     const apiUrl = `${this.baseUrl}/GetCEEmpresa?pcCompania=${pcCompania}&pcLogin=${pcLogin}&pcSuper=${pcSuper}`;
 
     console.log('🔍 Fetching empresas from API:', {

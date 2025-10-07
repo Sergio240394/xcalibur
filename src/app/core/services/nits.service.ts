@@ -45,7 +45,7 @@ export class NitsService {
    * @param pcToken Token de autenticación
    * @returns Observable con la lista de NITs
    */
-  getNits(pcCompania: string, pcLogin: string, pcSuper: boolean, pcToken: string): Observable<NitItem[]> {
+  getNits(pcCompania: string, pcLogin: string, pcSuper: string, pcToken: string): Observable<NitItem[]> {
     const apiUrl = `${this.baseUrl}/GetCEGenit?pcCompania=${pcCompania}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
 
     console.log('🔍 Fetching NITs from API:', {

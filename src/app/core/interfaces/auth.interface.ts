@@ -10,7 +10,7 @@ export interface User {
   role: string;
   pcToken?: string;
   pcLogin?: string;
-  pcSuper?: boolean;
+  pcSuper?: string;
 }
 
 export interface MenuItem {

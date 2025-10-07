@@ -67,7 +67,7 @@ export class CuentasService {
     pcCompania: string,
     pcCuentaC: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<CuentaResponse> {
     const apiUrl = `${this.baseUrl}/GetLeaveCuentaCCxC?pcCompania=${pcCompania}&pcCuentaC=${pcCuentaC}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
@@ -93,7 +93,7 @@ export class CuentasService {
   getCuentasList(
     pcCompania: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<CuentaResponse> {
     const apiUrl = `${this.baseUrl}/GetCECuentaCCxC?pcCompania=${pcCompania}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;

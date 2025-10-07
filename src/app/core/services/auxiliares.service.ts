@@ -47,7 +47,7 @@ export class AuxiliaresService {
     pcCuentaC: string,
     pcAuxiliar: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<AuxiliarResponse> {
     const apiUrl = `${this.baseUrl}/GetLeaveAuxiliarCxC?pcCompania=${pcCompania}&pcCuentaC=${pcCuentaC}&pcAuxiliar=${pcAuxiliar}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
@@ -74,7 +74,7 @@ export class AuxiliaresService {
     pcCompania: string,
     pcCuentaC: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<AuxiliarResponse> {
     const apiUrl = `${this.baseUrl}/GetCEAuxiliarCxC?pcCompania=${pcCompania}&pcCuentaC=${pcCuentaC}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;

@@ -47,7 +47,7 @@ export class FondosService {
     pcCuentaC: string,
     pcUtifon: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<FondoResponse> {
     const apiUrl = `${this.baseUrl}/GetLeaveUtifonCxC?pcCompania=${pcCompania}&pcCuentaC=${pcCuentaC}&pcUtifon=${pcUtifon}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
@@ -73,7 +73,7 @@ export class FondosService {
   getFondosList(
     pcCompania: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<FondoResponse> {
     const apiUrl = `${this.baseUrl}/GetCEUtifondoCxC?pcCompania=${pcCompania}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;

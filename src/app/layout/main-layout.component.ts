@@ -7,7 +7,6 @@ import { ToastService } from '../core/services/toast.service';
 import { SvgIconComponent } from '../shared/components/svg-icon/svg-icon.component';
 import { SecondaryMenuComponent } from '../shared/components/secondary-menu/secondary-menu.component';
 import { ToastComponent } from '../shared/components/toast/toast.component';
-import { GlobalLoadingComponent } from '../shared/components/global-loading/global-loading.component';
 import { MenuLevel1, MenuLevel2, MenuLevel3 } from '../core/interfaces/menu.interface';
 import { filter } from 'rxjs/operators';
 
@@ -26,8 +25,7 @@ interface MenuItem {
     RouterModule,
     SvgIconComponent,
     SecondaryMenuComponent,
-    ToastComponent,
-    GlobalLoadingComponent
+    ToastComponent
   ],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.css'],

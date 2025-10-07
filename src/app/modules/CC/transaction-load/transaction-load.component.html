@@ -1,0 +1,885 @@
+<div class="modern-form-container">
+  <!-- Header Section -->
+  <div class="form-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="form-title">Carga de Transacciones</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Navigation -->
+  <div class="section-navigation">
+    <button type="button" (click)="previousSection()" [disabled]="currentSection() === 1" class="nav-button prev-button">
+      <app-icon type="arrow-left"></app-icon>
+      <span class="button-text">Anterior</span>
+    </button>
+
+    <div class="section-indicator">
+      <span class="current-section">{{ currentSection() }} de 2</span>
+      <div class="section-title">{{ getCurrentSectionTitle() }}</div>
+    </div>
+
+    <button type="button" (click)="nextSection()" [disabled]="currentSection() === 2" class="nav-button next-button">
+      <span class="button-text">Siguiente</span>
+      <app-icon type="arrow-right"></app-icon>
+    </button>
+  </div>
+
+  <!-- Main Form -->
+  <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" (keydown)="onFormKeyDown($event)" class="modern-form">
+
+    <!-- Always Visible Fields -->
+    <div class="form-section always-visible">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">
+            Compañía
+            @if (companiaDescription()) {
+              <span class="compania-name-display">({{ companiaDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="compania" placeholder="Código de la compañía" class="modern-input"
+                   [class.error]="transactionForm.get('compania')?.invalid && transactionForm.get('compania')?.touched"
+                   (keydown.enter)="onCompaniaKeyDown($event)"
+                   (blur)="onCompaniaBlur()">
+            <button type="button" (click)="openPopup('compania')" class="search-button" title="Buscar compañía">
+              <app-icon type="lupa"></app-icon>
+            </button>
+          </div>
+          @if (transactionForm.get('compania')?.invalid && transactionForm.get('compania')?.touched) {
+            <span class="field-error">Este campo es requerido</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Fecha periodo</label>
+          <div class="input-with-loading">
+            <input type="date" formControlName="fechaPer" class="modern-input"
+                   [class.error]="transactionForm.get('fechaPer')?.invalid && transactionForm.get('fechaPer')?.touched"
+                   (keydown.enter)="onFecPerKeyDown($event)"
+                   (blur)="onFecPerBlur()"
+                   (change)="onFecPerChange()">
+          </div>
+          @if (transactionForm.get('fechaPer')?.invalid && transactionForm.get('fechaPer')?.touched) {
+            <span class="field-error">Este campo es requerido</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Lote</label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="lote" placeholder="Número de lote" class="modern-input"
+                   (keydown.enter)="onLoteKeyDown($event)"
+                   (blur)="onLoteBlur()">
+          </div>
+        </div>
+
+        <div class="content-debito-credito">
+          <div class="form-field">
+            <label class="field-label">T. Debe</label>
+            <div class="total-display">{{ totalDebe() | number:'1.0-0' }}</div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">T. Haber</label>
+            <div class="total-display">{{ totalHaber() | number:'1.0-0' }}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 1: Información General de la Transacción -->
+    @if (currentSection() === 1) {
+    <app-collapsible-section>
+      <div class="form-section active-section">
+      <div class="form-grid colums-4">
+        <div class="form-field">
+          <label class="field-label">
+            Empresa
+            @if (empresaDescription()) {
+              <span class="empresa-name-display">({{ empresaDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="empresa" placeholder="Código de la empresa" class="modern-input"
+                   [class.error]="transactionForm.get('empresa')?.invalid && transactionForm.get('empresa')?.touched"
+                   (keydown.enter)="onEmpresaKeyDown($event)"
+                   (blur)="onEmpresaBlur()">
+            <button type="button" (click)="openPopup('empresa')" class="search-button" title="Buscar empresa">
+              <app-icon type="lupa"></app-icon>
+            </button>
+          </div>
+          @if (transactionForm.get('empresa')?.invalid && transactionForm.get('empresa')?.touched) {
+            <span class="field-error">Este campo es requerido</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Documento
+            @if (documentoDescription()) {
+              <span class="documento-name-display">({{ documentoDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="documento" placeholder="Número de documento" class="modern-input"
+                   [class.error]="transactionForm.get('documento')?.invalid && transactionForm.get('documento')?.touched">
+            <button type="button" (click)="openPopup('documento')" class="search-button" title="Buscar documento">
+              <app-icon type="lupa"></app-icon>
+            </button>
+          </div>
+          @if (transactionForm.get('documento')?.invalid && transactionForm.get('documento')?.touched) {
+            <span class="field-error">Este campo es requerido</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Tipo Documento
+            @if (tipoDocDescription()) {
+              <span class="tipo-doc-name-display">({{ tipoDocDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="tipoDoc" placeholder="Tipo de documento" class="modern-input"
+                   [class.error]="transactionForm.get('tipoDoc')?.invalid && transactionForm.get('tipoDoc')?.touched"
+                   (keydown.enter)="onTipoDocKeyDown($event)"
+                   (blur)="onTipoDocBlur()">
+            <button type="button" (click)="openPopup('tipoDoc')" class="search-button" title="Buscar tipo de documento">
+              <app-icon type="lupa"></app-icon>
+            </button>
+          </div>
+          @if (transactionForm.get('tipoDoc')?.invalid && transactionForm.get('tipoDoc')?.touched) {
+            <span class="field-error">Este campo es requerido</span>
+          }
+        </div>
+
+
+
+        <div class="form-field">
+          <label class="field-label">
+            Vendedor
+            @if (vendedorDescription()) {
+              <span class="vendedor-name-display">({{ vendedorDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="vendedor" placeholder="Código del vendedor" class="modern-input">
+            <button type="button" (click)="openPopup('vendedor')" class="search-button" title="Buscar vendedor">
+              <app-icon type="lupa"></app-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Comentario</label>
+          <input type="text" formControlName="comentario" placeholder="Comentarios adicionales..." class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Referencia</label>
+          <input type="text" formControlName="referencia" placeholder="Referencia del documento" class="modern-input">
+        </div>
+
+
+
+        <div class="form-field">
+          <label class="field-label">
+            Aplica Documento
+            @if (aplicDocDescription()) {
+              <span class="aplic-doc-name-display">({{ aplicDocDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="aplicDoc" placeholder="Aplicación de documento" class="modern-input"
+                   (keydown.enter)="onAplicaDocKeyDown($event)"
+                   (blur)="onAplicaDocBlur()">
+          </div>
+        </div>
+
+
+
+        <div class="form-field">
+          <label class="field-label">
+            Moneda
+            @if (monedaDescription()) {
+              <span class="moneda-name-display">({{ monedaDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="moneda" placeholder="Código de moneda" class="modern-input">
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="form-grid colums-6">
+        <div class="form-field">
+          <label class="field-label">Emisión</label>
+          <div class="input-with-loading">
+            <input type="date" formControlName="emision" class="modern-input"
+                   (keydown.enter)="onFechaEmisionKeyDown($event)"
+                   (blur)="onFechaEmisionBlur()"
+                   (change)="onFechaEmisionChange()">
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="field-label">Vencimiento</label>
+          <div class="input-with-loading">
+            <input type="date" formControlName="vencimiento" class="modern-input"
+                   (keydown.enter)="onFechaVencimientoKeyDown($event)"
+                   (blur)="onFechaVencimientoBlur()"
+                   (change)="onFechaVencimientoChange()">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Monto</label>
+          <div class="input-with-loading">
+            <input type="number" formControlName="monto" placeholder="0.00" class="modern-input" step="0.01"
+                   (keydown.enter)="onMontoKeyDown($event)"
+                   (blur)="onMontoBlur()">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Impuesto</label>
+          <input type="number" formControlName="impuesto" placeholder="0.00" class="modern-input" step="0.01">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Monto Extranjero</label>
+          <input type="number" formControlName="mtoExtran" placeholder="0.00" class="modern-input" step="0.01">
+        </div>
+        <div class="form-field">
+          <label class="field-label">Base Impuesto</label>
+          <input type="number" formControlName="baseImp" placeholder="0.00" class="modern-input" step="0.01">
+        </div>
+      </div>
+
+    </div>
+    </app-collapsible-section>
+
+    <!-- Lote Data Table - Only in Section 1, Outside Blue Container -->
+    <div class="lote-data-section">
+      <div class="table-container">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Documento</th>
+              <th>Tipo Documento</th>
+              <th>Monto</th>
+              <th>Monto Extranjero</th>
+              <th>Emisión</th>
+              <th>Vencimiento</th>
+              <th>Impuesto</th>
+              <th>Base Imp</th>
+              <th>Aplica Doc</th>
+              <th>Vendedor</th>
+              <th>Referencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (loteData().length > 0) {
+              @for (item of loteData(); track $index; let i = $index) {
+                <tr class="table-row clickable-row" (click)="loadLoteItemToForm(item)">
+                  <td>{{ item['nombre-cia'] }}</td>
+                  <td>{{ item['numdoc-his'] }}</td>
+                  <td>{{ item['nombre-tdoc'] }}</td>
+                  <td>{{ item['monto-his'] | number:'1.0-0' }}</td>
+                  <td>{{ item['monext-his'] | number:'1.0-0' }}</td>
+                  <td>{{ item['fecmov-his'] | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item['fecven-his'] | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ item['desiva-his'] | number:'1.0-0' }}</td>
+                  <td>{{ item['basiva-his'] | number:'1.0-0' }}</td>
+                  <td>{{ item['apldoc-his'] }}</td>
+                  <td>{{ item['vendedor'] }}</td>
+                  <td>{{ item['refere-his'] }}</td>
+                </tr>
+              }
+            } @else {
+              <tr>
+                <td colspan="12" class="no-data">No hay datos de lote cargados</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    }
+
+    <!-- Section 2: Detalle de Líneas de Transacción -->
+    @if (currentSection() === 2) {
+    <app-collapsible-section>
+    <div class="form-section active-section">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">
+            Cuenta
+            @if (cuentaDescription()) {
+              <span class="cuenta-name-display">({{ cuentaDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="cuenta" placeholder="Código de cuenta" class="modern-input"
+                   [class.error]="transactionForm.get('cuenta')?.invalid && transactionForm.get('cuenta')?.touched"
+                   (keydown.enter)="onCuentaKeyDown($event)"
+                   (blur)="onCuentaBlur()">
+            <button type="button" (click)="openPopup('cuenta')" class="search-button" title="Buscar cuenta">
+              <app-icon type="lupa"></app-icon>
+            </button>
+          </div>
+          @if (transactionForm.get('cuenta')?.invalid && transactionForm.get('cuenta')?.touched) {
+            <span class="field-error">Este campo es requerido</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Referencia</label>
+          <input type="text" formControlName="referencia" placeholder="Referencia" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Descripción</label>
+          <input type="text" formControlName="descripcion" placeholder="Descripción de la línea" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Debe-Haber</label>
+          <select formControlName="debeHaber" class="modern-select">
+            <option value="1">Debe</option>
+            <option value="2">Haber</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Monto</label>
+          <input type="number" formControlName="montoLinea" placeholder="0.00" class="modern-input" step="0.01">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Monto Otra</label>
+          <input type="number" formControlName="montoOtra" placeholder="0.00" class="modern-input" step="0.01">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Cantidad</label>
+          <input type="number" formControlName="cantidad" placeholder="0.000" class="modern-input" step="0.001">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Auxiliar
+            @if (auxiliarDescription()) {
+              <span class="auxiliar-name-display">({{ auxiliarDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="auxiliar" placeholder="Código auxiliar" class="modern-input"
+                   [class.error]="transactionForm.get('auxiliar')?.invalid && transactionForm.get('auxiliar')?.touched"
+                   (keydown.enter)="onAuxiliarKeyDown($event)"
+                   (blur)="onAuxiliarBlur()">
+            <button type="button" (click)="openPopup('auxiliar')" class="search-button" title="Buscar auxiliar">
+              <app-icon type="lupa"></app-icon>
+            </button>
+          </div>
+          @if (transactionForm.get('auxiliar')?.invalid && transactionForm.get('auxiliar')?.touched) {
+            <span class="field-error">Este campo es requerido</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Ubicación
+            @if (ubicacionDescription()) {
+              <span class="ubicacion-name-display">({{ ubicacionDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="ubicacion" placeholder="Código de ubicación" class="modern-input"
+                   [class.error]="transactionForm.get('ubicacion')?.invalid && transactionForm.get('ubicacion')?.touched"
+                   (keydown.enter)="onUbicacionKeyDown($event)"
+                   (blur)="onUbicacionBlur()">
+            <button type="button" (click)="openPopup('ubicacion')" class="search-button" title="Buscar ubicación">
+              <app-icon type="lupa"></app-icon>
+            </button>
+          </div>
+          @if (transactionForm.get('ubicacion')?.invalid && transactionForm.get('ubicacion')?.touched) {
+            <span class="field-error">Este campo es requerido</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Centro Costo
+            @if (cCostoDescription()) {
+              <span class="c-costo-name-display">({{ cCostoDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="cCosto" placeholder="Centro de costo" class="modern-input"
+                   [class.error]="transactionForm.get('cCosto')?.invalid && transactionForm.get('cCosto')?.touched"
+                   (keydown.enter)="onCCostoKeyDown($event)"
+                   (blur)="onCCostoBlur()">
+            <button type="button" (click)="openPopup('cCosto')" class="search-button" title="Buscar centro de costo">
+              <app-icon type="lupa"></app-icon>
+            </button>
+          </div>
+          @if (transactionForm.get('cCosto')?.invalid && transactionForm.get('cCosto')?.touched) {
+            <span class="field-error">Este campo es requerido</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">
+            Unidad Fondo
+            @if (uFondoDescription()) {
+              <span class="u-fondo-name-display">({{ uFondoDescription() }})</span>
+            }
+          </label>
+          <div class="input-with-icon">
+            <input type="text" formControlName="uFondo" placeholder="Unidad de fondo" class="modern-input"
+                   [class.error]="transactionForm.get('uFondo')?.invalid && transactionForm.get('uFondo')?.touched"
+                   (keydown.enter)="onUFondoKeyDown($event)"
+                   (blur)="onUFondoBlur()">
+            <button type="button" (click)="openPopup('uFondo')" class="search-button" title="Buscar unidad de fondo">
+              <app-icon type="lupa"></app-icon>
+            </button>
+          </div>
+          @if (transactionForm.get('uFondo')?.invalid && transactionForm.get('uFondo')?.touched) {
+            <span class="field-error">Este campo es requerido</span>
+          }
+        </div>
+
+        <!-- Totals Display -->
+        <div class="totals-display">
+          <div class="total-box">
+            <span class="total-label">D:</span>
+            <span class="total-value">{{ totalDebe() | number:'1.0-0' }}</span>
+          </div>
+          <div class="total-box">
+            <span class="total-label">H:</span>
+            <span class="total-value">{{ totalHaber() | number:'1.0-0' }}</span>
+          </div>
+          <div class="total-box">
+            <span class="total-label">C:</span>
+            <span class="total-value">{{ (totalDebe() - totalHaber()) | number:'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    </app-collapsible-section>
+
+    <!-- Contabilidad Data Table - Only in Section 2, Outside Blue Container -->
+    <div class="lote-data-section">
+      <div class="table-container">
+        @if (isLoadingContabilidad()) {
+          <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Cargando datos de contabilidad...</div>
+          </div>
+        } @else {
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Cuenta</th>
+              <th>Referencia</th>
+              <th>Debe</th>
+              <th>Haber</th>
+              <th>Monto Extran</th>
+              <th>Descripción</th>
+              <th>Auxiliar</th>
+              <th>Ubicación</th>
+              <th>C. Costo</th>
+              <th>U. Fondo</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of contabilidadData(); track $index; let i = $index) {
+              <tr class="table-row clickable-row" (click)="selectContabilidadItem(item)">
+                <td>{{ item.cuenta }}</td>
+                <td>{{ item['refere-com'] }}</td>
+                <td class="amount-cell">{{ item['debe-com'] | number:'1.2-2' }}</td>
+                <td class="amount-cell">{{ item['haber-com'] | number:'1.2-2' }}</td>
+                <td class="amount-cell">{{ item['monext-com'] | number:'1.2-2' }}</td>
+                <td>{{ item['descri-com'] }}</td>
+                <td>{{ item.auxiliar }}</td>
+                <td>{{ item.ubicacion }}</td>
+                <td>{{ item.centro }}</td>
+                <td>{{ item.utilfon }}</td>
+              </tr>
+            }
+            @if (contabilidadData().length === 0 && !isLoadingContabilidad()) {
+              <tr>
+                <td colspan="10" class="no-data-message">
+                  No hay datos de contabilidad para este lote
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        }
+      </div>
+    </div>
+    }
+
+    <!-- Action Buttons - Always Visible -->
+    <div class="form-actions">
+      <div class="action-buttons">
+        <!-- Botones para Sección 1 -->
+        @if (currentSection() === 1) {
+          <button type="button" (click)="saveSection1()" class="btn-primary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            Guardar Transacción
+          </button>
+          <button type="button" (click)="deleteSection1()" class="btn-danger">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            Eliminar
+          </button>
+          <button type="button" (click)="printSection1()" class="btn-secondary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+            </svg>
+            Imprimir
+          </button>
+          <button type="button" (click)="clearSection1()" class="btn-secondary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Limpiar
+          </button>
+        }
+
+        <!-- Botones para Sección 2 -->
+        @if (currentSection() === 2) {
+          <button type="button" (click)="saveSection2()" class="btn-primary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            Guardar Contabilidad
+          </button>
+          <button type="button" (click)="deleteSection2()" class="btn-danger">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            Eliminar
+          </button>
+          <button type="button" (click)="printSection2()" class="btn-secondary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+            </svg>
+            Imprimir
+          </button>
+          <button type="button" (click)="clearSection2()" class="btn-secondary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Limpiar
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  <!-- Modern Popup Modal -->
+  @if (showPopup()) {
+    <div class="modern-popup-overlay">
+      <div class="modern-popup-modal">
+        <!-- Popup Header -->
+        <div class="popup-header">
+          <div class="popup-title-section">
+            <div class="popup-icon">
+              <app-icon type="lupa-large"></app-icon>
+            </div>
+            <h3 class="popup-title">{{ popupTitle() }}</h3>
+          </div>
+          <button (click)="closePopup()" class="popup-close-btn">
+            <app-icon type="close"></app-icon>
+          </button>
+        </div>
+
+        <!-- Search Section -->
+        <div class="popup-search-section">
+          <div class="search-controls">
+            <div class="search-input-container">
+              <input type="text" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" (keydown.enter)="onSearch()" placeholder="Buscar en todos los campos..." class="search-input">
+              <button class="search-btn" (click)="onSearch()" title="Buscar">
+                <app-icon type="lupa"></app-icon>
+              </button>
+              @if (searchTerm()) {
+                <button class="clear-btn" (click)="onSearchClear()" title="Limpiar búsqueda">
+                  <app-icon type="close"></app-icon>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Grid -->
+        <div class="popup-grid-container">
+          <div class="grid-header">
+            <div class="grid-cell header-cell">Código</div>
+            <div class="grid-cell header-cell">
+              {{ currentPopupType() === 'compania' ? 'Nombre Compañía' : currentPopupType() === 'empresa' ? 'Nombre Empresa' : currentPopupType() === 'tipoDoc' ? 'Nombre Tipo Doc' : currentPopupType() === 'documento' ? 'Fecha Emisión' : currentPopupType() === 'cuenta' ? 'Nombre Cuenta' : currentPopupType() === 'auxiliar' ? 'Nombre Auxiliar' : currentPopupType() === 'ubicacion' ? 'Nombre Ubicación' : currentPopupType() === 'cCosto' ? 'Nombre Centro' : currentPopupType() === 'uFondo' ? 'Nombre Fondo' : 'Descripción' }}
+            </div>
+            @if (currentPopupType() !== 'cCosto') {
+              <div class="grid-cell header-cell">
+                {{ currentPopupType() === 'compania' ? 'Responsable' : currentPopupType() === 'empresa' ? 'NIT' : currentPopupType() === 'tipoDoc' ? 'Siglas' : currentPopupType() === 'documento' ? 'Fecha Vencimiento' : currentPopupType() === 'cuenta' ? 'Clase' : currentPopupType() === 'auxiliar' ? 'NIT' : currentPopupType() === 'ubicacion' ? 'Zona' : currentPopupType() === 'uFondo' ? 'CIA' : 'Código' }}
+              </div>
+              <div class="grid-cell header-cell">
+                {{ currentPopupType() === 'compania' ? 'NIT' : currentPopupType() === 'empresa' ? 'Teléfono' : currentPopupType() === 'tipoDoc' ? 'Clase' : currentPopupType() === 'documento' ? 'Monto' : currentPopupType() === 'cuenta' ? 'Tipo' : currentPopupType() === 'auxiliar' ? 'Descripción' : currentPopupType() === 'ubicacion' ? 'Descripción' : currentPopupType() === 'uFondo' ? 'Tipo' : 'Tipo' }}
+              </div>
+            }
+          </div>
+
+          <div class="grid-body">
+            @if (currentPopupType() === 'compania') {
+              @if (isLoadingCompanias()) {
+                <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-text">Cargando compañías...</div>
+                </div>
+              } @else {
+                @for (item of filteredCompaniasCxC(); track item.cia; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    <div class="grid-cell">{{ item.cia }}</div>
+                    <div class="grid-cell">{{ item['nombre-cia'] }}</div>
+                    <div class="grid-cell">{{ item['nomrep-cia'] || '-' }}</div>
+                    <div class="grid-cell">{{ item.nit }}</div>
+                  </div>
+                }
+                @if (filteredCompaniasCxC().length === 0 && !isLoadingCompanias()) {
+                  <div class="no-data-message">
+                    No se encontraron registros
+                  </div>
+                }
+              }
+            } @else if (currentPopupType() === 'empresa') {
+              @if (isLoadingEmpresas()) {
+                <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-text">Cargando empresas...</div>
+                </div>
+              } @else {
+                @for (item of filteredEmpresasCxC(); track item.empresa; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    <div class="grid-cell">{{ item.empresa }}</div>
+                    <div class="grid-cell">{{ item['nombre-emp'] }}</div>
+                    <div class="grid-cell">{{ item.nit }}</div>
+                    <div class="grid-cell">{{ item['telefo-emp'] || '-' }}</div>
+                  </div>
+                }
+                @if (filteredEmpresasCxC().length === 0 && !isLoadingEmpresas()) {
+                  <div class="no-data-message">
+                    No se encontraron registros
+                  </div>
+                }
+              }
+            } @else if (currentPopupType() === 'tipoDoc') {
+              @if (isLoadingTiposDoc()) {
+                <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-text">Cargando tipos de documento...</div>
+                </div>
+              } @else {
+                @for (item of filteredTiposDocCxC(); track item.tipodoc; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    <div class="grid-cell">{{ item.tipodoc }}</div>
+                    <div class="grid-cell">{{ item['nombre-tdoc'] }}</div>
+                    <div class="grid-cell">{{ item['siglas-tdoc'] }}</div>
+                    <div class="grid-cell">{{ item['clase-tdoc'] }}</div>
+                  </div>
+                }
+                @if (filteredTiposDocCxC().length === 0 && !isLoadingTiposDoc()) {
+                  <div class="no-data-message">
+                    No se encontraron registros
+                  </div>
+                }
+              }
+            } @else if (currentPopupType() === 'documento') {
+              @if (isLoadingDocumentos()) {
+                <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-text">Cargando documentos...</div>
+                </div>
+              } @else {
+                @for (item of filteredDocumentosCxC(); track item['num-doc']; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    <div class="grid-cell">{{ item['num-doc'] }}</div>
+                    <div class="grid-cell">{{ item['fecemi-doc'] }}</div>
+                    <div class="grid-cell">{{ item['fecven-doc'] }}</div>
+                    <div class="grid-cell">{{ item['monori-doc'] | number:'1.0-0' }}</div>
+                  </div>
+                }
+                @if (filteredDocumentosCxC().length === 0 && !isLoadingDocumentos()) {
+                  <div class="no-data-message">
+                    No se encontraron registros
+                  </div>
+                }
+              }
+            } @else if (currentPopupType() === 'cuenta') {
+              @if (isLoadingCuentas()) {
+                <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-text">Cargando cuentas...</div>
+                </div>
+              } @else {
+                @for (item of cuentasData(); track item.cuenta; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    <div class="grid-cell">{{ item.cuenta }}</div>
+                    <div class="grid-cell">{{ item['nombre-cta'] }}</div>
+                    <div class="grid-cell">{{ item['clase-cta'] || '-' }}</div>
+                    <div class="grid-cell">{{ item['tipo-cta'] || '-' }}</div>
+                  </div>
+                }
+                @if (cuentasData().length === 0 && !isLoadingCuentas()) {
+                  <div class="no-data-message">
+                    No se encontraron cuentas
+                  </div>
+                }
+              }
+            } @else if (currentPopupType() === 'auxiliar') {
+              @if (isLoadingAuxiliares()) {
+                <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-text">Cargando auxiliares...</div>
+                </div>
+              } @else {
+                @for (item of auxiliaresData(); track item.auxiliar; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    <div class="grid-cell">{{ item.auxiliar }}</div>
+                    <div class="grid-cell">{{ item['nombre-aux'] }}</div>
+                    <div class="grid-cell">{{ item.nit || '-' }}</div>
+                    <div class="grid-cell">{{ item['text-aux'] || '-' }}</div>
+                  </div>
+                }
+                @if (auxiliaresData().length === 0 && !isLoadingAuxiliares()) {
+                  <div class="no-data-message">
+                    No se encontraron auxiliares
+                  </div>
+                }
+              }
+            } @else if (currentPopupType() === 'ubicacion') {
+              @if (isLoadingUbicaciones()) {
+                <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-text">Cargando ubicaciones...</div>
+                </div>
+              } @else {
+                @for (item of ubicacionesData(); track item.ubicacion; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    <div class="grid-cell">{{ item.ubicacion }}</div>
+                    <div class="grid-cell">{{ item['nombre-ubic'] }}</div>
+                    <div class="grid-cell">{{ item.zona || '-' }}</div>
+                    <div class="grid-cell">{{ item['text-ubic'] || '-' }}</div>
+                  </div>
+                }
+                @if (ubicacionesData().length === 0 && !isLoadingUbicaciones()) {
+                  <div class="no-data-message">
+                    No se encontraron ubicaciones
+                  </div>
+                }
+              }
+            } @else if (currentPopupType() === 'cCosto') {
+              @if (isLoadingCentrosCosto()) {
+                <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-text">Cargando centros de costo...</div>
+                </div>
+              } @else {
+                @for (item of centrosCostoData(); track item.centro; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    <div class="grid-cell">{{ item.centro }}</div>
+                    <div class="grid-cell">{{ item['nombre-cen'] }}</div>
+                  </div>
+                }
+                @if (centrosCostoData().length === 0 && !isLoadingCentrosCosto()) {
+                  <div class="no-data-message">
+                    No se encontraron centros de costo
+                  </div>
+                }
+              }
+            } @else if (currentPopupType() === 'uFondo') {
+              @if (isLoadingFondos()) {
+                <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-text">Cargando fondos...</div>
+                </div>
+              } @else {
+                @for (item of fondosData(); track item.utilfon; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    <div class="grid-cell">{{ item.utilfon }}</div>
+                    <div class="grid-cell">{{ item['nombre-ufon'] }}</div>
+                    <div class="grid-cell">{{ item.cia || '-' }}</div>
+                    <div class="grid-cell">{{ item['tipo-ufon'] || '-' }}</div>
+                  </div>
+                }
+                @if (fondosData().length === 0 && !isLoadingFondos()) {
+                  <div class="no-data-message">
+                    No se encontraron fondos
+                  </div>
+                }
+              }
+            } @else {
+              @if (isLoading()) {
+                <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <div class="loading-text">Cargando {{ popupTitle().toLowerCase() }}...</div>
+                </div>
+              } @else {
+                @for (item of filteredItems(); track $index; let i = $index) {
+                  <div class="grid-row" (click)="selectItem(item)">
+                    @if ('cia' in item && 'nombre-cia' in item) {
+                      <!-- CompaniaCxC -->
+                      <div class="grid-cell">{{ item.cia }}</div>
+                      <div class="grid-cell">{{ item['nombre-cia'] }}</div>
+                      <div class="grid-cell">{{ item['nomrep-cia'] || '-' }}</div>
+                      <div class="grid-cell">{{ item.nit }}</div>
+                    } @else if ('empresa' in item && 'nombre-emp' in item) {
+                      <!-- EmpresaCxC -->
+                      <div class="grid-cell">{{ item.empresa }}</div>
+                      <div class="grid-cell">{{ item['nombre-emp'] }}</div>
+                      <div class="grid-cell">{{ item.nit }}</div>
+                      <div class="grid-cell">{{ item['telefo-emp'] || '-' }}</div>
+                    } @else {
+                      <!-- SearchItem -->
+                      <div class="grid-cell">{{ item.codigo }}</div>
+                      <div class="grid-cell">{{ item.descripcion }}</div>
+                      <div class="grid-cell">{{ item.codigo }}</div>
+                      <div class="grid-cell">{{ '-' }}</div>
+                    }
+                  </div>
+                }
+                @if (filteredItems().length === 0 && !isLoading()) {
+                  <div class="no-data-message">
+                    No se encontraron registros
+                  </div>
+                }
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Popup Footer -->
+        <div class="popup-footer">
+          <button (click)="closePopup()" class="btn-secondary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

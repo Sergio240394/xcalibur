@@ -50,7 +50,7 @@ export class CondicionesPagoService {
    * @param pcToken Token de autenticación
    * @returns Observable con la lista de condiciones de pago
    */
-  getCondicionesPago(pcCompania: string, pcLogin: string, pcSuper: boolean, pcToken: string): Observable<CondicionPagoItem[]> {
+  getCondicionesPago(pcCompania: string, pcLogin: string, pcSuper: string, pcToken: string): Observable<CondicionPagoItem[]> {
     const url = `${this.baseUrl}/GetCECondPago`;
 
     // Construir parámetros de la URL

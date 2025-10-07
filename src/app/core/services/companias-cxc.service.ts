@@ -701,7 +701,7 @@ export class CompaniasCxCService {
    * @param pcSuper Valor de super-clav del usuario actual
    * @returns Observable con la respuesta del servidor
    */
-  updateCTCxC(transactionData: any, pcLogin: string, pcToken: string, pcSuper: boolean): Observable<any> {
+  updateCTCxC(transactionData: any, pcLogin: string, pcToken: string, pcSuper: string): Observable<any> {
     const apiUrl = `${this.baseUrl}/UpdateCTCxC?pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
 
     console.log('🌐 === ENVIANDO PETICIÓN AL API UpdateCTCxC ===');
@@ -744,7 +744,7 @@ export class CompaniasCxCService {
    * @param pcSuper Valor de super-clav del usuario actual
    * @returns Observable con la respuesta del servidor
    */
-  updateContCxC(transactionData: any, pcLogin: string, pcToken: string, pcSuper: boolean): Observable<any> {
+  updateContCxC(transactionData: any, pcLogin: string, pcToken: string, pcSuper: string): Observable<any> {
     const apiUrl = `${this.baseUrl}/UpdateContCxC?pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
 
     console.log('🌐 === ENVIANDO PETICIÓN AL API UpdateContCxC ===');
@@ -794,7 +794,7 @@ export class CompaniasCxCService {
     pcFechaPer: string,
     pcLote: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<any> {
     const apiUrl = `${this.baseUrl}/GetLeaveLoteCxCCont?pcCompania=${pcCompania}&pcFechaPer=${pcFechaPer}&pcLote=${pcLote}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;

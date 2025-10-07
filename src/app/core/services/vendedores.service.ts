@@ -61,7 +61,7 @@ export class VendedoresService {
    * @param pcToken Token de autenticación
    * @returns Observable con la lista de vendedores
    */
-  getVendedores(pcCompania: string, pcLogin: string, pcSuper: boolean, pcToken: string): Observable<VendedorItem[]> {
+  getVendedores(pcCompania: string, pcLogin: string, pcSuper: string, pcToken: string): Observable<VendedorItem[]> {
     const url = `${this.baseUrl}/GetCEVendedor`;
 
     // Construir parámetros de la URL

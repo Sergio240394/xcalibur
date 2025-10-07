@@ -47,7 +47,7 @@ export class UbicacionesService {
     pcCuentaC: string,
     pcUbicacion: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<UbicacionResponse> {
     const apiUrl = `${this.baseUrl}/GetLeaveUbicacionCxC?pcCompania=${pcCompania}&pcCuentaC=${pcCuentaC}&pcUbicacion=${pcUbicacion}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
@@ -73,7 +73,7 @@ export class UbicacionesService {
   getUbicacionesList(
     pcCompania: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<UbicacionResponse> {
     const apiUrl = `${this.baseUrl}/GetCEUbicacionCxC?pcCompania=${pcCompania}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;

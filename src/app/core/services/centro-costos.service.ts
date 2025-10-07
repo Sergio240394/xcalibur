@@ -45,7 +45,7 @@ export class CentroCostosService {
     pcCuentaC: string,
     pcCentro: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<CentroCostoResponse> {
     const apiUrl = `${this.baseUrl}/GetLeaveCentroCCxC?pcCompania=${pcCompania}&pcCuentaC=${pcCuentaC}&pcCentro=${pcCentro}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
@@ -71,7 +71,7 @@ export class CentroCostosService {
   getCentrosCostoList(
     pcCompania: string,
     pcLogin: string,
-    pcSuper: boolean,
+    pcSuper: string,
     pcToken: string
   ): Observable<CentroCostoResponse> {
     const apiUrl = `${this.baseUrl}/GetCECentroCCxC?pcCompania=${pcCompania}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;

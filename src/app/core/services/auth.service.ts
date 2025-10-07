@@ -96,7 +96,7 @@ export class AuthService {
             role: 'user',
             pcToken: firstMenuItem.token,
             pcLogin: firstMenuItem.tparent,
-            pcSuper: firstMenuItem['super-clav']
+            pcSuper: String(firstMenuItem['super-clav'])
           };
 
           console.log('👤 User object created:', user);

@@ -75,7 +75,7 @@ export class CompaniesService {
    * @param pcSuper Valor de super-clav del usuario actual
    * @returns Observable con la lista de compañías
    */
-  getCompanies(pcLogin: string, pcSuper: boolean): Observable<SearchItem[]> {
+  getCompanies(pcLogin: string, pcSuper: string): Observable<SearchItem[]> {
     const apiUrl = `${this.baseUrl}/GetCECompanias?pcLogin=${pcLogin}&pcSuper=${pcSuper}`;
 
     console.log('🔍 Fetching companies from API:', {

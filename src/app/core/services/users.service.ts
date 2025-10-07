@@ -15,39 +15,19 @@ export class UsersService {
 
   /**
    * Obtiene la lista de usuarios del sistema
-   * @param pcLogin Login del usuario actual
-   * @param pcToken Token de autenticación
-   * @param pcSuper Valor de super-clav del usuario actual
+   * @param apiUrl URL completa del endpoint
    * @returns Observable con la lista de usuarios
    */
-  getUsers(pcLogin: string, pcToken: string, pcSuper: boolean): Observable<UserData[]> {
-    const apiUrl = `${this.baseUrl}/GetCEUsuarios?pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
-
-    console.log('🔍 Fetching users from API:', {
-      url: apiUrl,
-      pcLogin: pcLogin,
-      pcToken: pcToken,
-      pcSuper: pcSuper,
-      timestamp: new Date().toISOString()
-    });
-
+  getUsers(apiUrl: string): Observable<UserData[]> {
     return this.http.get<UsersApiResponse>(apiUrl).pipe(
       map(response => {
-
         if (response.dsRespuesta && response.dsRespuesta.tgeclaves2) {
           return response.dsRespuesta.tgeclaves2;
         } else {
-          console.warn('No hay usuarios en la respuesta');
           return [];
         }
       }),
       catchError(error => {
-        console.error('Error recibiendo usuarios:', {
-          error: error,
-          message: error.message,
-          status: error.status,
-          timestamp: new Date().toISOString()
-        });
         return of([]);
       })
     );
@@ -106,38 +86,19 @@ export class UsersService {
 
   /**
    * Obtiene la lista de perfiles del sistema
-   * @param pcLogin Login del usuario actual
-   * @param pcToken Token de autenticación
-   * @param pcSuper Valor de super-clav del usuario actual
+   * @param apiUrl URL completa del endpoint
    * @returns Observable con la lista de perfiles
    */
-  getPerfiles(pcLogin: string, pcToken: string, pcSuper: boolean): Observable<PerfilData[]> {
-    const apiUrl = `${this.baseUrl}/GetCEPerfil?pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
-
-    console.log('🔍 Fetching perfiles from API:', {
-      url: apiUrl,
-      pcLogin: pcLogin,
-      pcToken: pcToken,
-      pcSuper: pcSuper,
-      timestamp: new Date().toISOString()
-    });
-
+  getPerfiles(apiUrl: string): Observable<PerfilData[]> {
     return this.http.get<PerfilesApiResponse>(apiUrl).pipe(
       map(response => {
         if (response.dsRespuesta && response.dsRespuesta.tgeclaves3) {
           return response.dsRespuesta.tgeclaves3;
         } else {
-          console.warn('No hay perfiles en la respuesta');
           return [];
         }
       }),
       catchError(error => {
-        console.error('Error recibiendo perfiles:', {
-          error: error,
-          message: error.message,
-          status: error.status,
-          timestamp: new Date().toISOString()
-        });
         return of([]);
       })
     );
@@ -191,36 +152,15 @@ export class UsersService {
 
   /**
    * Obtiene un usuario específico por login
-   * @param pcLoginP Login del usuario a buscar
-   * @param pcLogin Login del usuario actual
-   * @param pcSuper Valor de super-clav del usuario actual
-   * @param pcToken Token de autenticación
+   * @param apiUrl URL completa del endpoint
    * @returns Observable con la respuesta del servidor
    */
-  getUserByLogin(pcLoginP: string, pcLogin: string, pcSuper: boolean, pcToken: string): Observable<any> {
-    const apiUrl = `${this.baseUrl}/GetUsuarios?pcLoginP=${pcLoginP}&pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
-
-    console.log('🔍 Fetching user by login from API:', {
-      url: apiUrl,
-      pcLoginP: pcLoginP,
-      pcLogin: pcLogin,
-      pcToken: pcToken,
-      pcSuper: pcSuper,
-      timestamp: new Date().toISOString()
-    });
-
+  getUserByLogin(apiUrl: string): Observable<any> {
     return this.http.get(apiUrl).pipe(
       map(response => {
-        console.log('✅ User search response:', response);
         return response;
       }),
       catchError(error => {
-        console.error('❌ Error searching user by login:', {
-          error: error,
-          message: error.message,
-          status: error.status,
-          timestamp: new Date().toISOString()
-        });
         throw error;
       })
     );
@@ -229,45 +169,19 @@ export class UsersService {
   /**
    * Actualiza un usuario en el sistema
    * @param userData Datos del usuario a actualizar
-   * @param pcLogin Login del usuario actual
-   * @param pcToken Token de autenticación
-   * @param pcSuper Valor de super-clav del usuario actual
+   * @param apiUrl URL completa del endpoint
    * @returns Observable con la respuesta del servidor
    */
-  updateUser(userData: UpdateUserData, pcLogin: string, pcToken: string, pcSuper: boolean): Observable<any> {
-    const apiUrl = `${this.baseUrl}/UpdateUsuarios?pcLogin=${pcLogin}&pcSuper=${pcSuper}&pcToken=${pcToken}`;
-
+  updateUser(userData: UpdateUserData, apiUrl: string): Observable<any> {
     const requestBody = {
       tgeclaves: [userData]
     };
 
-    console.log('🌐 === ENVIANDO PETICIÓN AL API ===');
-    console.log('🌐 URL completa:', apiUrl);
-    console.log('🌐 Método: PUT');
-    console.log('🌐 Parámetros de URL:', {
-      pcLogin,
-      pcSuper,
-      pcToken: pcToken.substring(0, 10) + '...' // Solo mostrar parte del token por seguridad
-    });
-    console.log('🌐 Body de la petición:', JSON.stringify(requestBody, null, 2));
-    console.log('🌐 Timestamp:', new Date().toISOString());
-
     return this.http.put(apiUrl, requestBody).pipe(
       map(response => {
-        console.log('✅ === RESPUESTA EXITOSA DEL API ===');
-        console.log('📥 Respuesta completa:', response);
-        console.log('📥 Tipo de respuesta:', typeof response);
-        console.log('📥 Timestamp:', new Date().toISOString());
         return response;
       }),
       catchError(error => {
-        console.error('❌ === ERROR EN LA PETICIÓN AL API ===');
-        console.error('📥 Error completo:', error);
-        console.error('📥 Error message:', error.message);
-        console.error('📥 Error status:', error.status);
-        console.error('📥 Error statusText:', error.statusText);
-        console.error('📥 Error url:', error.url);
-        console.error('📥 Timestamp:', new Date().toISOString());
         throw error;
       })
     );
