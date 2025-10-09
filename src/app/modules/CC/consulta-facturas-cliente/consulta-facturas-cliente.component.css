@@ -21,11 +21,7 @@
   border: 1px solid #e2e8f0;
 }
 
-/* Form Actions */
-.form-actions {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-}
+
 
 /* Los estilos de .action-buttons, .btn-primary y .btn-secondary
    están definidos en styles.css (global) */
@@ -59,7 +55,7 @@
 
 /* Popup Header */
 .popup-header {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #764ba2 100%);
+  background: var(--color-primary);
   padding: 1.5rem 2rem;
   color: white;
   display: flex;
@@ -143,7 +139,7 @@
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  background: linear-gradient(135deg, var(--color-primary) 0%, #764ba2 100%);
+  background: var(--color-primary);
   color: white;
   border: none;
   padding: 0.5rem;

@@ -8,23 +8,12 @@
     </div>
   </div>
 
-  <!-- Section Navigation -->
-  <div class="section-navigation">
-    <button type="button" (click)="previousSection()" [disabled]="currentSection() === 1" class="nav-button prev-button">
-      <app-icon type="arrow-left"></app-icon>
-      <span class="button-text">Anterior</span>
-    </button>
-
-    <div class="section-indicator">
-      <span class="current-section">{{ currentSection() }} de 2</span>
-      <div class="section-title">{{ getCurrentSectionTitle() }}</div>
-    </div>
-
-    <button type="button" (click)="nextSection()" [disabled]="currentSection() === 2" class="nav-button next-button">
-      <span class="button-text">Siguiente</span>
-      <app-icon type="arrow-right"></app-icon>
-    </button>
-  </div>
+  <!-- Section Navigation with Tabs -->
+  <app-tabs
+    [tabs]="tabs()"
+    [activeTabId]="currentSection().toString()"
+    (tabChanged)="onTabChanged($event)">
+  </app-tabs>
 
   <!-- Main Form -->
   <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" (keydown)="onFormKeyDown($event)" class="modern-form">
@@ -59,8 +48,7 @@
             <input type="date" formControlName="fechaPer" class="modern-input"
                    [class.error]="transactionForm.get('fechaPer')?.invalid && transactionForm.get('fechaPer')?.touched"
                    (keydown.enter)="onFecPerKeyDown($event)"
-                   (blur)="onFecPerBlur()"
-                   (change)="onFecPerChange()">
+                   (blur)="onFecPerBlur()">
           </div>
           @if (transactionForm.get('fechaPer')?.invalid && transactionForm.get('fechaPer')?.touched) {
             <span class="field-error">Este campo es requerido</span>
@@ -210,7 +198,12 @@
             }
           </label>
           <div class="input-with-icon">
-            <input type="text" formControlName="moneda" placeholder="Código de moneda" class="modern-input">
+            <input type="text" formControlName="moneda" placeholder="Código de moneda" class="modern-input"
+                   (keydown.enter)="onMonedaKeyDown($event)"
+                   (blur)="onMonedaBlur()">
+            <button type="button" (click)="openPopup('moneda')" class="search-button" title="Buscar moneda">
+              <app-icon type="lupa"></app-icon>
+            </button>
           </div>
         </div>
 
@@ -223,8 +216,7 @@
           <div class="input-with-loading">
             <input type="date" formControlName="emision" class="modern-input"
                    (keydown.enter)="onFechaEmisionKeyDown($event)"
-                   (blur)="onFechaEmisionBlur()"
-                   (change)="onFechaEmisionChange()">
+                   (blur)="onFechaEmisionBlur()">
           </div>
         </div>
         <div class="form-field">
@@ -232,8 +224,7 @@
           <div class="input-with-loading">
             <input type="date" formControlName="vencimiento" class="modern-input"
                    (keydown.enter)="onFechaVencimientoKeyDown($event)"
-                   (blur)="onFechaVencimientoBlur()"
-                   (change)="onFechaVencimientoChange()">
+                   (blur)="onFechaVencimientoBlur()">
           </div>
         </div>
 
@@ -851,6 +842,12 @@
                       <div class="grid-cell">{{ item['nombre-emp'] }}</div>
                       <div class="grid-cell">{{ item.nit }}</div>
                       <div class="grid-cell">{{ item['telefo-emp'] || '-' }}</div>
+                    } @else if ('moneda' in item && 'nombre-mon' in item) {
+                      <!-- MonedaItem -->
+                      <div class="grid-cell">{{ item.moneda }}</div>
+                      <div class="grid-cell">{{ item['nombre-mon'] }}</div>
+                      <div class="grid-cell">{{ item['text-mon'] || '-' }}</div>
+                      <div class="grid-cell">{{ '-' }}</div>
                     } @else {
                       <!-- SearchItem -->
                       <div class="grid-cell">{{ item.codigo }}</div>

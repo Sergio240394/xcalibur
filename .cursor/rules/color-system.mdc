@@ -1,0 +1,134 @@
+# 🎨 Sistema de Colores - Regla Obligatoria
+
+## ⚠️ REGLA CRÍTICA: NUNCA uses colores fuera del :root
+
+**SIEMPRE** debes usar las variables CSS definidas en `:root` del archivo `src/styles.css`.
+
+**NUNCA** uses:
+- ❌ Valores hexadecimales: `#ffffff`, `#ef4444`, `#1f2937`
+- ❌ Valores RGB/RGBA: `rgb(255, 255, 255)`, `rgba(0, 0, 0, 0.5)`
+- ❌ Nombres de colores: `white`, `black`, `red`, `blue`
+- ❌ Cualquier color hardcodeado que no sea una variable CSS
+
+## ✅ Variables CSS Obligatorias
+
+### Colores Principales
+```css
+var(--color-primary)          /* #033481 - Azul principal */
+var(--color-primary-hover)    /* #4f66ad - Azul hover */
+var(--color-primary-light)    /* #dbeafe - Azul claro */
+var(--color-primary-dark)     /* #033481 - Azul oscuro */
+var(--color-secondary)        /* #0299a3 - Color secundario */
+var(--color-danger)           /* #ef4444 - Rojo peligro */
+var(--color-success)          /* #10b981 - Verde éxito */
+var(--color-warning)          /* #f59e0b - Amarillo advertencia */
+var(--color-error)            /* #ef4444 - Rojo error */
+var(--color-info)             /* #3b82f6 - Azul información */
+```
+
+### Fondos
+```css
+var(--bg-primary)             /* Fondo principal blanco */
+var(--bg-secondary)           /* Fondo secundario gris claro */
+var(--bg-tertiary)            /* Fondo terciario gris */
+var(--bg-overlay)             /* Overlay para modales */
+```
+
+### Textos
+```css
+var(--text-primary)           /* Texto principal oscuro */
+var(--text-secondary)         /* Texto secundario gris */
+var(--text-tertiary)          /* Texto terciario gris claro */
+var(--text-muted)             /* Texto apagado */
+var(--text-inverse)           /* Texto blanco sobre fondos oscuros */
+```
+
+### Bordes
+```css
+var(--border-light)           /* Borde claro */
+var(--border-medium)          /* Borde medio */
+var(--border-strong)          /* Borde fuerte */
+```
+
+### Sombras
+```css
+var(--shadow-sm)              /* Sombra pequeña */
+var(--shadow-md)              /* Sombra media */
+var(--shadow-lg)              /* Sombra grande */
+var(--shadow-xl)              /* Sombra extra grande */
+```
+
+### Escala de Grises
+```css
+var(--color-white)            /* #ffffff */
+var(--color-gray-50)          /* #f9fafb */
+var(--color-gray-100)         /* #f3f4f6 */
+var(--color-gray-200)         /* #e5e7eb */
+var(--color-gray-300)         /* #d1d5db */
+var(--color-gray-400)         /* #9ca3af */
+var(--color-gray-500)         /* #6b7280 */
+var(--color-gray-600)         /* #4b5563 */
+var(--color-gray-700)         /* #374151 */
+var(--color-gray-800)         /* #1f2937 */
+var(--color-gray-900)         /* #111827 */
+```
+
+## 📝 Ejemplos de Uso
+
+### ✅ CORRECTO
+```css
+.my-button {
+  background: var(--color-primary);
+  color: var(--text-inverse);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+}
+
+.danger-button {
+  background: var(--color-danger);
+  color: var(--text-inverse);
+}
+
+.modal-overlay {
+  background: var(--bg-overlay);
+}
+```
+
+### ❌ INCORRECTO
+```css
+.my-button {
+  background: #033481;           /* ❌ Usa var(--color-primary) */
+  color: white;                  /* ❌ Usa var(--text-inverse) */
+  border: 1px solid #e5e7eb;    /* ❌ Usa var(--border-light) */
+}
+
+.danger-button {
+  background: #ef4444;           /* ❌ Usa var(--color-danger) */
+  color: #ffffff;                /* ❌ Usa var(--text-inverse) */
+}
+
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.5); /* ❌ Usa var(--bg-overlay) */
+}
+```
+
+## 🎯 Aplicación de la Regla
+
+Esta regla aplica a:
+- ✅ Archivos CSS/SCSS
+- ✅ Estilos inline en componentes Angular
+- ✅ Estilos en templates
+- ✅ Cualquier lugar donde se defina un color
+
+## 🔍 Verificación
+
+Antes de completar cualquier tarea, verifica que:
+1. No hay valores hexadecimales de colores en el código
+2. No hay `rgb()` o `rgba()` excepto en variables del root
+3. No hay nombres de colores como `white`, `black`, `red`
+4. Todos los colores usan variables CSS del formato `var(--*)`
+
+## 📚 Referencia
+
+Archivo de variables: `src/styles.css` (líneas 1-71)
+Documentación: `src/styles/COLOR_USAGE_RULES.md`

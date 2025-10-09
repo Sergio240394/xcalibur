@@ -13,12 +13,14 @@ import { LoadingService } from '../../../core/services/loading.service';
 import { ModalService } from '../../../core/services/modal.service';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 import { CollapsibleSectionComponent } from '../../../shared/components/collapsible-section';
+import { TabsComponent, TabItem } from '../../../shared/components/tabs';
 import { CompaniasCxCService, CompaniaCxC, FechaPeriodoCxC, LoteCxC, EmpresaCxC, TipoDocCxC, DocumentoCxC, FechaEmisionCxC, FechaVencimientoCxC, AplicaDocCxC, MontoCxC, ApiResponse } from '../../../core/services/companias-cxc.service';
 import { CuentasService, CuentaItem, CuentaResponse } from '../../../core/services/cuentas.service';
 import { AuxiliaresService, AuxiliarItem, AuxiliarResponse } from '../../../core/services/auxiliares.service';
 import { UbicacionesService, UbicacionItem, UbicacionResponse } from '../../../core/services/ubicaciones.service';
 import { CentroCostosService, CentroCostoItem, CentroCostoResponse } from '../../../core/services/centro-costos.service';
 import { FondosService, FondoItem, FondoResponse } from '../../../core/services/fondos.service';
+import { MonedasService, MonedaItem } from '../../../core/services/monedas.service';
 import { environment } from '../../../../environments/environment';
 
 export interface TransactionLineItem {
@@ -38,7 +40,7 @@ export interface TransactionLineItem {
 @Component({
   selector: 'app-transaction-load',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule, IconComponent, CollapsibleSectionComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule, IconComponent, CollapsibleSectionComponent, TabsComponent],
   templateUrl: './transaction-load.component.html',
   styleUrls: ['./transaction-load.component.css']
 })
@@ -52,6 +54,12 @@ export class TransactionLoadComponent implements OnInit {
 
   // Current section state
   currentSection = signal<number>(1); // 1 = Sección 1, 2 = Sección 2
+
+  // Tabs configuration
+  tabs = signal<TabItem[]>([
+    { id: '1', label: 'Cuentas por Cobrar', title: 'Cuentas por Cobrar' },
+    { id: '2', label: 'Contabilidad', title: 'Contabilidad' }
+  ]);
 
   // Field descriptions
   companiaDescription = signal<string>('');
@@ -68,14 +76,14 @@ export class TransactionLoadComponent implements OnInit {
   uFondoDescription = signal<string>('');
 
   // Data arrays
-  filteredItems = signal<(SearchItem | CompaniaCxC | EmpresaCxC)[]>([]);
+  filteredItems = signal<(SearchItem | CompaniaCxC | EmpresaCxC | MonedaItem)[]>([]);
   allCompanies = signal<SearchItem[]>([]);
   allEmpresas = signal<SearchItem[]>([]);
   allDocumentTypes = signal<SearchItem[]>([]);
   allVendedores = signal<VendedorItem[]>([]);
   allDocumentos = signal<SearchItem[]>([]);
   allAplicDocs = signal<SearchItem[]>([]);
-  allMonedas = signal<SearchItem[]>([]);
+  allMonedas = signal<MonedaItem[]>([]);
   allCuentas = signal<SearchItem[]>([]);
   allAuxiliares = signal<SearchItem[]>([]);
   allUbicaciones = signal<SearchItem[]>([]);
@@ -116,6 +124,10 @@ export class TransactionLoadComponent implements OnInit {
   // Fondos data
   fondosData = signal<FondoItem[]>([]);
   isLoadingFondos = signal<boolean>(false);
+
+  // Monedas data
+  monedasData = signal<MonedaItem[]>([]);
+  isLoadingMonedas = signal<boolean>(false);
 
   // Datos originales para restaurar después de filtrar
   originalCompaniasData = signal<CompaniaCxC[]>([]);
@@ -180,7 +192,8 @@ export class TransactionLoadComponent implements OnInit {
     private auxiliaresService: AuxiliaresService,
     private ubicacionesService: UbicacionesService,
     private centroCostosService: CentroCostosService,
-    private fondosService: FondosService
+    private fondosService: FondosService,
+    private monedasService: MonedasService
   ) {
     this.transactionForm = this.fb.group({
       // Common fields (always visible)
@@ -231,28 +244,22 @@ export class TransactionLoadComponent implements OnInit {
     this.calculateTotals();
   }
 
-  // Section navigation methods
-  nextSection(): void {
-    if (this.currentSection() < 2) {
-      this.currentSection.set(this.currentSection() + 1);
-    }
+  // Tab navigation method
+  onTabChanged(tabId: string): void {
+    this.currentSection.set(parseInt(tabId));
   }
 
-  previousSection(): void {
-    if (this.currentSection() > 1) {
-      this.currentSection.set(this.currentSection() - 1);
+  // Utility method to validate date format
+  private isValidDateFormat(dateString: string): boolean {
+    // Check if the date string matches YYYY-MM-DD format
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(dateString)) {
+      return false;
     }
-  }
 
-  getCurrentSectionTitle(): string {
-    switch (this.currentSection()) {
-      case 1:
-        return 'Información General de la Transacción';
-      case 2:
-        return 'Detalle de Líneas de Transacción';
-      default:
-        return '';
-    }
+    // Check if it's a valid date
+    const date = new Date(dateString);
+    return date instanceof Date && !isNaN(date.getTime());
   }
 
   // Popup methods
@@ -327,7 +334,7 @@ export class TransactionLoadComponent implements OnInit {
     this.modalService.closeModal();
   }
 
-  selectItem(item: SearchItem | CompaniaCxC | EmpresaCxC | TipoDocCxC | DocumentoCxC | CuentaItem | AuxiliarItem | UbicacionItem | CentroCostoItem | FondoItem): void {
+  selectItem(item: SearchItem | CompaniaCxC | EmpresaCxC | TipoDocCxC | DocumentoCxC | MonedaItem | CuentaItem | AuxiliarItem | UbicacionItem | CentroCostoItem | FondoItem): void {
     const popupType = this.currentPopupType();
     console.log('🎯 Item seleccionado:', { popupType, item });
 
@@ -412,9 +419,11 @@ export class TransactionLoadComponent implements OnInit {
         }
         break;
       case 'moneda':
-        if ('codigo' in item) {
-          this.transactionForm.patchValue({ moneda: item.codigo });
-          this.monedaDescription.set(item.descripcion);
+        if ('moneda' in item && 'nombre-mon' in item) {
+          // Es un MonedaItem
+          const monedaItem = item as MonedaItem;
+          this.transactionForm.patchValue({ moneda: monedaItem.moneda.toString() });
+          this.monedaDescription.set(monedaItem['nombre-mon']);
         }
         break;
       case 'cuenta':
@@ -1085,11 +1094,6 @@ export class TransactionLoadComponent implements OnInit {
     this.filteredItems.set([]);
   }
 
-  private loadMonedas(): void {
-    // TODO: Implement currency loading
-    this.filteredItems.set([]);
-  }
-
   private loadCuentas(): void {
     // TODO: Implement account loading
     this.filteredItems.set([]);
@@ -1655,14 +1659,18 @@ export class TransactionLoadComponent implements OnInit {
   }
 
   onFecPerBlur(): void {
-    console.log('👁️ Campo fecha per perdió el foco - ejecutando validación');
-    this.validateFecPer();
+    console.log('👁️ Campo fecha per perdió el foco - validando fecha completa');
+    const fechaValue = this.transactionForm.get('fechaPer')?.value;
+
+    // Solo validar si la fecha está completa (formato YYYY-MM-DD)
+    if (fechaValue && fechaValue.length === 10 && this.isValidDateFormat(fechaValue)) {
+      console.log('📅 Fecha periodo completa detectada:', fechaValue);
+      this.validateFecPer();
+    } else {
+      console.log('📅 Fecha periodo incompleta o inválida, saltando validación');
+    }
   }
 
-  onFecPerChange(): void {
-    console.log('📅 Fecha per cambió desde el calendario - ejecutando validación');
-    this.validateFecPer();
-  }
 
   validateLote(): void {
     // Evitar llamadas duplicadas si ya hay una validación en progreso
@@ -3362,16 +3370,18 @@ export class TransactionLoadComponent implements OnInit {
   }
 
   onFechaEmisionBlur(): void {
-    console.log('👁️ Campo fecha emisión perdió el foco - ejecutando validación');
-    this.validateFechaEmision();
+    console.log('👁️ Campo fecha emisión perdió el foco - validando fecha completa');
+    const fechaValue = this.transactionForm.get('emision')?.value;
+
+    // Solo validar si la fecha está completa (formato YYYY-MM-DD)
+    if (fechaValue && fechaValue.length === 10 && this.isValidDateFormat(fechaValue)) {
+      console.log('📅 Fecha emisión completa detectada:', fechaValue);
+      this.validateFechaEmision();
+    } else {
+      console.log('📅 Fecha emisión incompleta o inválida, saltando validación');
+    }
   }
 
-  onFechaEmisionChange(): void {
-    console.log('📅 Campo fecha emisión cambió - ejecutando validación');
-    const fechaValue = this.transactionForm.get('emision')?.value;
-    console.log('📅 Nueva fecha seleccionada:', fechaValue);
-    this.validateFechaEmision();
-  }
 
   // Fecha Vencimiento methods
   validateFechaVencimiento(): void {
@@ -3462,15 +3472,146 @@ export class TransactionLoadComponent implements OnInit {
   }
 
   onFechaVencimientoBlur(): void {
-    console.log('👁️ Campo fecha vencimiento perdió el foco - ejecutando validación');
-    this.validateFechaVencimiento();
+    console.log('👁️ Campo fecha vencimiento perdió el foco - validando fecha completa');
+    const fechaValue = this.transactionForm.get('vencimiento')?.value;
+
+    // Solo validar si la fecha está completa (formato YYYY-MM-DD)
+    if (fechaValue && fechaValue.length === 10 && this.isValidDateFormat(fechaValue)) {
+      console.log('📅 Fecha vencimiento completa detectada:', fechaValue);
+      this.validateFechaVencimiento();
+    } else {
+      console.log('📅 Fecha vencimiento incompleta o inválida, saltando validación');
+    }
   }
 
-  onFechaVencimientoChange(): void {
-    console.log('📅 Campo fecha vencimiento cambió - ejecutando validación');
-    const fechaValue = this.transactionForm.get('vencimiento')?.value;
-    console.log('📅 Nueva fecha seleccionada:', fechaValue);
-    this.validateFechaVencimiento();
+
+  // Moneda methods
+  loadMonedas(): void {
+    console.log('🔍 Cargando monedas...');
+
+    const currentUser = this.authService.user();
+    const pcSuper = String(currentUser?.pcSuper);
+
+    if (!currentUser || !currentUser.pcToken || !currentUser.pcLogin) {
+      console.log('⚠️ Usuario no autenticado');
+      this.toastService.showError('Usuario no autenticado');
+      return;
+    }
+
+    this.isLoadingMonedas.set(true);
+    this.monedasService.getMonedas(
+      currentUser.pcLogin,
+      pcSuper,
+      currentUser.pcToken
+    ).subscribe({
+      next: (response) => {
+        console.log('✅ Respuesta API GetCEgemoneda:', response);
+        this.isLoadingMonedas.set(false);
+
+        if (response.dsRespuesta && response.dsRespuesta.tgemoneda) {
+          // Check for errors
+          if (response.dsRespuesta.terrores && response.dsRespuesta.terrores.length > 0) {
+            const error = response.dsRespuesta.terrores[0];
+            console.log('❌ Error en monedas:', error);
+            this.toastService.showError(error.descripcion);
+            return;
+          }
+
+          this.monedasData.set(response.dsRespuesta.tgemoneda);
+          this.allMonedas.set(response.dsRespuesta.tgemoneda);
+          this.filteredItems.set(response.dsRespuesta.tgemoneda);
+          console.log('✅ Monedas cargadas:', response.dsRespuesta.tgemoneda.length);
+        }
+      },
+      error: (error) => {
+        console.error('❌ Error al cargar monedas:', error);
+        this.isLoadingMonedas.set(false);
+        this.toastService.showError('Error al cargar monedas');
+      }
+    });
+  }
+
+  validateMoneda(): void {
+    if (this.isLoadingMonedas()) {
+      console.log('⚠️ Validación de moneda ya en progreso');
+      return;
+    }
+
+    const monedaValue = this.transactionForm.get('moneda')?.value;
+    const currentUser = this.authService.user();
+    const pcSuper = String(currentUser?.pcSuper);
+
+    console.log('🔍 Validando moneda:', { moneda: monedaValue });
+
+    if (!monedaValue) {
+      console.log('⚠️ Moneda no ingresada');
+      return;
+    }
+
+    if (!currentUser || !currentUser.pcToken || !currentUser.pcLogin) {
+      console.log('⚠️ Usuario no autenticado');
+      this.toastService.showError('Usuario no autenticado');
+      this.transactionForm.patchValue({ moneda: '' });
+      this.monedaDescription.set('');
+      return;
+    }
+
+    this.isLoadingMonedas.set(true);
+    this.monedasService.validateMoneda(
+      monedaValue,
+      currentUser.pcLogin,
+      pcSuper,
+      currentUser.pcToken
+    ).subscribe({
+      next: (response) => {
+        console.log('✅ Respuesta API GetLeaveMoneda:', response);
+        this.isLoadingMonedas.set(false);
+
+        if (response.dsRespuesta && response.dsRespuesta.tgemoneda && response.dsRespuesta.tgemoneda.length > 0) {
+          const moneda = response.dsRespuesta.tgemoneda[0];
+
+          // Check for errors
+          if (response.dsRespuesta.terrores && response.dsRespuesta.terrores.length > 0) {
+            const error = response.dsRespuesta.terrores[0];
+            console.log('❌ Error en moneda:', error);
+            this.toastService.showError(error.descripcion);
+            this.transactionForm.patchValue({ moneda: '' });
+            this.monedaDescription.set('');
+            return;
+          }
+
+          console.log('✅ Moneda validada:', moneda['nombre-mon']);
+          this.monedaDescription.set(moneda['nombre-mon']);
+        } else {
+          console.log('⚠️ No se encontró la moneda');
+          this.toastService.showError('No se encontró la moneda');
+          this.transactionForm.patchValue({ moneda: '' });
+          this.monedaDescription.set('');
+        }
+      },
+      error: (error) => {
+        console.error('❌ Error al validar moneda:', error);
+        this.isLoadingMonedas.set(false);
+        this.toastService.showError('Error al validar moneda');
+        this.transactionForm.patchValue({ moneda: '' });
+        this.monedaDescription.set('');
+      }
+    });
+  }
+
+  onMonedaKeyDown(event: Event): void {
+    console.log('🚀 Ejecutando validación de moneda por Enter');
+    event.preventDefault();
+    this.validateMoneda();
+  }
+
+  onMonedaBlur(): void {
+    console.log('👁️ Campo moneda perdió el foco - ejecutando validación');
+    const monedaValue = this.transactionForm.get('moneda')?.value;
+
+    if (monedaValue && monedaValue.trim() !== '') {
+      this.validateMoneda();
+    }
   }
 
   // Aplica Doc methods

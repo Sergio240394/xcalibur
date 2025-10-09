@@ -2,7 +2,7 @@
 .secondary-menu-container {
   background: #ffffff !important;
   border-bottom: 1px solid #e5e7eb;
-  height: calc(100vh - 120px) !important;
+  height: calc(100vh - 110px) !important;
   width: 100% !important;
   max-width: 100% !important;
   overflow-y: auto !important;

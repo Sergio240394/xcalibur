@@ -13,11 +13,12 @@ import { ToastService } from '../../../core/services/toast.service';
 import { LoadingService } from '../../../core/services/loading.service';
 import { ModalService } from '../../../core/services/modal.service';
 import { environment } from '../../../../environments/environment';
+import { TabsComponent, TabItem } from '../../../shared/components/tabs';
 
 @Component({
   selector: 'app-company-maintenance',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule, TabsComponent],
   templateUrl: './company-maintenance.component.html',
   styleUrls: ['./company-maintenance.component.css']
 })
@@ -56,6 +57,14 @@ export class CompanyMaintenanceComponent implements OnInit {
 
   // Section navigation
   currentSection = signal<number>(1);
+
+  // Tabs configuration
+  tabs = signal<TabItem[]>([
+    { id: '1', label: 'DATOS 1', title: 'Información Básica' },
+    { id: '2', label: 'DATOS 2', title: 'Información Geográfica' },
+    { id: '3', label: 'DATOS 3', title: 'Información Comercial y Legal' },
+    { id: '4', label: 'DATOS 4', title: 'Información Logística' }
+  ]);
 
   constructor(
     private fb: FormBuilder,
@@ -1600,16 +1609,12 @@ export class CompanyMaintenanceComponent implements OnInit {
     if (this.popupTitle().includes('Compañía')) {
       this.filteredCompanies.set(this.companiasService.filterCompanias(this.searchTerm()));
     } else if (this.popupTitle().includes('Empresa')) {
-      // Para empresas, usar el filtrado del servicio de empresas
-      const empresas = this.filteredCompanies() as EmpresaItem[];
-      this.filteredCompanies.set(this.empresasService.filterEmpresas(
-        empresas.map(emp => ({ codigo: emp.codigo, descripcion: emp.descripcion })),
-        this.searchTerm()
-      ).map(searchItem => {
-        // Encontrar la empresa completa por código
-        return empresas.find(emp => emp.codigo === searchItem.codigo) ||
-               { codigo: searchItem.codigo, descripcion: searchItem.descripcion } as EmpresaItem;
-      }));
+      // Para empresas, usar el filtrado del servicio que busca en TODOS los registros
+      const searchResults = this.empresasService.filterEmpresas([], this.searchTerm());
+
+      // Convertir los resultados de búsqueda de vuelta a EmpresaItem completos
+      // Necesitamos obtener los datos completos de las empresas encontradas
+      this.loadEmpresasForSearch(searchResults);
     } else if (this.popupTitle().includes('Vendedor')) {
       // Para vendedores, usar el filtrado del servicio de vendedores
       const vendedores = this.filteredCompanies() as VendedorItem[];
@@ -1769,6 +1774,32 @@ export class CompanyMaintenanceComponent implements OnInit {
     }
   }
 
+  /**
+   * Carga empresas completas basado en resultados de búsqueda
+   * @param searchResults Resultados de búsqueda del servicio
+   */
+  private loadEmpresasForSearch(searchResults: any[]): void {
+    if (searchResults.length === 0) {
+      this.filteredCompanies.set([]);
+      return;
+    }
+
+    // Obtener los códigos de las empresas encontradas
+    const codigosEncontrados = searchResults.map(result => result.codigo);
+
+    // Obtener empresas completas directamente del servicio
+    const empresasFiltradas = this.empresasService.getEmpresasByCodigos(codigosEncontrados);
+
+    console.log('🔍 Empresas filtradas por búsqueda:', {
+      terminoBusqueda: this.searchTerm(),
+      resultadosEncontrados: searchResults.length,
+      empresasFiltradas: empresasFiltradas.length,
+      timestamp: new Date().toISOString()
+    });
+
+    this.filteredCompanies.set(empresasFiltradas);
+  }
+
   onSearch(): void {
     // Usar la misma lógica que onSearchChange pero solo cuando se hace click o Enter
     this.onSearchChange();
@@ -1856,6 +1887,9 @@ export class CompanyMaintenanceComponent implements OnInit {
           console.log('✅ [GUARDAR] Respuesta exitosa:', response);
           this.toastService.showSuccess('Empresa guardada exitosamente');
           this.loadingService.hide();
+
+          // Limpiar el formulario después de guardar exitosamente
+          this.onClear();
         },
         error: (error) => {
           console.error('❌ [GUARDAR] Error al guardar empresa:', error);
@@ -4271,6 +4305,12 @@ export class CompanyMaintenanceComponent implements OnInit {
     this.currentSection.set(1);
   }
 
+  // Handle tab changes
+  onTabChanged(tabId: string): void {
+    const sectionNumber = parseInt(tabId, 10);
+    this.currentSection.set(sectionNumber);
+  }
+
   onReport(): void {
     const currentUser = this.authService.user();
 
@@ -4419,7 +4459,7 @@ export class CompanyMaintenanceComponent implements OnInit {
     if (this.popupTitle().includes('Compañía')) {
       return (company as CompaniaItem).responsable;
     } else if (this.popupTitle().includes('Empresa')) {
-      return (company as EmpresaItem).nit; // NIT para empresas
+      return (company as EmpresaItem).nit || ''; // NIT para empresas (3ra columna)
     } else if (this.popupTitle().includes('Vendedor')) {
       return (company as VendedorItem).vendedorData['text-vend'] || ''; // text-vend para vendedores
     } else if (this.popupTitle().includes('Condición de Pago')) {
@@ -4470,7 +4510,7 @@ export class CompanyMaintenanceComponent implements OnInit {
     if (this.popupTitle().includes('Compañía')) {
       return (company as CompaniaItem).nit;
     } else if (this.popupTitle().includes('Empresa')) {
-      return (company as EmpresaItem).vendedor; // Vendedor para empresas
+      return (company as EmpresaItem).vendedor || ''; // Vendedor para empresas (4ta columna)
     } else if (this.popupTitle().includes('Vendedor')) {
       return (company as VendedorItem).vendedorData.tipvend || ''; // tipvend para vendedores
     } else if (this.popupTitle().includes('Condición de Pago')) {
@@ -4517,18 +4557,8 @@ export class CompanyMaintenanceComponent implements OnInit {
     return '';
   }
 
-  // Section navigation methods
-  nextSection(): void {
-    if (this.currentSection() < 5) {
-      this.currentSection.set(this.currentSection() + 1);
-    }
-  }
-
-  previousSection(): void {
-    if (this.currentSection() > 1) {
-      this.currentSection.set(this.currentSection() - 1);
-    }
-  }
+  // Section navigation methods (replaced by tabs)
+  // nextSection() and previousSection() methods removed - now using tabs
 
   getCurrentSectionTitle(): string {
     const titles = [

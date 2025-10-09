@@ -383,4 +383,10 @@
       </div>
     </div>
   }
+
+  <!-- Confirmation Dialog -->
+  <app-confirmation-dialog
+    (confirmed)="onConfirmDelete()"
+    (cancelled)="onCancelDelete()">
+  </app-confirmation-dialog>
 </div>

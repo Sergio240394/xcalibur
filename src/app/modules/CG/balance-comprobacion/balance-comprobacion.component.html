@@ -9,13 +9,17 @@
   </div>
 
   <!-- Main Form -->
-  <form [formGroup]="form" (ngSubmit)="onGenerate()" class="modern-form">
+  <form [formGroup]="form" (ngSubmit)="$event.preventDefault()" (keydown.enter)="$event.preventDefault()" class="modern-form">
     <div class="form-section">
       <div class="form-grid">
         <!-- Compañía Field -->
         <div class="form-field">
           <label class="field-label">
-            Compañía <span class="required">*</span>
+            Compañía
+            @if (companiaName()) {
+              <span class="field-description">({{ companiaName() }})</span>
+            }
+            <span class="required">*</span>
           </label>
           <div class="input-with-icon">
             <input
@@ -24,7 +28,14 @@
               placeholder="Código de la compañía"
               class="modern-input"
               [class.error]="form.get('compania')?.invalid && form.get('compania')?.touched"
+              (keydown.enter)="onCompaniaEnter($event)"
+              (blur)="onCompaniaBlur()"
             />
+            <button type="button" (click)="openPopup()" class="search-button" title="Buscar compañía">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
           </div>
           @if (form.get('compania')?.invalid && form.get('compania')?.touched) {
             <div class="error-message">La compañía es requerida</div>
@@ -42,6 +53,7 @@
               formControlName="fechaProceso"
               class="modern-input"
               [class.error]="form.get('fechaProceso')?.invalid && form.get('fechaProceso')?.touched"
+              (keydown.enter)="$event.preventDefault()"
             />
           </div>
           @if (form.get('fechaProceso')?.invalid && form.get('fechaProceso')?.touched) {
@@ -55,7 +67,8 @@
     <div class="form-actions">
       <div class="action-buttons">
         <button
-          type="submit"
+          type="button"
+          (click)="onGenerate()"
           class="btn-primary"
           [disabled]="!canGenerate()"
         >
@@ -92,5 +105,100 @@
       </div>
     </div>
   </form>
+
+  <!-- Modern Popup Modal -->
+  @if (showPopup()) {
+    <div class="modern-popup-overlay" (click)="closePopup()">
+      <div class="modern-popup-modal" (click)="$event.stopPropagation()">
+        <!-- Popup Header -->
+        <div class="popup-header">
+          <div class="popup-title-section">
+            <div class="popup-icon">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <h3 class="popup-title">{{ popupTitle() }}</h3>
+          </div>
+          <button (click)="closePopup()" class="popup-close-btn">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Search Section -->
+        <div class="popup-search-section">
+          <div class="search-controls">
+            <div class="search-input-container">
+              <input
+                type="text"
+                [value]="searchTerm()"
+                (input)="searchTerm.set($any($event.target).value); onSearchCompanias()"
+                (keydown.enter)="onSearchCompanias()"
+                placeholder="Buscar en todos los campos..."
+                class="search-input">
+              <button class="search-btn" (click)="onSearchCompanias()" title="Buscar">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+              @if (searchTerm()) {
+                <button class="clear-btn" (click)="searchTerm.set(''); onSearchCompanias()" title="Limpiar búsqueda">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Grid -->
+        <div class="popup-grid-container">
+          @if (isLoading()) {
+            <div class="loading-container">
+              <div class="loading-spinner"></div>
+              <div class="loading-text">Cargando compañías...</div>
+            </div>
+          } @else {
+            <div class="grid-header">
+              <div class="grid-cell header-cell">Código</div>
+              <div class="grid-cell header-cell">Nombre Compañía</div>
+              <div class="grid-cell header-cell">Responsable</div>
+              <div class="grid-cell header-cell">NIT</div>
+            </div>
+
+            <div class="grid-body">
+              @if (filteredCompanias().length === 0) {
+                <div class="no-data-message">
+                  No se encontraron registros
+                </div>
+              } @else {
+                @for (compania of filteredCompanias(); track compania.cia; let i = $index) {
+                  <div class="grid-row" (click)="selectCompania(compania)">
+                    <div class="grid-cell">{{ compania.cia }}</div>
+                    <div class="grid-cell">{{ compania['nombre-cia'] }}</div>
+                    <div class="grid-cell">{{ compania['nomrep-cia'] }}</div>
+                    <div class="grid-cell">{{ compania.nit }}</div>
+                  </div>
+                }
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Popup Footer -->
+        <div class="popup-footer">
+          <button (click)="closePopup()" class="btn-secondary">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 
 </div>

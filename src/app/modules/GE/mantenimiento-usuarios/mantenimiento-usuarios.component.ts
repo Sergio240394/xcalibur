@@ -1,22 +1,26 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { UsersService } from '../../../core/services/users.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { ModalService } from '../../../core/services/modal.service';
 import { PerfilData, UserData, UpdateUserData } from '../../../core/interfaces/auth.interface';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-mantenimiento-usuarios',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, ConfirmationDialogComponent],
   templateUrl: './mantenimiento-usuarios.component.html',
   styleUrls: ['./mantenimiento-usuarios.component.css']
 })
 export class MantenimientoUsuariosComponent implements OnInit {
+  @ViewChild(ConfirmationDialogComponent) confirmDialog!: ConfirmationDialogComponent;
+
   userForm: FormGroup;
   showPopup = signal<boolean>(false);
   popupTitle = signal('');
@@ -33,6 +37,7 @@ export class MantenimientoUsuariosComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private http: HttpClient,
     private usersService: UsersService,
     private authService: AuthService,
     private toastService: ToastService,
@@ -451,11 +456,6 @@ export class MantenimientoUsuariosComponent implements OnInit {
     return userData;
   }
 
-  onDelete(): void {
-    // Handle delete operation
-    // Add confirmation dialog and delete logic here
-  }
-
   onClear(): void {
     // Clear all form fields
     this.clearForm();
@@ -687,5 +687,91 @@ export class MantenimientoUsuariosComponent implements OnInit {
       mantenimientoConsultar: '',
       comentario: ''
     });
+  }
+
+  /**
+   * Abre el diálogo de confirmación para eliminar usuario
+   */
+  public onDelete(): void {
+    const loginValue = this.userForm.get('login')?.value;
+
+    if (!loginValue) {
+      this.toastService.showWarning('Debe seleccionar un usuario para eliminar');
+      return;
+    }
+
+    this.confirmDialog.open({
+      title: '¿Eliminar Usuario?',
+      message: `¿Está seguro que desea eliminar el usuario "${loginValue}"? Esta acción no se puede deshacer.`,
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar'
+    });
+  }
+
+  /**
+   * Ejecuta la eliminación del usuario
+   */
+  public onConfirmDelete(): void {
+    const loginValue = this.userForm.get('login')?.value;
+    const user = this.authService.user();
+
+    if (!loginValue || !user) {
+      this.toastService.showError('No se puede eliminar el usuario');
+      this.confirmDialog.close();
+      return;
+    }
+
+    // Construir la URL del endpoint
+    const apiUrl = `${environment.apiUrl}/DelUsuarios`;
+
+    // Parámetros de la petición (asegurar que no sean undefined)
+    const params = {
+      pcLoginP: loginValue,
+      pcLogin: user.pcLogin || '',
+      pcSuper: user.pcSuper || ''
+    };
+
+    console.log('🗑️ Eliminando usuario - Petición a la API:', {
+      url: apiUrl,
+      params: params,
+      timestamp: new Date().toISOString()
+    });
+
+    // Mostrar estado de procesamiento en el diálogo
+    this.confirmDialog.setProcessing(true);
+
+    // Realizar la petición DELETE
+    this.http.delete(apiUrl, { params }).subscribe({
+      next: (response) => {
+        console.log('✅ Usuario eliminado - Respuesta de la API:', {
+          response: response,
+          timestamp: new Date().toISOString()
+        });
+
+        this.toastService.showSuccess(`Usuario "${loginValue}" eliminado exitosamente`);
+        this.confirmDialog.close();
+
+        // Limpiar el formulario después de eliminar
+        this.clearLoginRelatedFields();
+      },
+      error: (error) => {
+        console.error('❌ Error al eliminar usuario - Respuesta de la API:', {
+          error: error,
+          message: error.message,
+          status: error.status,
+          timestamp: new Date().toISOString()
+        });
+
+        this.toastService.showError('Error al eliminar el usuario: ' + (error.error?.message || error.message));
+        this.confirmDialog.setProcessing(false);
+      }
+    });
+  }
+
+  /**
+   * Cancela la eliminación del usuario
+   */
+  public onCancelDelete(): void {
+    console.log('ℹ️ Eliminación de usuario cancelada por el usuario');
   }
 }

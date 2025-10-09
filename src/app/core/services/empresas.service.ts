@@ -97,6 +97,7 @@ export interface EmpresaItem {
 export class EmpresasService {
   private readonly baseUrl = environment.apiUrl;
   private todasLasEmpresas: SearchItem[] = []; // Almacenar todos los registros para búsqueda
+  private todasLasEmpresasCompletas: EmpresaItem[] = []; // Almacenar todas las empresas completas para búsqueda
 
   constructor(private http: HttpClient) {}
 
@@ -158,6 +159,9 @@ export class EmpresasService {
             codigo: emp.codigo,
             descripcion: emp.descripcion
           }));
+
+          // Almacenar todas las empresas completas para búsqueda
+          this.todasLasEmpresasCompletas = todasLasEmpresas;
 
           // Limitar a los primeros 300 registros para mostrar inicialmente
           const empresasLimitadas = todasLasEmpresas.slice(0, 300);
@@ -231,6 +235,17 @@ export class EmpresasService {
     });
 
     return resultadosLimitados;
+  }
+
+  /**
+   * Obtiene empresas completas basado en códigos específicos
+   * @param codigos Array de códigos de empresas a buscar
+   * @returns Array de empresas completas que coinciden con los códigos
+   */
+  getEmpresasByCodigos(codigos: string[]): EmpresaItem[] {
+    return this.todasLasEmpresasCompletas.filter(empresa =>
+      codigos.includes(empresa.codigo)
+    );
   }
 
   /**
