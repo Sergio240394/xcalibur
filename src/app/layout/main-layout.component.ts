@@ -9,7 +9,7 @@ import { SecondaryMenuComponent } from '../shared/components/secondary-menu/seco
 import { ToastComponent } from '../shared/components/toast/toast.component';
 import { MenuLevel1, MenuLevel2, MenuLevel3 } from '../core/interfaces/menu.interface';
 import { filter } from 'rxjs/operators';
-import { SearchMenuComponent } from "../shared/search-menu/search-menu.component";
+import { SearchMenuComponent } from "../shared/search-menu.component/search-menu.component";
 
 interface MenuItem {
   path: string;
