@@ -1,0 +1,124 @@
+<div class="modern-form-container">
+  <div class="form-header">
+    <div class="header-content">
+      <h1 class="form-title">Mantenimiento de Parámetros Generales</h1>
+    </div>
+  </div>
+
+  <form [formGroup]="parametrosForm" (ngSubmit)="onSubmit()" class="modern-form">
+
+    <div class="form-section">
+      <div class="section-header">
+        <h3 class="section-title">Configuración General</h3>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">Logs</label>
+          <select formControlName="logs" class="modern-select">
+            <option value="">Seleccione</option>
+            <option value="SI">SI</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Fondo</label>
+          <input type="text" formControlName="fondo" class="modern-input" placeholder="Color o valor de fondo">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Fondo Campo</label>
+          <input type="text" formControlName="fondoCampo" class="modern-input" placeholder="Color de fondo de campo">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Fondo Texto</label>
+          <input type="text" formControlName="fondoTexto" class="modern-input" placeholder="Color de fondo de texto">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Rectángulo</label>
+          <input type="text" formControlName="rectangulo" class="modern-input" placeholder="Color del rectángulo">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Días Aviso</label>
+          <input type="number" maxlength="3" formControlName="diasAviso" class="modern-input" placeholder="Máx. 3 dígitos">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Intentos</label>
+          <input type="number" maxlength="3" formControlName="intentos" class="modern-input" placeholder="Máx. 3 dígitos">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Sonido</label>
+          <select formControlName="sonido" class="modern-select">
+            <option value="">Seleccione</option>
+            <option value="SI">SI</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Letras</label>
+          <input type="text" formControlName="letras" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Idioma</label>
+          <select formControlName="idioma" class="modern-select">
+            <option value="ESPAÑOL">ESPAÑOL</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Letras Texto</label>
+          <input type="text" formControlName="letrasTexto" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Días Contraseña</label>
+          <input type="number" maxlength="3" formControlName="diasContrasena" class="modern-input" placeholder="Máx. 3 dígitos">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Historia</label>
+          <input type="text" formControlName="historia" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Animación</label>
+          <input type="text" formControlName="animacion" class="modern-input">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Decimales</label>
+          <input type="number" maxlength="3" formControlName="decimales" class="modern-input" placeholder="Máx. 3 dígitos">
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Fuentes</label>
+          <select formControlName="fuentes" class="modern-select">
+            <option value="">Seleccione</option>
+            <option value="SI">SI</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">
+        Guardar Parámetros
+      </button>
+      <button type="button" class="btn-secondary" (click)="onClear()">Limpiar</button>
+    </div>
+
+    <div *ngIf="isLoading()" class="loading-indicator">
+      <div class="loading-spinner"></div>
+      <span>Cargando...</span>
+    </div>
+  </form>
+</div>

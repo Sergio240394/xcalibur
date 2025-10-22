@@ -1,0 +1,38 @@
+input::placeholder {
+  color: #9ca3af;
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+li {
+  transition: background-color 0.2s ease;
+}
+/* Asegura que el modal y el botón estén siempre al frente */
+.fixed,
+[title="Buscar menú (Ctrl + K)"] {
+  z-index: 999999 !important;
+}
+
+.backdrop-blur-sm,
+.bg-black\/50 {
+  z-index: 999998 !important;
+}
+
+app-search-menu {
+  position: relative;
+  z-index: 999999 !important;
+}
+button {
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+}
+button[title="Buscar menú (Ctrl + K)"] {
+  margin: 10px;
+  padding: 3px;
+}

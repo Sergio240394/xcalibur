@@ -9,6 +9,10 @@ import { TransactionLoadComponent } from './modules/CC/transaction-load/transact
 import { BalanceComprobacionComponent } from './modules/CG/balance-comprobacion/balance-comprobacion.component';
 
 import { MantenimientoUsuariosComponent } from './modules/GE/mantenimiento-usuarios/mantenimiento-usuarios.component';
+import { ReiniciarPasswordComponent } from './modules/GE/reiniciar-password/reiniciar-password.component';
+
+
+import { MantenimientoParametrosGeneralesComponent } from './modules/GE/mantenimiento-parametros-generales/mantenimiento-parametros-generales.component';
 
 import { ConsultaFacturasClienteComponent } from './modules/CC/consulta-facturas-cliente/consulta-facturas-cliente.component';
 import { CargaComprobantesComponent } from './modules/CG/carga-comprobantes/carga-comprobantes.component';
@@ -34,8 +38,11 @@ export const routes: Routes = [
       { path: 'administrador/companias/mantenimiento-companias', component: CompanyMaintenanceComponent },
       // Autorización a usuarios
       { path: 'administrador/autorizacion-usuarios/mantenimiento-usuarios', component: MantenimientoUsuariosComponent },
+      { path: 'administrador/autorizacion-usuarios/reiniciar-password', component: ReiniciarPasswordComponent },
 
       { path: 'contabilidad-general/reportes-principales/balance-comprobacion', component: BalanceComprobacionComponent },
+
+      { path: 'administrador/programas-especiales/mantenimiento-parametros-generales', component: MantenimientoParametrosGeneralesComponent },
 
       // Transacciones routes
       { path: 'transacciones', component: TransactionLoadComponent },

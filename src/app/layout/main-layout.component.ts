@@ -9,6 +9,7 @@ import { SecondaryMenuComponent } from '../shared/components/secondary-menu/seco
 import { ToastComponent } from '../shared/components/toast/toast.component';
 import { MenuLevel1, MenuLevel2, MenuLevel3 } from '../core/interfaces/menu.interface';
 import { filter } from 'rxjs/operators';
+import { SearchMenuComponent } from "../shared/search-menu/search-menu.component";
 
 interface MenuItem {
   path: string;
@@ -25,8 +26,9 @@ interface MenuItem {
     RouterModule,
     SvgIconComponent,
     SecondaryMenuComponent,
-    ToastComponent
-  ],
+    ToastComponent,
+    SearchMenuComponent
+],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -39,7 +41,9 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   public readonly showUserMenu = signal<boolean>(false);
   public readonly dynamicMenuItems = signal<MenuLevel1[]>([]);
   public readonly showSecondaryMenu = signal<boolean>(false);
-
+  public searchTerm = signal<string>('');
+  public searchResults = signal<MenuItem[]>([]);
+  public showSearchModal = signal<boolean>(false);
   public readonly menuItems = signal<MenuItem[]>([
     {
       path: '/administrador',
@@ -117,7 +121,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
             { path: '/administrador/programas-especiales/mantenimiento-errores', label: 'Mantenimiento errores' },
             { path: '/administrador/programas-especiales/blanqueo-logs', label: 'Blanqueo de logs' },
             { path: '/administrador/programas-especiales/usuarios-trabajando', label: 'Usuarios trabajando' },
-            { path: '/administrador/programas-especiales/mantenimiento-parametros', label: 'Mantenimiento parametros' },
+            { path: '/administrador/programas-especiales/mantenimiento-parametros-generales', label: 'Mantenimiento parametros' },
             { path: '/administrador/programas-especiales/reporte-errores', label: 'Reporte de errores' },
             { path: '/administrador/programas-especiales/reporte-logs', label: 'Reporte de logs' },
             { path: '/administrador/programas-especiales/reporte-errores-soluciones', label: 'Reporte de errores/soluciones' },
@@ -186,7 +190,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         {
           path: '/cuentas-por-cobrar/reportes-principales',
           label: 'Reportes principales',
-      children: [
+          children: [
             { path: '/cuentas-por-cobrar/reportes-principales/recaudo-consolidado-product-group', label: 'Recaudo consolidado por product group' },
             { path: '/cuentas-por-cobrar/reportes-principales/informe-ingresos-trimestre-pg', label: 'Informe de ingresos por trimestre PG' },
             { path: '/cuentas-por-cobrar/reportes-principales/facturacion-recaudo-socio-mensual', label: 'Facturación y recaudo por socio mensual' },
@@ -254,7 +258,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         {
           path: '/cuentas-por-cobrar/procesos-facturacion',
           label: 'Procesos facturación',
-      children: [
+          children: [
             { path: '/cuentas-por-cobrar/procesos-facturacion/modificacion-detalle-facturas', label: 'Modificación detalle facturas' },
             { path: '/cuentas-por-cobrar/procesos-facturacion/generacion-archivo-factura-electronica', label: 'Generación archivo factura electrónica' },
             { path: '/cuentas-por-cobrar/procesos-facturacion/parametros-facturacion', label: 'Parámetros de facturación' },
@@ -287,7 +291,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         {
           path: '/cuentas-por-cobrar/procesos-cierre',
           label: 'Procesos de cierre',
-      children: [
+          children: [
             { path: '/cuentas-por-cobrar/procesos-cierre/proceso-diario', label: 'Proceso diario' },
             { path: '/cuentas-por-cobrar/procesos-cierre/proceso-mensual', label: 'Proceso mensual' },
             { path: '/cuentas-por-cobrar/procesos-cierre/proceso-anual', label: 'Proceso anual' }
@@ -296,7 +300,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         {
           path: '/cuentas-por-cobrar/generadores',
           label: 'Generadores',
-      children: [
+          children: [
             { path: '/cuentas-por-cobrar/generadores/crea-ruta-calculo', label: 'Crea ruta cálculo' },
             { path: '/cuentas-por-cobrar/generadores/crea-ruta-contable', label: 'Crea ruta contable' },
             { path: '/cuentas-por-cobrar/generadores/generador-excel', label: 'Generador Excel' },
@@ -313,7 +317,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private menuService: MenuService,
     private toastService: ToastService,
-    private router: Router
+    public  router: Router
   ) {
     // No usar effect() - todo se pre-calculará una sola vez
   }
@@ -327,6 +331,13 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
     // Listen for window resize events
     window.addEventListener('resize', () => this.checkScreenSize());
+
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        this.openSearchModal();
+      }
+    });
 
     // Listen for route changes and close menu on mobile
     this.router.events
@@ -490,6 +501,8 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     'CARGA DE CLIENTES AUTOMATICO': '/cuentas-por-cobrar/procesos-principales/carga-clientes-automatico',
     'AUDITORIA CORREOS FACTURACION': '/cuentas-por-cobrar/procesos-principales/auditoria-correos-facturacion',
     'CARGA ANULACION DE RECIBOS DE CAJA': '/cuentas-por-cobrar/procesos-principales/carga-anulacion-recibos',
+    'MANTENIMIENTO PARAMETROS': '/administrador/programas-especiales/mantenimiento-parametros-generales',
+    'REINICIAR PASSWORD': '/administrador/autorizacion-usuarios/reiniciar-password',
   };
 
   /**
@@ -551,4 +564,99 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   toggleMenuView(): void {
     this.showSecondaryMenu.set(!this.showSecondaryMenu());
   }
+
+
+  // Abre el modal de búsqueda
+  openSearchModal() {
+    this.showSearchModal.set(true);
+    setTimeout(() => {
+      const input = document.getElementById('menu-search-input') as HTMLInputElement;
+      input?.focus();
+    }, 200);
+  }
+
+  // Cierra el modal y limpia resultados
+  closeSearchModal() {
+    this.showSearchModal.set(false);
+    this.searchTerm.set('');
+    this.searchResults.set([]);
+  }
+
+  // ✅ Filtra solo menús visibles (nivel 3)
+  onSearchChange(event: Event) {
+    const term = (event.target as HTMLInputElement).value.toLowerCase();
+    this.searchTerm.set(term);
+
+    if (!term.trim()) {
+      this.searchResults.set([]);
+      return;
+    }
+
+    const allMenus = this.flattenVisibleMenus(this.menuItems());
+    const filtered = allMenus.filter((m) => m.label.toLowerCase().includes(term));
+    this.searchResults.set(filtered);
+  }
+
+  // ✅ Aplana solo los menús visibles (nivel 3)
+  private flattenVisibleMenus(menuList: any[]): MenuItem[] {
+    const flat: MenuItem[] = [];
+    for (const menu of menuList) {
+      if (menu.children && menu.children.length > 0) {
+        for (const group of menu.children) {
+          if (group.children && group.children.length > 0) {
+            for (const item of group.children) {
+              flat.push({ path: item.path, label: item.label });
+            }
+          }
+        }
+      }
+    }
+    return flat;
+  }
+
+  // Convierte el menú jerárquico a una lista plana
+  private flattenMenu(menuList: MenuItem[]): MenuItem[] {
+    const flat: MenuItem[] = [];
+    const traverse = (items: MenuItem[]) => {
+      for (const item of items) {
+        if (item.label && item.path) {
+          flat.push({ path: item.path, label: item.label });
+        }
+        if (item.children) traverse(item.children);
+      }
+    };
+    traverse(menuList);
+    return flat;
+  }
+
+  // --- Navegación corregida para usar la misma lógica del menú original ---
+  async navigateTo(path: string) {
+    if (!path) return;
+
+    try {
+      // Normaliza la ruta (igual que el menú)
+      let destino = path.startsWith('/') ? path : '/' + path;
+
+      // Verifica que exista dentro del menú (estático o dinámico)
+      const allMenus = this.flattenMenu(this.menuItems());
+      const match = allMenus.find(
+        (m) => m.path === path || m.path === destino
+      );
+
+      if (!match) {
+        console.warn('No se encontró el menú correspondiente para:', path);
+        return;
+      }
+
+      // 🔹 Usa la misma forma que tu menú original
+      await this.router.navigate([match.path.startsWith('/') ? match.path : '/' + match.path]);
+
+      // Cierra el modal de búsqueda
+      this.closeSearchModal();
+    } catch (err) {
+      console.error('Error al navegar al menú:', path, err);
+    }
+  }
+
+
 }
